@@ -1,0 +1,556 @@
+.lab-container {
+	width: 100%;
+	height: 500px;
+	background: #1d1d1d;
+	position: relative;
+	color: #f3f3f3;
+}
+
+.lab-container .menu {
+	width: 100%;
+	height: 40px;
+	margin: 0 10px
+}
+
+.lab-container .menu .item {
+	width: 150px;
+	height: 40px;
+	background: #2d2d2d;
+	float: left;
+	text-align: center;
+	line-height: 40px;
+	cursor: pointer;
+	transition: all .3s ease-out;
+	font-weight: 700
+}
+
+.lab-container .menu .active,
+.lab-container .menu .item:hover {
+	height: 45px;
+	line-height: 45px;
+	background: #00a5a4
+}
+
+.lab-container .high-techs {
+	width: 880px;
+	height: 437px;
+	background: #2d2d2d;
+	margin: 15px auto
+}
+
+.lab-container .energies {
+	width: 880px;
+	height: 437px;
+	background: #2d2d2d;
+	margin-left: auto;
+	margin-right: auto
+}
+
+.lab-container .high-techs .techs {
+	float: left;
+	background: #3d3d3d;
+	width: 200px;
+	height: 437px;
+	padding: 10px
+}
+
+.lab-container .high-techs .techs b {
+	height: 30px;
+	font-size: 16px;
+	display: inline-block
+}
+
+.lab-container .high-techs .techs .tech {
+	float: left;
+	width: 56px;
+	height: 60px;
+	margin: 10px 15px;
+	background: url(../../../../img/lab/techs.png);
+	cursor: pointer;
+	opacity: .7;
+	transition: opacity .3s ease-out
+}
+
+.lab-container .high-techs .techs .active,
+.lab-container .high-techs .techs .tech:hover {
+	opacity: 1
+}
+
+.lab-container .high-techs .description {
+	float: left;
+	background: #2d2d2d;
+	width: 450px;
+	height: 437px;
+	padding: 20px;
+	position: relative
+}
+
+.lab-container .high-techs .description .line {
+	width: 100%;
+	height: 2px;
+	background: #3d3d3d;
+	opacity: .5;
+	margin: 7px 0
+}
+
+.lab-container .high-techs .description li b {
+	width: 60px;
+	display: inline-block
+}
+
+.lab-container .high-techs .description .button {
+	width: 150px;
+	height: 35px;
+	line-height: 35px;
+	font-size: 14px;
+	transition: background .3s ease-out;
+	margin: 10px 0;
+	text-align: center;
+	cursor: pointer;
+	background: #00a5a4;
+	display: inline-block;
+	color: #fff;
+	font-weight: 700
+}
+
+.lab-container .high-techs .description .button:hover {
+	background: #5ebdfd
+}
+
+.lab-container .high-techs .slots {
+	float: left;
+	background: #3d3d3d;
+	padding: 60px;
+	width: 230px;
+	height: 437px
+}
+
+.lab-container .high-techs .slots .slot {
+	float: left;
+	width: 74px;
+	height: 80px;
+	margin: 10px 15px;
+	background: url(../../../../img/lab/techs_big.png);
+	cursor: pointer;
+	opacity: .7;
+	transition: opacity .3s ease-out;
+	position: relative
+}
+
+.lab-container .high-techs .slots .slot .remove {
+	width: 24px;
+	position: absolute;
+	height: 24px;
+	line-height: 24px;
+	text-align: center;
+	cursor: pointer;
+	transition: all .3s ease-out;
+	top: 8px;
+	right: 5px;
+	background: #d64541;
+	color: #dbdbdb;
+	border-bottom-left-radius: 5px
+}
+
+.lab-container .high-techs .slots .slot .remove:hover {
+	width: 26px;
+	height: 26px;
+	color: #fff
+}
+
+.lab-container .high-techs .slots .slot .quantity {
+	width: 60px;
+	height: 15px;
+	font-size: 12px;
+	color: #dbdbdb;
+	text-align: center;
+	position: absolute;
+	bottom: 6px;
+	left: 10px;
+	background: rgba(10, 10, 10, .8)
+}
+
+.lab-container .loader {
+	width: 100%;
+	height: 100%;
+	position: absolute;
+	background: rgba(0, 0, 0, .9);
+	z-index: 10;
+	text-align: center;
+	display: none
+}
+
+.lab-container .loader .content {
+	padding: 200px 0 0;
+	font-size: 20px;
+	width: 100%;
+	color: #fff;
+	position: absolute
+}
+
+.lab-container .loader .content i {
+	font-size: 40px
+}
+
+.lab-container .drones {
+	width: 880px;
+	height: 437px;
+	background: #2d2d2d;
+	margin: 15px auto;
+	text-align: center;
+	display: none
+}
+
+.lab-container .drones .inventory {
+	width: 665px;
+	height: 23px;
+	background: #1d1d1d;
+	margin: 10px 0;
+	display: inline-block;
+	text-align: left;
+	position: relative;
+	padding: 3px
+}
+
+.lab-container .drones .item {
+	width: 320px;
+	height: 210px;
+	background: #1d1d1d;
+	margin: 10px;
+	display: inline-block;
+	text-align: left;
+	position: relative
+}
+
+.lab-container .drones .item .image {
+	width: 84px;
+	height: 84px;
+	background: #2d2d2d;
+	margin: 10px;
+	display: inline-block;
+	float: left
+}
+
+.lab-container .drones .item .description {
+	margin: 10px 0;
+	float: right;
+	width: 210px
+}
+
+.lab-container .drones .item .action {
+	position: absolute;
+	bottom: 5px;
+	width: 100%;
+	text-align: center
+}
+
+.lab-container .drones .button {
+	width: 150px;
+	height: 35px;
+	line-height: 35px;
+	font-size: 14px;
+	transition: background .3s ease-out;
+	margin: 10px 0;
+	text-align: center;
+	cursor: pointer;
+	background: #00a5a4;
+	display: inline-block;
+	color: #fff;
+	font-weight: 700
+}
+
+.lab-container .drones .button:hover {
+	background: #5ebdfd
+}
+
+.lab-container .drones .inactive,
+.lab-container .drones .inactive:hover {
+	background: #2d2d2d
+}
+
+.lab-container {
+	width: 100%;
+	height: 500px;
+	background: #1d1d1d;
+	position: relative;
+	color: #f3f3f3;
+	border-bottom: 3px solid #00a5a4
+}
+
+.lab-container .menu {
+	width: 100%;
+	height: 40px;
+	margin: 0 10px
+}
+
+.lab-container .menu .item {
+	width: 150px;
+	height: 40px;
+	background: #2d2d2d;
+	float: left;
+	text-align: center;
+	line-height: 40px;
+	cursor: pointer;
+	transition: all .3s ease-out;
+	font-weight: 700
+}
+
+.lab-container .menu .active,
+.lab-container .menu .item:hover {
+	height: 45px;
+	line-height: 45px;
+	background: #00a5a4
+}
+
+.lab-container .energies {
+	width: 880px;
+	height: 437px;
+	background: #2d2d2d;
+	margin: 15px auto
+}
+
+.lab-container .energies {
+	width: 880px;
+	height: 437px;
+	background: #2d2d2d;
+	margin: 15px auto
+}
+
+.lab-container .energies .techs {
+	float: left;
+	background: #3d3d3d;
+	width: 200px;
+	height: 437px;
+	padding: 10px
+}
+
+.lab-container .energies .techs b {
+	height: 30px;
+	font-size: 16px;
+	display: inline-block
+}
+
+.lab-container .energies .techs .tech {
+	float: left;
+	width: 56px;
+	height: 60px;
+	margin: 10px 15px;
+	background: url(../../../../img/lab/techs.png);
+	cursor: pointer;
+	opacity: .7;
+	transition: opacity .3s ease-out
+}
+
+.lab-container .energies .techs .active,
+.lab-container .energies .techs .tech:hover {
+	opacity: 1
+}
+
+.lab-container .energies .description {
+	background: #2d2d2d;
+	width: 750px;
+	height: 437px;
+	padding: 20px;
+	margin-left: auto;
+	margin-right: auto;
+	position: relative
+}
+
+.lab-container .energies .description .line {
+	width: 100%;
+	height: 2px;
+	background: #3d3d3d;
+	opacity: .5;
+	margin: 7px 0
+}
+
+.lab-container .energies .description li b {
+	width: 20%;
+	display: inline-block
+}
+
+.lab-container .energies .description .button {
+	width: 150px;
+	height: 35px;
+	line-height: 35px;
+	font-size: 14px;
+	transition: background .3s ease-out;
+	margin: 10px 0;
+	text-align: center;
+	cursor: pointer;
+	background: #00a5a4;
+	display: inline-block;
+	color: #fff;
+	font-weight: 700
+}
+
+.lab-container .energies .description .button:hover {
+	background: #5ebdfd
+}
+
+.lab-container .energies .slots {
+	float: left;
+	background: #3d3d3d;
+	padding: 60px;
+	width: 230px;
+	height: 437px
+}
+
+.lab-container .energies .slots .slot {
+	float: left;
+	width: 74px;
+	height: 80px;
+	margin: 10px 15px;
+	background: url(../../../../img/lab/techs_big.png);
+	cursor: pointer;
+	opacity: .7;
+	transition: opacity .3s ease-out;
+	position: relative
+}
+
+.lab-container .energies .slots .slot .remove {
+	width: 24px;
+	position: absolute;
+	height: 24px;
+	line-height: 24px;
+	text-align: center;
+	cursor: pointer;
+	transition: all .3s ease-out;
+	top: 8px;
+	right: 5px;
+	background: #d64541;
+	color: #dbdbdb;
+	border-bottom-left-radius: 5px
+}
+
+.lab-container .energies .slots .slot .remove:hover {
+	width: 26px;
+	height: 26px;
+	color: #fff
+}
+
+.lab-container .energies .slots .slot .quantity {
+	width: 60px;
+	height: 15px;
+	font-size: 12px;
+	color: #dbdbdb;
+	text-align: center;
+	position: absolute;
+	bottom: 6px;
+	left: 10px;
+	background: rgba(10, 10, 10, .8)
+}
+
+.lab-container .loader {
+	width: 100%;
+	height: 100%;
+	position: absolute;
+	background: rgba(0, 0, 0, .9);
+	z-index: 10;
+	text-align: center;
+	display: none
+}
+
+.lab-container .loader .content {
+	padding: 200px 0 0;
+	font-size: 20px;
+	width: 100%;
+	color: #fff;
+	position: absolute
+}
+
+.lab-container .loader .content i {
+	font-size: 40px
+}
+
+.lab-container .drones {
+	width: 880px;
+	height: 437px;
+	background: #2d2d2d;
+	margin: 15px auto;
+	text-align: center;
+	display: none
+}
+
+.lab-container .drones .inventory {
+	width: 665px;
+	height: 23px;
+	background: #1d1d1d;
+	margin: 10px 0;
+	display: inline-block;
+	text-align: left;
+	position: relative;
+	padding: 3px
+}
+
+.lab-container .drones .item {
+	width: 320px;
+	height: 310px;
+	background: #1d1d1d;
+	margin: 10px;
+	display: inline-block;
+	text-align: left;
+	position: relative
+}
+
+.droneApis {
+	border: dashed 1px #203753;
+	border-radius: 3px 3px;
+	-moz-box-shadow: 0 0 5px  5px rgba(32,55,83,0.5);
+	-webkit-box-shadow: 0 0 5px 5px rgba(32,55,83,0.5);
+	-o-box-shadow: 0 0 5px 5px rgba(32,55,83,0.5);
+}
+
+.droneZeus {
+	border: dashed 1px #473520;
+	border-radius: 3px 3px;
+	-moz-box-shadow: 0 0 10px  5px rgba(71,53,32,0.5);
+	-webkit-box-shadow: 0 0 5px 5px rgba(71,53,32,0.5);
+	-o-box-shadow: 0 0 10px 5px rgba(71,53,32,0.5);
+}
+
+.lab-container .drones .item .image {
+	width: 84px;
+	height: 84px;
+	background: #2d2d2d;
+	margin: 10px;
+	display: inline-block;
+	float: left
+}
+
+.lab-container .drones .item .description {
+	margin: 10px 0;
+	float: right;
+	width: 210px
+}
+
+.lab-container .drones .item .action {
+	position: absolute;
+	bottom: 5px;
+	width: 100%;
+	text-align: center
+}
+
+.lab-container .drones .button {
+	width: 100px;
+	height: 30px;
+	line-height: 30px;
+	font-size: 15px;
+	transition: background .3s ease-out;
+	margin: 4px 0;
+	text-align: center;
+	cursor: pointer;
+	background: #00a5a4;
+	display: inline-block;
+	color: #fff;
+	font-weight: 700
+}
+
+.lab-container .drones .button:hover {
+	background: #5ebdfd
+}
+
+.lab-container .drones .inactive,
+.lab-container .drones .inactive:hover {
+	background: #2d2d2d
+}

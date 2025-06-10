@@ -1,0 +1,30 @@
+Server_quests:
+ID --> Ezt hagyd így (automatikusan növekszik)
+Title --> Küldetés neve
+Description --> Küldetés leírása, bármit írhatsz
+Category --> (NPC = pve) ----- (űrhajó = pvp)
+NeededLvl --> Szükséges szint
+OnlyAdmin --> Csak admin látja = 1 - mindenkinek = 0
+
+Server_Quest_Rewards:
+ID --> Küldetés ID-je
+Type --> Jutalom típusa
+Amount --> Jutalom mennyisége (darabszám)
+
+Server_Quest_Rewards_Temp:
+QuestID --> Server_Quest_Rewards ID-je
+RewardID --> Server_Rewards ID-je
+
+Server_Quest_Tasks:
+ID --> Ezt hagyd így (automatikusan növekszik)
+NeededAmount --> Megölni kívánt ellenség mennyisége (darabszám)
+Type --> (Ha NPC akkor = destroy_npc / Ha Játékos akkor = destroy_player)
+Company --> Melyik megbízó térképen kell
+TargetElement --> Megölni kívánt (NPC vagy hajó) ID-je
+TargetElementBaseID --> 0
+
+
+Server_Quests_Tasks_Temp:
+QuestID --> Server_Quests ID-je
+TaskID --> Server_Quests_Tasks ID-je
+

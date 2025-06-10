@@ -1,0 +1,188 @@
+.ships{
+    width:100%;
+    height:500px;
+    background:#1d1d1d;
+    position:relative;
+    color:#f3f3f3;
+    border-bottom:3px solid #e30914
+}
+.popup{
+    width:100%;
+    height:100%;
+    background:rgba(30,30,30,.9);
+    position:absolute;
+    z-index:120;
+    display:none
+}
+.popup .popup-container{
+    width:400px;
+    min-height:100px;
+    height:auto;
+    background:#1d1d1d;
+    position:relative;
+    text-align:center;
+    padding:25px 0 5px;
+    margin:50px auto
+}
+.popup .popup-container .button{
+    width:100px;
+    height:30px;
+    line-height:30px;
+    font-size:14px;
+    transition:background .3s ease-out;
+    text-align:center;
+    cursor:pointer;
+    background:#e30914;
+    display:inline-block;
+    color:#fff;
+    margin:7px 0
+}
+.popup .popup-container .button:hover{
+    background:#d4040f
+}
+.popup .popup-container .cancel{
+    background:#9e3d3a
+}
+.popup .popup-container .cancel:hover{
+    background:#d64541
+}
+.ships .list{
+    float:left;
+    padding:20px;
+    width:450px;
+    height:100%
+}
+.ships .list .list-container{
+    overflow:auto;
+    height:440px;
+    position:relative
+}
+.ships .item{
+    float:left;
+    width:110px;
+    height:110px;
+    margin:0 10px 15px;
+    background:#d33d3d;
+    transition:all .3s ease-out;
+    line-height:110px;
+    text-align:center;
+    background:#2d2d2d
+}
+.ships .item:hover{
+    background-color:#4d4d4d!important;
+    border:1px inset #fff
+}
+.ships .item img{
+    max-width:105px;
+    max-height:105px
+}
+.ships .selected-ship .item{
+    background:#1d1d1d
+}
+.ships .infos{
+    float:right;
+    padding:20px;
+    width:450px;
+    height:100%;
+    background:#2d2d2d;
+    position:relative
+}
+.ships .infos .selected-ship{
+    width:100%;
+    height:130px;
+    float:left
+}
+.ships .infos .selected-ship b{
+    width:30px;
+    color:#d4040f;
+    display:inline-block
+}
+.ships .infos .selected-ship .left-column{
+    float:left;
+    width:140px
+}
+.ships .infos .selected-ship .right-column{
+    float:right;
+    width:140px
+}
+.ships .infos .buttons{
+    position:relative;
+    width:100%;
+    margin:180px auto 0;
+    padding:10px
+}
+.ships .infos .buttons .button{
+    width:100%;
+    height:50px;
+    line-height:50px;
+    font-size:15px;
+    transition:background .3s ease-out;
+    margin:10px 0;
+    text-align:center;
+    cursor:pointer;
+    background:#e30914
+}
+.ships .infos .buttons .button:hover{
+    background:#d4040f
+}
+.ships .infos .buttons .sell{
+    background:#9e3d3a
+}
+.ships .infos .buttons .sell:hover{
+    background:#d64541
+}
+.ships .infos .buttons .inactive{
+    background:#1d1d1d;
+    color:#777;
+    cursor:default
+}
+.ships .infos .buttons .inactive:hover{
+    background:#1d1d1d
+}
+.ships h2{
+    line-height:20px;
+    font-size:20px;
+    margin:0 0 15px;
+    font-weight:700
+}
+.equipment{
+    width:100%;
+    height:500px;
+    position:absolute;
+    color:#f3f3f3;
+    display:none
+}
+.equipment .close{
+    position:absolute;
+    top:5px;
+    right:5px;
+    cursor:pointer;
+    color:#fff
+}
+.equipment .overlay{
+    width:100%;
+    height:100%;
+    background:rgba(30,30,30,.9);
+    position:absolute
+}
+.equipment .equipment-container{
+    padding:5px;
+    width:600px;
+    height:100%;
+    background:#2d2d2d;
+    margin:0 auto;
+    z-index:100;
+    position:relative
+}
+.equipment .equipment-container h2{
+    line-height:20px;
+    font-size:20px;
+    margin:10px 20px;
+    font-weight:700
+}
+.equipment .equipment-container .equipment-slots-container-active{
+    background:rgba(0,120,150,.4)
+}
+.equipment .equipment-container .equipment-inventory-active{
+    background:rgba(100,100,100,.4)
+}

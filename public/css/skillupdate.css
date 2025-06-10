@@ -1,0 +1,706 @@
+[class~=pilotSheet-container],[class~=page]{
+    width:75pc;
+}
+.pilotSheet-container .nav-left .active{
+    background:#3498db !important;
+}
+[class~=pilotSheet-container] [class~=resetContainer] [class~=button]:hover{
+    background:#fd5e5e;
+}
+[class~=pilotSheet-container]{
+    height:31.25pc;
+}
+[class~=pilotSheet-container] [class~=resetContainer] [class~=button]{
+    width:100%;
+}
+[class~=pilotSheet-container] [class~=resetContainer] [class~=button]{
+    height:.260416667in;
+}
+[class~=pilotSheet-container] [class~=resetContainer] [class~=button]{
+    line-height:.260416667in;
+}
+[class~=pilotSheet-container] [class~=resetContainer] [class~=button]{
+    font-size:.9375pc;
+}
+[class~=pilotSheet-container] [class~=items] [class~=item]:hover{
+    background-color:rgba(100,100,100,.1) !important;
+}
+[class~=pilotSheet-container] [class~=resetContainer] [class~=button]{
+    transition:background .3s ease-out;
+}
+.pilotSheet-container .nav-left{
+    float:left;
+}
+[class~=pilotSheet-container] [class~=nav-left] a:hover{
+    background:#3498db;
+}
+.pilotSheet-container .nav-left,[class~=pilotSheet-container] [class~=resetContainer] [class~=button]{
+    text-align:center;
+}
+.pilotSheet-container .nav-left a{
+    width:120pt;
+}
+.pilotSheet-container .nav-left{
+    width:2.083333333in;
+}
+[class~=pilotSheet-container] [class~=items],.pilotSheet-container .nav-left{
+    height:95%;
+}
+[class~=pilotSheet-container] [class~=resetContainer] [class~=button]{
+    color:white;
+}
+.pilotSheet-container .nav-left{
+    background:#2d2d2d;
+}
+[class~=pilotSheet-container],.pilotSheet-container .nav-left a{
+    background:#1d1d1d;
+}
+[class~=pilotSheet-container] [class~=resetContainer] [class~=button]{
+    font-weight:bold;
+}
+[class~=pilotSheet-container] [class~=resetContainer] [class~=button]{
+    cursor:pointer;
+}
+[class~=pilotSheet-container] [class~=resetContainer] [class~=button]{
+    background:#db3434;
+}
+[class~=pilotSheet-container] [class~=infoContainer] [class~=amount]{
+    width:.104166667in;
+}
+[class~=pilotSheet-container],[class~=pilotSheet-container] [class~=items],[class~=pilotSheet-container] [class~=infoContainer] [class~=seprom],[class~=pilotSheet-container] [class~=infoContainer] [class~=logfiles]{
+    position:relative;
+}
+[class~=pilotSheet-container] [class~=infoContainer] [class~=logfiles],.pilotSheet-container .nav-left a,[class~=pilotSheet-container] [class~=infoContainer] [class~=amount],[class~=pilotSheet-container] [class~=infoContainer] [class~=seprom]{
+    display:inline-block;
+}
+.pilotSheet-container .nav-left a{
+    height:.416666667in;
+}
+[class~=pilotSheet-container] [class~=infoContainer] [class~=logfiles]{
+    padding-left:psx;
+}
+.pilotSheet-container .nav-left{
+    padding-top:.104166667in;
+}
+[class~=pilotSheet-container] [class~=items]{
+    width:918px;
+}
+[class~=pilotSheet-container] [class~=items],[class~=pilotSheet-container] [class~=infoContainer] [class~=logfiles]{
+    padding-bottom:0;
+}
+[class~=pilotSheet-container] [class~=infoContainer] [class~=logfiles]{
+    padding-right:psx;
+}
+[class~=page]{
+    margin-left:auto;
+}
+[class~=pilotSheet-container] [class~=infoContainer] [class~=logfiles]{
+    padding-top:0;
+}
+[class~=page]{
+    margin-bottom:0;
+}
+[class~=pilotSheet-container] [class~=items]{
+    padding-left:50px;
+}
+[class~=pilotSheet-container] [class~=items] [class~=item] [class~=upgradelevel]{
+    position:absolute;
+}
+[class~=pilotSheet-container] [class~=items] [class~=item] [class~=upgradelevel]{
+    bottom:.104166667in;
+}
+.pilotSheet-container .nav-left a{
+    line-height:40px;
+}
+[class~=pilotSheet-container] [class~=items] [class~=item] img{
+    max-width:100%;
+}
+[class~=pilotSheet-container] [class~=infoContainer] [class~=logfiles]{
+    color:#70bccf;
+}
+[class~=page]{
+    margin-right:auto;
+}
+[class~=pilotSheet-container] [class~=infoContainer] [class~=researchpoint],[class~=pilotSheet-container] [class~=infoContainer] [class~=logfiles],[class~=pilotSheet-container] [class~=infoContainer] [class~=seprom]{
+    width:32%;
+}
+[class~=page]{
+    margin-top:0pc;
+}
+[class~=pilotSheet-container] [class~=items] [class~=item] [class~=upgradelevel]{
+    left:.125in;
+}
+[class~=pilotSheet-container] [class~=items]{
+    padding-right:0;
+}
+[class~=pilotSheet-container] [class~=items]{
+    padding-top:5px;
+}
+[class~=pilotSheet-container] [class~=infoContainer] [class~=researchpoint],[class~=pilotSheet-container] [class~=infoContainer] [class~=seprom]{
+    padding-left:0pt;
+}
+[class~=pilotSheet-container] [class~=items] [class~=item] [class~=upgradelevel]{
+    width:90px;
+}
+[class~=item-skill]{
+    -webkit-background-size:cover;
+}
+[class~=pilotSheet-container] [class~=items] [class~=item] [class~=upgradelevel]{
+    color:#fff;
+}
+[class~=pilotSheet-container] [class~=infoContainer] [class~=researchpoint],[class~=pilotSheet-container] [class~=infoContainer] [class~=seprom]{
+    padding-bottom:0pt;
+}
+[class~=pilotSheet-container] [class~=infoContainer] [class~=seprom],[class~=pilotSheet-container] [class~=infoContainer] [class~=researchpoint]{
+    padding-right:0pt;
+}
+[class~=item-skill]{
+    -moz-background-size:cover;
+}
+[class~=pilotSheet-container] [class~=items]{
+    float:left;
+}
+[class~=item-skill]{
+    -o-background-size:cover;
+}
+[class~=pilotSheet-container] [class~=items]{
+    overflow:hidden;
+}
+[class~=pilotSheet-container] [class~=infoContainer] [class~=seprom],[class~=pilotSheet-container] [class~=infoContainer] [class~=researchpoint]{
+    padding-top:0pt;
+}
+[class~=item-skill]{
+    background-size:cover;
+}
+.pilotSheet-container .nav-left a,[class~=pilotSheet-container] [class~=items] [class~=item] [class~=upgradelevel]{
+    text-align:center;
+}
+[class~=item-skill]{
+    background-image:url("/public/img/skillTree/skilltree_textur.png");
+}
+[class~=skill_ship_hull_1]{
+    background-position:-129.3125pc 0;
+}
+[class~=pilotSheet-container] [class~=infoContainer] [class~=seprom]{
+    color:#7067db;
+}
+[class~=skill_desc_ship_hull_1]{
+    background-position:-1550px 0;
+}
+[class~=pilotSheet-container] [class~=items] [class~=item] [class~=upgradelevel]{
+    line-height:1.25pc;
+}
+[class~=pilotSheet-container] [class~=items]{
+    color:#dbdbdb;
+}
+[class~=skill_ship_hull_2]{
+    background-position:-1634.25pt 0;
+}
+[class~=pilotSheet-container] [class~=resetContainer]{
+    width:150pt;
+}
+[class~=pilotSheet-container] [class~=resetContainer]{
+    height:35px;
+}
+[class~=skill_desc_ship_hull_2]{
+    background-position:-16.989583333in 0;
+}
+[class~=pilotSheet-container] [class~=item-infos] [class~=item] img,[class~=pilotSheet-container] [class~=items] [class~=item] img{
+    max-height:100%;
+}
+[class~=pilotSheet-container] [class~=item-infos] [class~=infos] [class~=name]{
+    height:25px;
+}
+[class~=skill_ship_hull_3]{
+    background-position:-32.90625in 0;
+}
+[class~=pilotSheet-container] [class~=infoContainer] [class~=researchpoint]{
+    color:#4a86a0;
+}
+[class~=pilotSheet-container] [class~=infoContainer] [class~=researchpoint]{
+    display:inline-block;
+}
+[class~=skill_desc_ship_hull_3]{
+    background-position:-1777.5pt 0;
+}
+[class~=pilotSheet-container] [class~=item-infos] [class~=item] img{
+    max-width:100%;
+}
+.pilotSheet-container .items .item,[class~=pilotSheet-container] [class~=infoContainer] [class~=researchpoint]{
+    position:relative;
+}
+.pilotSheet-container .items .item{
+    border-left-width:.0625pc;
+}
+[class~=pilotSheet-container] [class~=resetContainer]{
+    background:#2d2d2d;
+}
+[class~=skill_ship_hull_4]{
+    background-position:-3269px 0;
+}
+[class~=skill_desc_ship_hull_4]{
+    background-position:-153.25pc 0;
+}
+.pilotSheet-container .items .item{
+    border-bottom-width:.0625pc;
+}
+[class~=skill_engineering_1]{
+    background-position:-14.739583333in 0;
+}
+[class~=pilotSheet-container] [class~=resetContainer]{
+    padding-left:.3125pc;
+}
+[class~=skill_desc_engineering_1]{
+    background-position:-1059px 0;
+}
+.pilotSheet-container .items .item{
+    border-right-width:.0625pc;
+}
+.pilotSheet-container .items .item{
+    border-top-width:.0625pc;
+}
+.pilotSheet-container .nav-left a{
+    margin-left:0;
+}
+.pilotSheet-container .items .item{
+    border-left-style:solid;
+}
+[class~=skill_shield_engineering_1]{
+    background-position:-122.375pc 0;
+}
+.pilotSheet-container .items .item{
+    border-bottom-style:solid;
+}
+.pilotSheet-container .items .item{
+    border-right-style:solid;
+}
+.pilotSheet-container .items .item{
+    border-top-style:solid;
+}
+.pilotSheet-container .items .item{
+    border-left-color:rgba(255,255,255,.1);
+}
+.skill_desc_shield_engineering_1{
+    background-position:-15.302083333in 0;
+}
+.pilotSheet-container .nav-left a{
+    margin-bottom:.052083333in;
+}
+[class~=pilotSheet-container] [class~=item-infos] [class~=infos] [class~=desc]{
+    max-height:60pt;
+}
+.pilotSheet-container .nav-left a{
+    margin-right:0;
+}
+.pilotSheet-container .items .item{
+    border-bottom-color:rgba(255,255,255,.1);
+}
+[class~=skill_shield_engineering_2]{
+    background-position:-35.21875in 0;
+}
+.pilotSheet-container .nav-left a{
+    margin-top:.052083333in;
+}
+.pilotSheet-container .items .item{
+    border-right-color:rgba(255,255,255,.1);
+}
+.pilotSheet-container .items .item{
+    border-top-color:rgba(255,255,255,.1);
+}
+.pilotSheet-container .items .item{
+    border-image:none;
+}
+.pilotSheet-container .items .item{
+    background-color:rgba(0,0,0,.1) !important;
+}
+[class~=pilotSheet-container] [class~=resetContainer]{
+    padding-bottom:.3125pc;
+}
+.pilotSheet-container .items .item{
+    border-radius:5px;
+}
+.pilotSheet-container .items .item{
+    margin-left:.020833333in;
+}
+[class~=pilotSheet-container] [class~=resetContainer]{
+    padding-right:.3125pc;
+}
+[class~=pilotSheet-container] [class~=item-infos] [class~=previewupgradelevel],.pilotSheet-container .nav-left a{
+    color:#fff;
+}
+.pilotSheet-container .items .item{
+    margin-bottom:2.25pt;
+}
+[class~=pilotSheet-container] [class~=item-infos] [class~=item] img{
+    vertical-align:middle;
+}
+[class~=pilotSheet-container] [class~=resetContainer]{
+    padding-top:.3125pc;
+}
+[class~=pilotSheet-container] [class~=item-infos] [class~=previewupgradelevel],[class~=pilotSheet-container] [class~=resetContainer],[class~=pilotSheet-container] [class~=infoContainer]{
+    position:absolute;
+}
+.pilotSheet-container .items .item{
+    margin-right:.020833333in;
+}
+[class~=pilotSheet-container] [class~=resetContainer]{
+    left:704px;
+}
+.pilotSheet-container .items .item{
+    margin-top:2.25pt;
+}
+[class~=skill_desc_shield_engineering_2]{
+    background-position:-91.8125pc 0;
+}
+.pilotSheet-container .items .item{
+    width:1.15625in;
+}
+.pilotSheet-container .items .item{
+    height:1.322916667in;
+}
+[class~=pilotSheet-container] [class~=resetContainer]{
+    border-radius:.3125pc 3.75pt 0in 0px;
+}
+.pilotSheet-container .items .item,.pilotSheet-container .nav-left a{
+    cursor:pointer;
+}
+.pilotSheet-container .items .item{
+    display:inline-block;
+}
+.pilotSheet-container .items .item,[class~=pilotSheet-container] [class~=item-infos] [class~=previewupgradelevel]{
+    text-align:center;
+}
+.pilotSheet-container .items .item{
+    line-height:96pt;
+}
+[class~=skill_shield_mechanics_1]{
+    background-position:-68.0625pc 0;
+}
+[class~=pilotSheet-container] [class~=resetContainer]{
+    top:28.9375pc;
+}
+.pilotSheet-container .items .item{
+    vertical-align:top;
+}
+[class~=pilotSheet-container] [class~=infoContainer]{
+    width:400px;
+}
+[class~=skill_desc_shield_mechanics_1]{
+    background-position:-609.75pt 0;
+}
+[class~=skill_luck_1]{
+    background-position:-30.614583333in 0;
+}
+[class~=pilotSheet-container] [class~=infoContainer]{
+    height:26.25pt;
+}
+[class~=pilotSheet-container] [class~=infoContainer],[class~=pilotSheet-container] [class~=item-infos]{
+    background:#2d2d2d;
+}
+[class~=pilotSheet-container] [class~=infoContainer]{
+    padding-left:.1875pc;
+}
+[class~=skill_desc_luck_1]{
+    background-position:-22.958333333in 0;
+}
+[class~=pilotSheet-container] [class~=item-infos] [class~=previewupgradelevel]{
+    bottom:.3125pc;
+}
+[class~=pilotSheet-container] [class~=item-infos] [class~=previewupgradelevel]{
+    left:.125pc;
+}
+[class~=skill_luck_2]{
+    background-position:-31.760416667in 0;
+}
+[class~=skill_desc_luck_2]{
+    background-position:-1715.25pt 0;
+}
+[class~=pilotSheet-container] [class~=infoContainer]{
+    padding-bottom:.1875pc;
+}
+[class~=pilotSheet-container] [class~=infoContainer]{
+    padding-right:.1875pc;
+}
+[class~=pilotSheet-container] [class~=item-infos] [class~=previewupgradelevel]{
+    width:5.625pc;
+}
+[class~=pilotSheet-container] [class~=infoContainer] img{
+    width:.3125in;
+}
+[class~=pilotSheet-container] [class~=infoContainer]{
+    padding-top:.1875pc;
+}
+[class~=pilotSheet-container] [class~=item-infos] [class~=previewupgradelevel]{
+    line-height:.1875in;
+}
+[class~=pilotSheet-container] [class~=infoContainer]{
+    left:378pt;
+}
+[class~=pilotSheet-container] [class~=infoContainer]{
+    border-radius:0px 0in .052083333in .052083333in;
+}
+[class~=pilotSheet-container] [class~=item-infos] [class~=previewupgradelevel]{
+    font-size:.104166667in;
+}
+[class~=pilotSheet-container] [class~=item-infos]{
+    width:280px;
+}
+[class~=pilotSheet-container] [class~=infoContainer] img{
+    height:1.875pc;
+}
+.pilotSheet-container .item-infos .item{
+    width:72pt;
+}
+[class~=skill_bounty_hunter_1]{
+    background-position:-28.333333333in 0;
+}
+[class~=pilotSheet-container] [class~=item-infos]{
+    height:95%;
+}
+.pilotSheet-container .item-infos .item{
+    height:6pc;
+}
+.skill_desc_bounty_hunter_1{
+    background-position:-21.25in 0;
+}
+[class~=pilotSheet-container] [class~=loader] [class~=content] i{
+    font-size:30pt;
+}
+[class~=pilotSheet-container] [class~=infoContainer] img{
+    padding-left:0in;
+}
+.pilotSheet-container .item-infos .item{
+    border-radius:5px;
+}
+.pilotSheet-container .item-infos .item{
+    border-left-width:.010416667in;
+}
+.pilotSheet-container .item-infos .item{
+    border-bottom-width:.010416667in;
+}
+.pilotSheet-container .item-infos .item{
+    border-right-width:.010416667in;
+}
+[class~=skill_bounty_hunter_2]{
+    background-position:-2830px 0;
+}
+.pilotSheet-container .item-infos .item{
+    border-top-width:.010416667in;
+}
+.pilotSheet-container .item-infos .item{
+    border-left-style:solid;
+}
+.pilotSheet-container .item-infos .item{
+    border-bottom-style:solid;
+}
+.pilotSheet-container .item-infos .item{
+    border-right-style:solid;
+}
+.skill_desc_bounty_hunter_2{
+    background-position:-132.625pc 0;
+}
+.pilotSheet-container .item-infos .item{
+    border-top-style:solid;
+}
+[class~=skill_special_weapons_1]{
+    background-position:-3492px 0;
+}
+[class~=skill_desc_special_weapons_1]{
+    background-position:-27.302083333in 0;
+}
+[class~=pilotSheet-container] [class~=item-infos]{
+    float:right;
+}
+.pilotSheet-container .item-infos .item{
+    border-left-color:#d3d3d3;
+}
+[class~=pilotSheet-container] [class~=item-infos] [class~=infos] [class~=desc]{
+    overflow:hidden;
+}
+.pilotSheet-container .action,[class~=pilotSheet-container] [class~=item-infos]{
+    padding-left:.3125pc;
+}
+[class~=pilotSheet-container] [class~=item-infos]{
+    padding-bottom:.3125pc;
+}
+[class~=pilotSheet-container] [class~=infoContainer] img{
+    padding-bottom:0in;
+}
+.pilotSheet-container .item-infos .item{
+    border-bottom-color:#d3d3d3;
+}
+.pilotSheet-container .item-infos .item{
+    border-right-color:#d3d3d3;
+}
+.pilotSheet-container .item-infos .item{
+    border-top-color:#d3d3d3;
+}
+.pilotSheet-container .item-infos .item{
+    border-image:none;
+}
+[class~=skill_alien_hunter_1]{
+    background-position:-81.5625pc 0;
+}
+[class~=skill_desc_alien_hunter_1]{
+    background-position:-61pc 0;
+}
+[class~=skill_logistics_1]{
+    background-position:-654px 0;
+}
+.pilotSheet-container .item-infos .item,[class~=pilotSheet-container] [class~=item-infos] [class~=infos]{
+    float:left;
+}
+.pilotSheet-container .item-infos .item{
+    margin-left:.3125pc;
+}
+.pilotSheet-container .action,.pilotSheet-container .item-infos .item{
+    margin-bottom:0;
+}
+.pilotSheet-container .item-infos .item{
+    margin-right:.3125pc;
+}
+.pilotSheet-container .item-infos .item{
+    margin-top:0;
+}
+[class~=pilotSheet-container] [class~=item-infos]{
+    padding-right:.3125pc;
+}
+[class~=pilotSheet-container] [class~=item-infos]{
+    padding-top:.3125pc;
+}
+[class~=skill_desc_logistics_1]{
+    background-position:-486px 0;
+}
+.pilotSheet-container .item-infos .item,[class~=pilotSheet-container] [class~=item-infos] [class~=infos] [class~=desc]{
+    position:relative;
+}
+[class~=pilotSheet-container] [class~=infoContainer] img{
+    padding-right:0in;
+}
+[class~=skillToolTip_Text]{
+    color:gray;
+}
+[class~=pilotSheet-container] [class~=item-infos] [class~=infos] [class~=desc]{
+    padding-right:5px;
+}
+.pilotSheet-container .action,[class~=pilotSheet-container] [class~=item-infos] [class~=infos]{
+    color:#fff;
+}
+[class~=pilotSheet-container] [class~=action] [class~=button],.pilotSheet-container .item-infos .item,[class~=pilotSheet-container] [class~=loader]{
+    text-align:center;
+}
+.skillToolTip_Text_active{
+    color:#349e00;
+}
+.skillToolTip_Text_next,.skillToolTip_Text_active{
+    font-weight:bold;
+}
+.pilotSheet-container .action .button:hover{
+    background:#5ebdfd;
+}
+[class~=pilotSheet-container] [class~=item-infos] [class~=infos]{
+    width:164px;
+}
+.skillToolTip_Text_next{
+    color:white;
+}
+.pilotSheet-container .action{
+    padding-bottom:.104166667in;
+}
+[class~=pilotSheet-container] [class~=infoContainer] img{
+    padding-top:0in;
+}
+[class~=pilotSheet-container] [class~=action] [class~=button],.skillToolTip_requirements_need,[class~=pilotSheet-container] [class~=loader],[class~=pilotSheet-container] [class~=loader] [class~=content]{
+    width:100%;
+}
+.pilotSheet-container .action{
+    padding-right:.9375pc;
+}
+[class~=pilotSheet-container] [class~=action] [class~=button]{
+    height:.520833333in;
+}
+.pilotSheet-container .action{
+    padding-top:7.5pt;
+}
+[class~=pilotSheet-container] [class~=action] [class~=button]{
+    line-height:37.5pt;
+}
+.skillToolTip_requirements_need{
+    font-size:7.5pt;
+}
+[class~=pilotSheet-container] [class~=loader] [class~=content],.pilotSheet-container .action,[class~=pilotSheet-container] [class~=loader]{
+    position:absolute;
+}
+[class~=pilotSheet-container] [class~=action] [class~=button]{
+    font-size:11.25pt;
+}
+.pilotSheet-container .action,[class~=pilotSheet-container] [class~=action] [class~=button]{
+    margin-left:0;
+}
+[class~=pilotSheet-container] [class~=action] [class~=button]{
+    transition:background .3s ease-out;
+}
+.skillToolTip_requirements_need{
+    padding-left:.03125in;
+}
+.skillToolTip_requirements_need{
+    padding-right:2.25pt;
+}
+.pilotSheet-container .action,[class~=pilotSheet-container] [class~=action] [class~=button]{
+    margin-right:0;
+}
+[class~=pilotSheet-container] [class~=action] [class~=button]{
+    margin-bottom:.625pc;
+}
+.pilotSheet-container .action{
+    /* margin-top:8.75pc;
+     */
+}
+[class~=pilotSheet-container] [class~=loader]{
+    height:100%;
+}
+.skillToolTip_requirements_need{
+    background-color:rgba(255,255,255,.2);
+}
+[class~=pilotSheet-container] [class~=action] [class~=button]{
+    margin-top:.625pc;
+}
+[class~=pilotSheet-container] [class~=loader]{
+    background:rgba(0,0,0,.9);
+}
+[class~=pilotSheet-container] [class~=loader]{
+    z-index:10;
+}
+[class~=pilotSheet-container] [class~=action] [class~=button]{
+    cursor:pointer;
+}
+[class~=pilotSheet-container] [class~=loader]{
+    display:none;
+}
+.skillToolTip_requirements_need{
+    margin-bottom:.3125pc;
+}
+[class~=pilotSheet-container] [class~=action] [class~=button]{
+    background:#3498db;
+}
+.skillToolTip_requirements_need{
+    border-radius:3px;
+}
+[class~=pilotSheet-container] [class~=loader] [class~=content]{
+    padding-left:0;
+}
+[class~=pilotSheet-container] [class~=loader] [class~=content]{
+    padding-bottom:0;
+}
+[class~=pilotSheet-container] [class~=loader] [class~=content]{
+    padding-right:0;
+}
+[class~=pilotSheet-container] [class~=loader] [class~=content]{
+    padding-top:12.5pc;
+}
+[class~=pilotSheet-container] [class~=loader] [class~=content]{
+    font-size:20px;
+}
+[class~=pilotSheet-container] [class~=loader] [class~=content]{
+    color:#fff;
+}

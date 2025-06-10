@@ -1,0 +1,115 @@
+.settings-container {
+    width: 900;
+    height: 435px;
+    background: #1d1d1d;
+    position: relative;
+    padding-top: 1px;
+    color: #f3f3f3;
+}
+
+.settings-container .data {
+    width: 900px;
+	height: 435px;
+    
+    background: rgba(0,0,0,.1);
+    position: relative;
+    padding: 10px 10px 20px;
+ 
+}
+
+.settings-container .data .profileData {
+	margin-left: 20px;
+    
+    position: relative;
+    padding: 10px 10px 20px;
+	
+}
+
+.settings-container .data .saveButton {
+	text-align: center;
+	margin-top: 200px;
+	margin-left: 250px;
+    
+    position: absolute;
+    padding: 10px 10px 20px;
+	width: 250px;
+}
+
+.settings-container b {
+    width: 100px;
+    display: inline-block;
+    margin-top: 5px;
+    text-align: left
+}
+
+.settings-container .cp {
+    width: auto
+}
+
+.settings-container .cpi {
+    width: 270px
+}
+
+.settings-container input {
+    background: rgba(100,100,100,.3);
+    color: #dbdbdb;
+    border: none;
+    margin-left: 5px;
+    padding-left: 5px
+}
+
+.settings-container input:disabled {
+    background: rgba(0,0,0,.2)
+}
+
+.settings-container input:focus,.settings-container textarea:focus {
+    outline: none
+}
+
+.popup {
+    width: 100%;
+    height: 100%;
+    background: rgba(20,20,20,.9);
+    position: absolute;
+    z-index: 20;
+    display: none;
+    right: 0;
+    top: 0
+}
+
+.popup .popup-container {
+    width: 400px;
+    min-height: 100px;
+    height: auto;
+    background: #1d1d1d;
+    position: relative;
+    text-align: center;
+    padding: 25px 0 5px;
+    margin: 50px auto
+}
+
+.popup .popup-container .button {
+    width: 100px;
+    height: 30px;
+    line-height: 30px;
+    font-size: 14px;
+    transition: background .3s ease-out;
+    text-align: center;
+    cursor: pointer;
+    background: #3498db;
+    display: inline-block;
+    color: #fff;
+    margin: 7px 0
+}
+
+.popup .popup-container .button:hover {
+    background: #5ebdfd
+}
+
+.popup .popup-container .cancel {
+    background: #9e3d3a
+}
+
+.popup .popup-container .cancel:hover {
+    background: #d64541
+}

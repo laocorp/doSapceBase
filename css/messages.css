@@ -1,0 +1,195 @@
+.warnmessage-container {
+	width: 100%;
+	height: 100%;
+	background: #1d1d1d;
+	position: relative;
+	color: #ff0000;
+	margin: 10px auto 20px auto;
+}
+
+.warnmessage-text {
+	width: 100%;
+	height: 100%;
+	position: relative;
+	font-size: 15px;
+	font-weight: bold;
+	color: #ff0000;
+	margin: 10px auto 10px auto;
+}
+
+.messages-container {
+	width: 100%;
+	height: 500px;
+	background: #1d1d1d;
+	position: relative;
+	color: #f3f3f3;
+}
+
+.messages-container .top {
+	width: 100%;
+	height: 50px;
+	background: #2d2d2d
+}
+
+.messages-container .top h3 {
+	position: absolute;
+	margin-top: 10px;
+	margin-left: 10px
+}
+
+.messages-container .top .buttons {
+	position: absolute;
+	top: 5px;
+	right: 5px
+}
+
+.messages-container .top .buttons {
+	position: absolute;
+	top: 5px;
+	right: 5px
+}
+
+.messages-container .messages {
+	width: 100%;
+	height: 447px;
+	position: relative;
+	overflow: hidden
+}
+
+.messages-container .message {
+	width: 100%;
+	height: 70px;
+	background: rgba(10, 10, 10, .2);
+	border-bottom: 1px solid rgba(10, 10, 10, .4);
+	position: relative;
+	word-wrap: break-word
+}
+
+.messages-container .message .icon {
+	width: 70px;
+	height: 100%;
+	float: left;
+	text-align: center;
+	line-height: 70px;
+	font-size: 24px
+}
+
+.messages-container .message .infos {
+	padding: 12px;
+	float: left
+}
+
+.messages-container .message .infos .title {
+	font-size: 15px
+}
+
+.messages-container .message .infos .title:hover {
+	text-decoration: underline;
+	color: #fff
+}
+
+.messages-container .message .infos .user {
+	font-size: 13px
+}
+
+.messages-container .message .infos .date {
+	position: absolute;
+	right: 15px;
+	top: 10px;
+	text-align: right
+}
+
+.messages-container .vmessage {
+	width: 100%;
+	height: 450px;
+	position: relative
+}
+
+.messages-container .vmessage .top {
+	height: 50px;
+	background: rgba(10, 10, 10, .4);
+	padding: 5px 0 0 50px;
+	position: relative
+}
+
+.messages-container .vmessage .back {
+	font-size: 25px;
+	line-height: 40px;
+	position: absolute;
+	left: 10px
+}
+
+.messages-container .vmessage .message {
+	width: 100%;
+	height: 290px;
+	background: rgba(10, 10, 10, .2);
+	border: 1px inset rgba(10, 10, 10, .4);
+	position: relative;
+	overflow: auto;
+	padding: 20px;
+}
+
+.messages-container .vmessage input {
+	background: 0 0;
+	color: #dbdbdb;
+	border: none;
+	margin-left: 5px;
+	width: 700px;
+}
+
+.messages-container .vmessage input:focus,
+.messages-container .vmessage textarea:focus {
+	outline: none
+}
+
+.messages-container .vmessage .action {
+	width: 100%;
+	text-align: center;
+	padding-top: 15px
+}
+
+.popup {
+	width: 100%;
+	height: 100%;
+	background: rgba(20, 20, 20, .9);
+	position: absolute;
+	z-index: 20;
+	display: none
+}
+
+.popup .popup-container {
+	width: 400px;
+	min-height: 100px;
+	height: auto;
+	background: #1d1d1d;
+	position: relative;
+	text-align: center;
+	padding: 25px 0 5px;
+	margin: 50px auto
+}
+
+.popup .popup-container .button {
+	width: 100px;
+	height: 30px;
+	line-height: 30px;
+	font-size: 14px;
+	transition: background .3s ease-out;
+	text-align: center;
+	cursor: pointer;
+	background: #3498db;
+	display: inline-block;
+	color: #fff;
+	margin: 7px 0
+}
+
+.popup .popup-container .button:hover {
+	background: #5ebdfd
+}
+
+.popup .popup-container .cancel {
+	background: #9e3d3a
+}
+
+.popup .popup-container .cancel:hover {
+	background: #d64541
+}

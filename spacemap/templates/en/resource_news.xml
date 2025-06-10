@@ -1,0 +1,212 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resource>
+	<!-- 	#################################################
+			# 												#
+			# The texts have been categorized as follows	#
+			#                                               #
+			# News Categories                               #
+			# Permanent announcements (Subscriptions,		#
+			#	Communication Channels, etc.)               #
+			# Repeatable Events                             #
+			# Special Days                                  # 
+			# Galaxy Gate Special Sales -					#
+			#	GG Weekend, GG Double Rewards,				#
+			#	GG Extra Rewards							#
+			# Starter Packs									#
+			# One Day Sales Events (XP Day Honor, Flash		#
+			#	Sales, etc.)                                #
+			# Subscriptions and Booster Packs               #
+			# Ship and Design Sales							#
+			# Booty Box Reshuffles                          #
+			# Booty Box Reworks                             #
+			# Happy Hour (Large Graphic News)               #
+			# Unsorted and Miscellaneous					#
+			#												#
+			#################################################
+	-->
+<!--News Categories-->
+
+<item name="bn_category_sales"><![CDATA[Sales]]></item>
+<item name="bn_category_events"><![CDATA[Events]]></item>
+<item name="bn_category_news"><![CDATA[News]]></item>
+<item name="bn_category_deals"><![CDATA[Deals]]></item>
+<item name="bn_category_upselling"><![CDATA[Special]]></item>
+
+<!--End of News Categories-->
+<!-- =============================== -->	
+<!--Permanent Announcements (Subscriptions, Comm Channels, etc.)-->
+
+<item name="bn_discord_headline"><![CDATA[Join DO Discord]]></item>
+<item name="bn_discord_content"><![CDATA[Join the DarkOrbit Discord Community, and chat with other players, moderators and developers!! Become a true part of the DarkOrbit family by taking part in all the Discord fun.]]></item>
+
+<!--End of Permanent Announcements (Subscriptions, Comm Channels, etc.)-->
+<!-- =============================== -->
+<!--Repeatable Events-->
+	
+<item name="bn_domination_headline"><![CDATA[Domination]]></item>
+<item name="bn_domination_content"><![CDATA[Seize the Domination Beacons on Battle Maps, build a Clan Battle Station and gain Domination Points. Gain great advantages and bonuses, by gaining the 9 points your Company needs!]]></item>
+<item name="bn_demaner_headline"><![CDATA[Demaner]]></item>
+<item name="bn_demaner_content"><![CDATA[Are you ready for the challenge? Hunt out the Demaner and defeat them in battle to gain great prizes, with greater rewards for those who prove they're the best!]]></item>
+<item name="bn_pirateRaid_headline"><![CDATA[Pirate Raid]]></item>
+<item name="bn_pirateRaid_content"><![CDATA[Time to step up to the mark and halt the pirate raid. Arm your ship and prepare for battle to gain special rewards and items to show you're the master!]]></item>
+<item name="bn_terror_headline"><![CDATA[Vortex of Terror]]></item>
+<item name="bn_terror_content"><![CDATA[The Vortex of Terror has opened and all humanity is under threat! Enter the vortex, battle the within and return victorious for great prizes. As only the best survive!]]></item>
+<item name="bn_battleforinfluence_headline"><![CDATA[Battle for Influence!]]></item>
+<item name="bn_battleforinfluence_content"><![CDATA[Battle for your faction and defeat your rivals for the sake of the galaxy! Climbing the leaderboards and earning valuable rewards for you and your whole faction!]]></item>
+<item name="bn_battleforinfluenceMMO_headline"><![CDATA[MMO Victorious!]]></item>
+<item name="bn_battleforinfluenceMMO_content"><![CDATA[Well done pilot! A victory for the MMO proves our punishing power, but be ready for reprisals in the future!]]></item>
+<item name="bn_battleforinfluenceEIC_headline"><![CDATA[EIC Triumphant!]]></item>
+<item name="bn_battleforinfluenceEIC_content"><![CDATA[Well done pilot! A victory for the EIC proves our punishing power, but be ready for reprisals in the future!]]></item>
+<item name="bn_battleforinfluenceVRU_headline"><![CDATA[VRU Exalted!]]></item>
+<item name="bn_battleforinfluenceVRU_content"><![CDATA[Well done pilot! A victory for the VRU proves our punishing power, but be ready for reprisals in the future!]]></item>
+<item name="bn_spaceCup_headline"><![CDATA[Space Cup!]]></item>
+<item name="bn_spaceCup_content"><![CDATA[Battle aliens and other players in the Space Cup! Grab all-new Space Cup designs, awesome Cosmic Class ammo and more, as the competion really heats up!]]></item>
+
+<!--End of Repeatable Events-->
+<!-- =============================== -->
+<!--Special Days-->
+
+<item name="bn_yuris_headline"><![CDATA[Yuri's Day]]></item>
+<item name="bn_yuris_content"><![CDATA[Commemorating the first human in space: Yuri Gagarin's launch on 12 April 1961. This galactic one-day celebration brings you treats to show your appreciation to his bravery and testament!]]></item>
+
+<!--End of Special Days-->
+<!-- =============================== -->
+<!--Galaxy Gate Special Sales-->
+
+<item name="bn_ggWeekend_headline"><![CDATA[Galaxy Gate Weekend]]></item>
+<item name="bn_ggWeekend_content"><![CDATA[An abnormality has caused certain Galaxy Gates to yield extra rewards this weekend and you could win amazing prizes! Get prepared for action, ready to reign and prove you're the best pilot for the job!]]></item>
+<item name="bn_ggDouble_headline"><![CDATA[Galaxy Gate Doubler]]></item>
+<item name="bn_ggDouble_content"><![CDATA[On this special day the Galaxy Gates are granting double the rewards. Are you the type of pilot to reap these rewards? We think you are!]]></item>
+<item name="bn_ggBonus_headline"><![CDATA[Galaxy Gate Bonus]]></item>
+<item name="bn_ggBonus_content"><![CDATA[When you spin the wheel to build your Galaxy Gate today, you’ll also have a chance to receive something special. With Goliath designs, booster packages, or even LF-4s on offer, what more could you want?!]]></item>
+<item name="bn_ggAction_button"><![CDATA[Build]]></item>
+<item name="bn_ggDoubleWeek_headline"><![CDATA[Extended Double GG Rewards]]></item>
+<item name="bn_ggDoubleWeek_content"><![CDATA[Pilots! For an extended period, the Galaxy Gates are giving double rewards. Keep an eye on the countdown timer, to see how long you've got to ensure you reap the benefits!]]></item>
+
+
+<!--End of Galaxy Gate Special Sales-->
+<!-- =============================== -->
+<!--Starter Packs-->
+
+<item name="bn_starter_headline"><![CDATA[Starter Pack]]></item>
+<item name="bn_starter_content"><![CDATA[Get an action-ready starship with competitive equipment for a bargain! This is your chance to make a dream come true, with this discount on these ships and equipment!]]></item>
+<item name="bn_starteree_headline"><![CDATA[Starter Pack + EE]]></item>
+<item name="bn_starteree_content"><![CDATA[Get a ship with competitive equipment and Extra Energy (EE) for a fabulous discount! What more could a starting pilot want? Just the thrill of battle!]]></item>
+
+<!--End of Starter Packs-->
+<!-- =============================== -->
+<!--One Day Sales Events-->
+
+<item name="bn_honorday_headline"><![CDATA[Honor Day!]]></item>
+<item name="bn_honorday_content"><![CDATA[Grab a 50% honor booster! Order 5,000 Uridium today and benefit from extra honor for 24 hours!]]></item>
+<item name="bn_xpday_headline"><![CDATA[Experience Day]]></item>
+<item name="bn_xpday_content"><![CDATA[Get 50% EP Booster! Order 5,000 Uridium today and benefit from 50% more EP for the next 24 hours!]]></item>
+<item name="bn_doublexpday_headline"><![CDATA[Double Honor & XP]]></item>
+<item name="bn_doublexpday_content"><![CDATA[Today only! For every purchase of 15,000 Uridium or above, you will enjoy 24 hours of double XP and Honor! Get your bonus now, before time runs out!]]></item>
+<item name="bn_premiumsale_headline"><![CDATA[Premium Sale]]></item>
+<item name="bn_premiumsale_content"><![CDATA[Upgrade your account to Premium status and gain these perks: Free ship repairs anywhere; Free P.E.T. repairs; 50% off drone repairs; 50% shorter rocket reload; 5% off all Uridium items and much more!]]></item>
+<item name="bn_eejvsale_headline"><![CDATA[EE + JV Sale]]></item>
+<item name="bn_eejvsale_content"><![CDATA[Use your head and save today! Top Deals for Extra Energy and Jump Vouchers! Then you're ready to take on the galaxy and show the enemy who's in charge!]]></item>
+<item name="bn_bklfsale_headline"><![CDATA[BK + LD Sale]]></item>
+<item name="bn_bkjfsale_content"><![CDATA[Can you miss out on discounted Booty Keys and Log Disks? We think not! With this fabulous limited sale, you're making super savings to supplement your experience in space!]]></item>
+
+<!--End of One Day Sales Events-->
+<!-- =============================== -->
+<!--Subscriptions and Booster Packs-->
+
+<item name="bn_subscriptions_headline"><![CDATA[Super Subscription]]></item>
+<item name="bn_subscriptions_content"><![CDATA[We've got a host of superb subscription deals for all pilots! Check out what's on offer, like the XL Doubler Advantage Packs; XL Rebate Advantage Packs and XL Uridium Advantage Packs. What a deal!]]></item>
+<item name="bn_50cent_headline"><![CDATA[Super Booster Deal]]></item>
+<item name="bn_50cent_content"><![CDATA[Get a fabulous discount on the 10 Hour DMG/SHD/HP Booster Pack! What could be better than merging all three of these things under one Booster. We think you'll be delighted with the results!]]></item>
+<item name="bn_levelUpBoosters_headline"><![CDATA[Ascend!]]></item>
+<item name="bn_levelUpBoosters_content"><![CDATA[Rise above the competition with our selection of Ascension Booster Packs! Act now and a wealth of honor and experience boosters will aid your quest to be one of the galaxy's best!]]></item>
+
+<!--End of Subscriptions and Booster Packs-->
+<!-- =============================== -->
+<!--Ship and Design Sales-->
+
+<item name="bn_alienTechAll_headline"><![CDATA[Alien Designs]]></item>
+<item name="bn_alienTechAll_content"><![CDATA[Become part of the alien agenda! Don't miss this opportunity to disguise your ship with the G-Surgeon Saimon, Devolarium and Sibelonit designs.]]></item>
+<item name="bn_alienTechSaimon_headline"><![CDATA[Alien Designs]]></item>
+<item name="bn_alienTechSaimon_content"><![CDATA[Become part of the alien agenda! Don't miss this opportunity to disguise your ship with the G-Surgeon Saimon design!]]></item>
+<item name="bn_alienTechSibelonit_headline"><![CDATA[Alien Designs]]></item>
+<item name="bn_alienTechSibelonit_content"><![CDATA[Become part of the alien agenda! Don't miss this opportunity to disguise your ship with the G-Surgeon Sibelonit design!]]></item>
+<item name="bn_alienTechDevolarium_headline"><![CDATA[Alien Designs]]></item>
+<item name="bn_alienTechDevolarium_content"><![CDATA[Become part of the alien agenda! Don't miss this opportunity to disguise your ship with the G-Surgeon Devolarium design!]]></item>
+
+<!--End of Ship and Design Sales-->
+<!-- =============================== -->
+<!--Booty Box Reshuffles-->
+
+<item name="bn_rbReshuffle_headline"><![CDATA[Red & Blue Boxes]]></item>
+<item name="bn_rbReshuffle_content"><![CDATA[Craft red and blue keys or buy packs in the shop to get your hands on epic P.E.T. designs in the Red and Blue Booty Boxes!]]></item>
+
+<item name="bn_apocReshuffle_headline"><![CDATA[Apocalypse Box]]></item>
+<item name="bn_apocReshuffle_content"><![CDATA[Craft or buy packs of keys for a chance to get epic drone designs in the Apocalypse Boxes! Face the apocalypse head on!]]></item>
+
+<item name="bn_obsidianReshuffle_headline"><![CDATA[Obsidian Box]]></item>
+<item name="bn_obsidianReshuffle_content"><![CDATA[Craft or buy packs of keys for a chance to get epic ship designs in the Obsidian Boxes!]]></item>
+
+
+<!--End of Booty Box Reshuffles-->
+<!-- =============================== -->
+<!--Booty Box Reworks-->
+
+<item name="bn_obsidianMay2018_headline"><![CDATA[Obsidian Box Refresh]]></item>
+<item name="bn_obsidianMay2018_content"><![CDATA[Get classic ship designs from the Obsidian box! This month includes the all-new Carbonite Cyborg and Carbonite Hammerclaw Designs.]]></item>
+
+<item name="bn_rbMay2018_headline"><![CDATA[RnB Rules!]]></item>
+<item name="bn_rbMay2018_content"><![CDATA[A classic selection of P.E.T.s are available in the Red and Blue Booty Boxes. Craft <strong>1 Red Key</strong> with 10 Scrap (Saimon/Mordon), 5 Aurus (Pirate NPCs) and 3 Schism (Galaxy Gates) and craft <strong>1 Blue Key</strong> with 20 Scrap (Saimon/Mordon), 10 Aurus (Pirate NPCs) and 5 Schism (Galaxy Gates), or buy packs of 5 to 155 keys in the shop.]]></item>
+
+<item name="bn_apocJun2018_headline"><![CDATA[Apocalypse Box Refresh]]></item>
+<item name="bn_apocJun2018_content"><![CDATA[We've refreshed the Apocalypse Box! Craft or buy packs of keys for a chance to get the epic Carbonite Cyborg and Carbonite Hammerclaw Drone Designs.]]></item>
+
+<item name="bn_rbJuly2018_headline"><![CDATA[Collect Carbonite]]></item>
+<item name="bn_rbJuly2018_content"><![CDATA[Craft red and blue keys or buy packs in the shop to get your hands on Carbonite Hammerclaw and Cyborg P.E.T.s this month!]]></item>
+
+<!--End of Booty Box Reworks-->
+<!-- =============================== -->
+<!--Happy Hours (Large Graphic News)-->
+
+<item name="be_happyhour_content"><![CDATA[Get a 200% Bonus on Uridium purchases during this awesome Happy Hour!]]></item>
+<item name="bn_hh_button"><![CDATA[BUY NOW]]></item>
+<item name="be_megahappyhour_content"><![CDATA[Get a 300% Bonus on Uridium purchases during this Mega Happy Hour!]]></item>
+<item name="be_blitz350_content"><![CDATA[Get a 350% Bonus on Uridium purchases during this Giga Happy Hour!]]></item>
+<item name="be_blitz400_content"><![CDATA[Get a 400% Bonus on Uridium purchases during this Giga Happy Hour!]]></item>
+<item name="be_blitz400ts_content"><![CDATA[Get a 400% Bonus on Uridium purchases plus bonus Indoctrine Oil during this Giga Happy Hour!]]></item>
+<item name="be_blitz350ts_content"><![CDATA[Get a 350% Bonus on Uridium purchases plus bonus Indoctrine Oil during this Giga Happy Hour!]]></item>
+<item name="bn_mega_happyhour_categorytext"><![CDATA[Mega Happy Hour]]></item>
+<item name="bn_happyhour_categorytext"><![CDATA[Happy Hour]]></item>
+<item name="bn_blitz_categorytext"><![CDATA[Helix Blitz]]></item>
+<item name="bn_upgradeBounsHour_headline"><![CDATA[Upgrade Hour]]></item>
+<item name="bn_upgradeBounsHour_content"><![CDATA[Get a 25% discount on all attempted upgrades during this cosmic hour!]]></item>
+
+<!--End of Happy Hours (Large Graphic News)-->
+<!-- =============================== -->
+<!--Unsorted and Miscellaneous-->
+
+<item name="bn_empty"><![CDATA[]]></item>
+<item name="bn_start_button"><![CDATA[START]]></item>
+<item name="bn_missionExpansion2018_headline"><![CDATA[Nightmares Unbound!]]></item>
+<item name="bn_missionExpansion2018_content"><![CDATA[Can you survive the nightmare, as Nyx, HULL, the Ministry and a new contact, compel you to uncover who lives in your nightmares. Find out in 100 brand-new missions which will change DarkOrbit forever!]]></item>
+<item name="bn_trRamadan2018_headline"><![CDATA[Size Özel Süprizler]]></item>
+<item name="bn_trRamadan2018_content"><![CDATA[Ramazan Bayramınız Kutlu Olsun! Bayramınız süresince oyunda daha fazla tecrübe ve şeref kazanabilmeniz için, özel paketlerimiz ve haritalardaki özel bayraklı kutularımız sizler için hazırlandı.]]></item>
+<item name="bn_trPriceSpecial2018_headline"><![CDATA[Kaçırılmayacak Fırsat!]]></item>
+<item name="bn_trPriceSpecial2018_content"><![CDATA[Merhaba Uzay Pilotu, Fiyat değişikliğinden çok fazla etkilenmemeniz adına sadece sizlere özel “Muhteşem Üyelik” ve “Süper Güçlendirici” paketlerimiz fiyat farkı olmaksızın kısa bir süreliğine sizler için marketimizde olacak.]]></item>
+
+<!-- End of Unsorted and Miscellaneous-->
+<!-- =============================== -->
+
+<item name="bn_dummyNews_headline"><![CDATA[TODO]]></item>
+<item name="bn_dummyNews_content"><![CDATA[TODO]]></item>
+
+   <!-- 	#################################################
+			# 												#
+			# Please mind the categories mentioned at the	#
+			# top of this file.	All texts should be added	#
+			# to their specific	category 					#
+			#												#
+			#################################################
+	-->
+
+</resource>

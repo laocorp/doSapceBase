@@ -1,0 +1,200 @@
+body {
+    background: #000;
+    font-family: 'Exo', sans-serif !important
+}
+
+a,.bgc a,.bgc a:link,.bgc a:visited {
+    color: #30c2ff;
+    text-decoration: none !important
+}
+
+a:hover,.bgc a:hover {
+    text-decoration: none;
+    color: #66ddff
+}
+
+#content {
+    background: url(/img/bgindex1.jpg) no-repeat;
+    min-height: 740px;
+    position: relative;
+    background-size: 100% 100%;
+}
+
+#content > .container {
+    padding-top: 52px;
+    padding-bottom: 123px;
+}
+
+#bpLogo {
+    left: 460px;
+    top: 275px;
+    right: auto;
+    z-index: 400;
+}
+#reg,
+#login {
+    background: rgba(31, 31, 31, 0.84);
+    background: -moz-linear-gradient(top, rgba(31, 31, 31, 0.84) 0%,
+        rgba(0, 0, 0, 0.87) 100% );
+    background: -webkit-gradient(left top, left bottom, color-stop(0%, rgba(31, 31, 31,
+        0.84) ), color-stop(100%, rgba(0, 0, 0, 0.87) ) );
+    background: -webkit-linear-gradient(top, rgba(31, 31, 31, 0.84) 0%,
+        rgba(0, 0, 0, 0.87) 100% );
+    background: -o-linear-gradient(top, rgba(31, 31, 31, 0.84) 0%,
+        rgba(0, 0, 0, 0.87) 100% );
+    background: -ms-linear-gradient(top, rgba(31, 31, 31, 0.84) 0%,
+        rgba(0, 0, 0, 0.87) 100% );
+    background: linear-gradient(to bottom, rgba(31, 31, 31, 0.84) 0%,
+        rgba(0, 0, 0, 0.87) 100% );
+    filter: progid : DXImageTransform.Microsoft.gradient (   startColorstr =
+        '#1f1f1f', endColorstr = '#000000', GradientType = 0 );
+    -webkit-box-shadow: 0px 0px 20px 0px rgb(255 241 197);
+    -moz-box-shadow: 0px 0px 20px 0px rgba(70, 187, 255, 1);
+    box-shadow: 0px 0px 20px 0px rgb(255 241 197);
+}
+
+#reg:after {
+    background: #0C0;
+    width: 100px;
+    height: 100px;
+    float: left;
+}
+
+#logo {
+    background: url(/img/index3/logo.png) center top no-repeat;
+    width: 368px;
+    height: 198px;
+    margin: 0 0 8px -25px
+}
+
+#claim {
+    position: absolute;
+    top: 110px;
+    left: 455px;
+    z-index: 300;
+    font-size: 62px;
+    font-weight: 600;
+    color: #fff1c5;
+    text-shadow: 3px 3px 5px rgba(0, 0, 0, 1);
+    line-height: 74px;
+    width: 470px;
+}
+
+#reg {
+    width: 320px;
+    padding: 8px 25px 40px !important;
+    min-height: 600px;
+    border: 2px solid #fff1c5;
+    margin: 0 0 40px 20px;
+    position: relative;
+    z-index: 5;
+}
+
+#reg,.bgc_signup_short_container,.bgc_signup_form_legal,
+.bgc_doi_hint,#footer,#login,.bgcdw_captcha,.bgc_fbConnect_container_link
+    {
+    font-family: 'Exo', sans-serif !important;
+}
+
+h1 {
+    font-size: 30px;
+    color: #fff;
+    margin-bottom: 15px;
+    font-family: 'Exo', sans-serif
+}
+
+#reg .bgc_signup_form_register {
+    background: #ffc923;
+    color: #000;
+    font-size: 20px !important;
+    font-weight: 600;
+    line-height: 10px;
+    font-family: 'Exo', sans-serif !important;
+}
+
+.bgcdw_login_container_form {
+    font-family: 'Exo', sans-serif !important;
+}
+
+#bgc_signup_short_container,#reg .bgc_fbConnect_container_link {
+    width: 280px !important
+}
+
+.bgc_fbConnect_container_link a {
+    padding-left: 18px !important
+}
+
+#reg .bgc_fbConnect_container_link {
+    margin-left: 20px
+}
+
+.bgcdw_captcha p,.bgc_signup_form_legal,
+.bgc_doi_hint {
+    color: #efeeee !important
+}
+
+#reg .bgc div.bgcdw_errors {
+    right: 34px;
+}
+
+#login {
+    border-left: 2px solid #fff1c5;
+    border-right: 2px solid #fff1c5;
+    border-bottom: 2px solid #fff1c5;
+    padding: 9px;
+    border-radius: 2px;
+    margin-top: -2px;
+    height: 52px;
+}
+
+.bgcdw_login_container_remindpassword {
+    position: absolute;
+    top: 42px;
+    right: 139px
+}
+
+#login .bgc_fbConnect .bgc_facebookIcon {
+    display: none;
+}
+
+#login .bgcdw_button.bgcdw_login_form_login {
+    background: #ffc923;
+    color: #000;
+    font-size: 15px !important;
+    font-weight: 600;
+    line-height: 10px
+}
+
+.bgcdw_errors_flash {
+    position: relative;
+    z-index: 400
+}
+
+.bgc_signup_form_signup input,
+.bgcdw_login_container_form input {
+    background: #dedede
+}
+
+.bgc .bgc_signup_form_legal label {
+    float: right;
+    margin-right: 26px;
+    width: 220px;
+}
+
+#footer {
+    background: url(/img/index3/footer.png) center top no-repeat;
+    padding-top: 60px;
+    color: #625f5b;
+    position: relative;
+    z-index: 10;
+    margin-top: -123px
+}
+
+#reg .bgc_fbConnect {
+    font-size: 12px !important
+}
+
+#reg .bgc_signup_form_register:hover,
+#login .bgcdw_button.bgcdw_login_form_login:hover {
+    background: #ffe139
+}

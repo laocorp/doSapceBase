@@ -1,0 +1,474 @@
+[class~=ships] [class~=menu],[class~=ships] [class~=petsmenu]{
+    width:100%;
+}
+[class~=ships] [class~=petsmenu] [class~=active],[class~=ships] [class~=petsmenu] [class~=item],[class~=ships] [class~=menu] [class~=item],[class~=ships] [class~=menu]{
+    height:1.875pc;
+}
+[class~=ships] [class~=petsmenu]{
+    height:2.5pc;
+}
+[class~=ships] [class~=menu] [class~=item]{
+    width:1.822916667in;
+}
+[class~=ships] [class~=infos] [class~=selected-ship] b{
+    width:.3125in;
+}
+.popup .popup-container,[class~=ships] [class~=petsmenu]{
+    position:relative;
+}
+.popup .popup-container{
+    width:4.166666667in;
+}
+.popup .popup-container{
+    min-height:1.041666667in;
+}
+[class~=ships] [class~=menu] [class~=item]{
+    background:#2d2d2d;
+}
+[class~=ships] [class~=item],[class~=ships] [class~=list],[class~=ships] [class~=menu] [class~=item],[class~=ships] [class~=petsmenu] [class~=active],[class~=ships] [class~=infos] [class~=selected-ship] [class~=left-column],[class~=ships] [class~=petsmenu] [class~=item]{
+    float:left;
+}
+[class~=ships] [class~=petsmenu] [class~=item],[class~=ships] [class~=menu] [class~=item],[class~=ships] [class~=petsmenu] [class~=active],.popup .popup-container{
+    text-align:center;
+}
+.popup .popup-container{
+    height:auto;
+}
+.popup .popup-container,[class~=ships]{
+    background:#1d1d1d;
+}
+[class~=ships] [class~=menu] [class~=item],[class~=ships] [class~=petsmenu] [class~=active],[class~=ships] [class~=petsmenu] [class~=item],[class~=popup] [class~=popup-container] [class~=button]{
+    line-height:30px;
+}
+[class~=ships] [class~=infos] [class~=selected-ship] b{
+    color:#d4040f;
+}
+[class~=ships] [class~=menu] [class~=item],[class~=ships] [class~=petsmenu] [class~=active],[class~=ships] [class~=petsmenu] [class~=item]{
+    cursor:pointer;
+}
+[class~=ships] [class~=petsmenu] [class~=item],[class~=ships] [class~=menu] [class~=item],[class~=ships] [class~=petsmenu] [class~=active],[class~=ships] [class~=item]{
+    transition:all .3s ease-out;
+}
+.popup .popup-container{
+    padding-left:0;
+}
+.popup .popup-container{
+    padding-bottom:5px;
+}
+[class~=ships] [class~=menu] [class~=item],[class~=ships] [class~=petsmenu] [class~=item],[class~=ships] [class~=petsmenu] [class~=active]{
+    font-weight:700;
+}
+.popup .popup-container{
+    padding-right:0;
+}
+[class~=popup] [class~=popup-container] [class~=button]:hover,[class~=ships] [class~=infos] [class~=buttons] [class~=button]:hover{
+    background:#d4040f;
+}
+.popup .popup-container{
+    padding-top:1.5625pc;
+}
+.popup .popup-container{
+    margin-left:auto;
+}
+[class~=ships]{
+    width:903px;
+}
+[class~=ships] [class~=petsmenu] [class~=item],[class~=ships] [class~=petsmenu] [class~=active]{
+    width:110px;
+}
+[class~=ships] [class~=petsmenu] [class~=item]{
+    background:#581553;
+}
+.popup .popup-container{
+    margin-bottom:.520833333in;
+}
+[class~=ships] [class~=infos] [class~=buttons] [class~=sell]:hover,[class~=popup] [class~=popup-container] [class~=cancel]:hover{
+    background:#d64541;
+}
+[class~=ships] [class~=item] img{
+    max-width:78.75pt;
+}
+[class~=ships] [class~=item] img{
+    max-height:78.75pt;
+}
+.popup .popup-container{
+    margin-right:auto;
+}
+.popup .popup-container{
+    margin-top:.520833333in;
+}
+[class~=ships] [class~=list]{
+    padding-left:.208333333in;
+}
+[class~=ships]{
+    height:5.208333333in;
+}
+[class~=ships] [class~=petsmenu] [class~=active]{
+    background:#7c2fb7;
+}
+[class~=ships] [class~=infos] [class~=selected-ship] [class~=left-column],[class~=ships] [class~=infos] [class~=selected-ship] [class~=right-column]{
+    width:140px;
+}
+[class~=ships] [class~=list]{
+    padding-bottom:.208333333in;
+}
+[class~=ships] [class~=petsmenu] [class~=active]{
+    border-left-width:.0625pc;
+}
+[class~=ships] [class~=petsmenu] [class~=active]{
+    border-bottom-width:.0625pc;
+}
+[class~=ships] [class~=list]{
+    padding-right:.208333333in;
+}
+[class~=ships] [class~=list]{
+    padding-top:.208333333in;
+}
+[class~=ships] [class~=petsmenu] [class~=active]{
+    border-right-width:.0625pc;
+}
+[class~=ships] [class~=list] [class~=list-petDesigns],[class~=ships]{
+    position:relative;
+}
+[class~=ships] h2,.equipment .equipment-container h2{
+    line-height:20px;
+}
+[class~=ships] [class~=petsmenu] [class~=active]{
+    border-top-width:.0625pc;
+}
+[class~=ships] [class~=list]{
+    width:450px;
+}
+.ships .infos,[class~=ships] [class~=infos] [class~=selected-ship] [class~=right-column]{
+    float:right;
+}
+[class~=ships] [class~=list]{
+    height:100%;
+}
+[class~=ships] [class~=petsmenu] [class~=active]{
+    border-left-style:none;
+}
+[class~=ships] [class~=petsmenu] [class~=active]{
+    border-bottom-style:none;
+}
+[class~=ships] [class~=petsmenu] [class~=active]{
+    border-right-style:none;
+}
+[class~=ships] [class~=petsmenu] [class~=active]{
+    border-top-style:none;
+}
+[class~=popup],.ships .infos .buttons .button{
+    width:100%;
+}
+[class~=ships] [class~=petsmenu] [class~=active]{
+    border-left-color:#fff;
+}
+[class~=ships] [class~=item]{
+    width:110px;
+}
+[class~=ships] [class~=petsmenu] [class~=active]{
+    border-bottom-color:#fff;
+}
+[class~=ships]{
+    color:#f3f3f3;
+}
+[class~=ships] [class~=item]{
+    height:110px;
+}
+[class~=ships] [class~=petsmenu] [class~=active]{
+    border-right-color:#fff;
+}
+[class~=ships] [class~=petsmenu] [class~=active]{
+    border-top-color:#fff;
+}
+[class~=ships] [class~=item]{
+    margin-left:.625pc;
+}
+.ships .infos .buttons .button{
+    height:37.5pt;
+}
+[class~=ships] [class~=item]{
+    margin-bottom:15px;
+}
+[class~=ships] [class~=petsmenu] [class~=active]{
+    border-image:none;
+}
+.ships .list .list-container,[class~=ships] [class~=list] [class~=list-petDesigns],[class~=ships] [class~=list] [class~=petlist-container]{
+    overflow:auto;
+}
+[class~=ships] [class~=list] [class~=list-petDesigns]{
+    height:25.625pc;
+}
+[class~=ships] h2,.equipment .equipment-container h2{
+    font-size:1.25pc;
+}
+[class~=ships] [class~=item]{
+    margin-right:7.5pt;
+}
+[class~=ships] [class~=item]{
+    margin-top:0pt;
+}
+[class~=ships] [class~=item]{
+    background:#d33d3d;
+}
+[class~=popup] [class~=popup-container] [class~=button]{
+    width:75pt;
+}
+.ships .infos,[class~=ships] [class~=item]{
+    background:#2d2d2d;
+}
+[class~=popup] [class~=popup-container] [class~=button]{
+    height:22.5pt;
+}
+[class~=ships] [class~=item]{
+    line-height:1.145833333in;
+}
+[class~=popup] [class~=popup-container] [class~=button],[class~=ships] [class~=item]{
+    text-align:center;
+}
+[class~=popup] [class~=popup-container] [class~=button]{
+    font-size:10.5pt;
+}
+[class~=popup] [class~=popup-container] [class~=button]{
+    transition:background .3s ease-out;
+}
+.ships .infos .buttons .button{
+    line-height:37.5pt;
+}
+[class~=equipment] [class~=close],[class~=popup] [class~=popup-container] [class~=button]{
+    cursor:pointer;
+}
+.ships .infos{
+    padding-left:1.25pc;
+}
+[class~=ships] [class~=infos] [class~=selected-ship] b,[class~=popup] [class~=popup-container] [class~=button]{
+    display:inline-block;
+}
+[class~=popup] [class~=popup-container] [class~=button]{
+    background:#00a5a4;
+}
+.ships .infos{
+    padding-bottom:1.25pc;
+}
+.ships .infos{
+    padding-right:1.25pc;
+}
+.ships .infos{
+    padding-top:1.25pc;
+}
+[class~=popup] [class~=popup-container] [class~=button],[class~=equipment] [class~=close]{
+    color:#fff;
+}
+.ships .infos{
+    width:337.5pt;
+}
+[class~=popup] [class~=popup-container] [class~=button],[class~=ships] h2{
+    margin-left:0;
+}
+.ships .infos,[class~=equipment] [class~=overlay],.equipment .equipment-container,[class~=popup]{
+    height:100%;
+}
+[class~=popup] [class~=popup-container] [class~=button]{
+    margin-bottom:.4375pc;
+}
+[class~=popup] [class~=popup-container] [class~=button]{
+    margin-right:0;
+}
+[class~=popup] [class~=popup-container] [class~=button]{
+    margin-top:.4375pc;
+}
+[class~=popup] [class~=popup-container] [class~=cancel]{
+    background:#9e3d3a;
+}
+[class~=ships] [class~=list] [class~=petlist-container],.ships .list .list-container,.ships .infos,[class~=ships] [class~=infos] [class~=buttons]{
+    position:relative;
+}
+[class~=ships] [class~=list] [class~=petlist-container],.ships .list .list-container{
+    height:26.25pc;
+}
+.equipment .equipment-container h2{
+    margin-left:1.25pc;
+}
+[class~=popup],[class~=equipment],[class~=equipment] [class~=close],[class~=equipment] [class~=overlay]{
+    position:absolute;
+}
+[class~=equipment] [class~=close]{
+    top:5px;
+}
+[class~=equipment] [class~=close]{
+    right:3.75pt;
+}
+.ships .item:hover{
+    background-color:#4d4d4d !important;
+}
+.ships .item:hover{
+    border-left-width:.010416667in;
+}
+[class~=ships] [class~=infos] [class~=selected-ship],[class~=equipment] [class~=overlay],[class~=equipment],[class~=ships] [class~=infos] [class~=buttons]{
+    width:100%;
+}
+.ships .item:hover{
+    border-bottom-width:.010416667in;
+}
+.ships .item:hover{
+    border-right-width:.010416667in;
+}
+.ships .item:hover{
+    border-top-width:.010416667in;
+}
+.ships .item:hover{
+    border-left-style:inset;
+}
+.ships .item:hover{
+    border-bottom-style:inset;
+}
+[class~=popup],[class~=equipment] [class~=overlay]{
+    background:rgba(30,30,30,.9);
+}
+.ships .item:hover{
+    border-right-style:inset;
+}
+.ships .item:hover{
+    border-top-style:inset;
+}
+.ships .item:hover{
+    border-left-color:#fff;
+}
+.ships .item:hover{
+    border-bottom-color:#fff;
+}
+.equipment .equipment-container{
+    padding-left:.3125pc;
+}
+.ships .item:hover{
+    border-right-color:#fff;
+}
+.ships .infos .buttons .button{
+    font-size:.9375pc;
+}
+.ships .item:hover{
+    border-top-color:#fff;
+}
+.ships .item:hover{
+    border-image:none;
+}
+[class~=popup]{
+    z-index:120;
+}
+[class~=equipment],[class~=popup]{
+    display:none;
+}
+[class~=ships] [class~=infos] [class~=buttons] [class~=inactive]:hover,.ships .selected-ship .item{
+    background:#1d1d1d;
+}
+[class~=ships] [class~=infos] [class~=selected-ship]{
+    height:1.354166667in;
+}
+.ships .infos .buttons .button{
+    transition:background .3s ease-out;
+}
+.equipment .equipment-container{
+    padding-bottom:.3125pc;
+}
+.equipment .equipment-container{
+    padding-right:.3125pc;
+}
+[class~=ships] [class~=infos] [class~=selected-ship]{
+    float:left;
+}
+.ships .infos .buttons .button{
+    margin-left:0;
+}
+.equipment .equipment-container{
+    padding-top:.3125pc;
+}
+.ships .infos .buttons .button,.equipment .equipment-container h2{
+    margin-bottom:7.5pt;
+}
+[class~=ships] [class~=infos] [class~=buttons],.equipment .equipment-container{
+    margin-left:auto;
+}
+.equipment .equipment-container,[class~=ships] [class~=infos] [class~=buttons]{
+    margin-bottom:0;
+}
+[class~=equipment]{
+    height:375pt;
+}
+.ships .infos .buttons .button,[class~=ships] h2{
+    margin-right:0;
+}
+.equipment .equipment-container,[class~=ships] [class~=infos] [class~=buttons]{
+    margin-right:auto;
+}
+.equipment .equipment-container{
+    width:600px;
+}
+[class~=ships] h2{
+    margin-bottom:.9375pc;
+}
+[class~=ships] [class~=infos] [class~=buttons]{
+    margin-top:1.875in;
+}
+.equipment .equipment-container{
+    background:#2d2d2d;
+}
+[class~=ships] [class~=infos] [class~=buttons]{
+    padding-left:7.5pt;
+}
+.equipment .equipment-container h2,.ships .infos .buttons .button{
+    margin-top:7.5pt;
+}
+[class~=ships] [class~=infos] [class~=buttons]{
+    padding-bottom:7.5pt;
+}
+[class~=ships] [class~=infos] [class~=buttons]{
+    padding-right:7.5pt;
+}
+[class~=ships] [class~=infos] [class~=buttons]{
+    padding-top:7.5pt;
+}
+[class~=equipment]{
+    color:#f3f3f3;
+}
+[class~=equipment] [class~=equipment-container] [class~=equipment-slots-container-active]{
+    background:rgba(0,120,150,.4);
+}
+.ships .infos .buttons .button{
+    text-align:center;
+}
+[class~=ships] h2,.equipment .equipment-container{
+    margin-top:0;
+}
+.equipment .equipment-container h2{
+    margin-right:1.25pc;
+}
+.equipment .equipment-container{
+    z-index:100;
+}
+.ships .infos .buttons .button{
+    cursor:pointer;
+}
+.equipment .equipment-container{
+    position:relative;
+}
+.equipment .equipment-container .equipment-inventory-active{
+    background:rgba(100,100,100,.4);
+}
+.ships .infos .buttons .button{
+    background:#00a5a4;
+}
+[class~=ships] [class~=infos] [class~=buttons] [class~=sell]{
+    background:#9e3d3a;
+}
+[class~=ships] [class~=infos] [class~=buttons] [class~=inactive]{
+    background:#1d1d1d;
+}
+[class~=ships] [class~=infos] [class~=buttons] [class~=inactive]{
+    color:#777;
+}
+[class~=ships] [class~=infos] [class~=buttons] [class~=inactive]{
+    cursor:default;
+}
+.equipment .equipment-container h2,[class~=ships] h2{
+    font-weight:700;
+}

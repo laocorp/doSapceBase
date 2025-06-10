@@ -1,0 +1,430 @@
+.color-vru{
+    color:#25cc3e!important
+}
+.color-eic{
+    color:#e30914!important
+}
+.color-mmo{
+    color:#e30914!important
+}
+.index-container{
+    margin:45px auto;
+    width:100%;
+    height:500px;
+    padding:0;
+    position:relative
+}
+.index .user{
+    float:left;
+     height: 519px;
+     background:#141313d9;
+     padding:10px;
+     position:relative;
+     box-shadow: 0 0 20px #fff;
+}
+.index .user .avatar{
+    width:150px;
+    height:150px;
+    background:#2d2d2d;
+    float:left
+}
+.index .user .infos{
+    width:270px;
+    height:150px;
+    float:left;
+    padding:0 20px;
+    position:relative;
+    color:#cbcbcb
+}
+.index .user .infos .username{
+    font-size:18px;
+    color:#f9f9f9;
+    font-weight:700
+}
+.index .user .infos .company{
+    font-size:16px;
+    font-weight:700;
+    right:0;
+    top:0;
+    position:absolute
+}
+.index .user .progress{
+    border-radius:0;
+    margin:9px 0 10px
+}
+.index .user .progress-bar-custom{
+    background:#9ecf51
+}
+.index .user label{
+    width:70px
+}
+.index .user .line{
+    width:95%;
+    height:5px;
+    background:0 0;
+    margin:170px 0;
+    position:absolute
+}
+.index .user .ranking{
+    width:100%;
+    height: 313px;
+    background:transparent;
+    margin:180px 0 0;
+    padding:5px;
+    color:#fff;
+}
+.index .user .ranking h2{
+    line-height:20px;
+    font-size:20px;
+    margin:0 0 15px;
+    font-weight:700
+}
+.index .user .ranking b{
+    width: 33px;
+    display:inline-block;
+    padding-left:5px;
+    color:#d3d3d3;
+}
+.index .user .ranking .rankpoints{
+    float:right;
+    margin-right:10px
+}
+.index .user .ranking .name{
+    width: 219px;
+    display:inline-block;
+}
+.index .user .ranking img{
+    /* width:16px;
+     */
+    /* height: 21px;
+     */
+    /* display:inline-block;
+     */
+}
+.index .user .ranking .links{
+    width:100%;
+    margin:10px 0;
+    font-size:14px;
+    text-align:center
+}
+.index .user .ranking .links a{
+    width:120px;
+    display:inline-block;
+    font-weight:600
+}
+.index .uotv{
+    width:420px;
+    float:right;
+    height:200px;
+    background:#1d1d1d;
+    padding:5px 5px 0;
+    position:relative;
+    border-bottom:3px solid #e30914
+}
+.index .uotv .tv{
+    width:100%;
+    height:100%;
+    background:0 0;
+    position:relative;
+    color:#777
+}
+.index .uotv .tv .mainscreen{
+    width:100%;
+    height:100%;
+    background:#3d3d3d;
+    text-align:center;
+    position:absolute;
+    padding:10px 0
+}
+.index .uotv .tv .mainscreen .tv-buttons{
+    margin:40px 0 0;
+    display:inline-block
+}
+.index .uotv .tv .mainscreen .tv-buttons .tv-button{
+    cursor:pointer;
+    font-size:30px;
+    display:inline-block;
+    color:#777;
+    transition:all .2s;
+    height:40px;
+    line-height:40px;
+    width:50px;
+    float:left;
+    vertical-align:top;
+    position:relative
+}
+.index .uotv .tv .mainscreen .tv-buttons .tv-button:hover{
+    color:#e30914;
+    font-size:34px
+}
+.index .uotv .tv .mainscreen .tv-buttons .tv-button .notification{
+    position:absolute;
+    top:0;
+    right:2px;
+    width:16px;
+    height:16px;
+    background:#d64541;
+    border-radius:5px;
+    font-size:13px;
+    color:#fff;
+    line-height:16px
+}
+.index .uotv .tv .mainscreen .streambutton{
+    position:absolute;
+    width:130px;
+    height:30px;
+    text-align:center;
+    line-height:30px;
+    background:#6441a5;
+    color:#f1f1f1;
+    left:0;
+    right:0;
+    top:130px;
+    margin-left:auto;
+    margin-right:auto;
+    font-size:14px;
+    border-radius:3px;
+    cursor:pointer
+}
+.index .uotv .tv .mainscreen .streambutton-active{
+    background:#d64541
+}
+.index .uotv .tv .mainscreen .subtitle{
+    position:absolute;
+    bottom:10px;
+    width:100%;
+    text-align:center;
+    color:#e30914;
+    opacity:0
+}
+.index .uotv .tv .mainscreen .subtitle-active{
+    transition:all .4s;
+    opacity:1
+}
+.index .uotv .tv .mainscreen .settings{
+    position:absolute;
+    top:10px;
+    right:15px;
+    cursor:pointer;
+    font-size:20px;
+    transition:all .2s;
+    line-height:24px;
+    color:#777;
+    width:24px
+}
+.index .uotv .tv .mainscreen .settings:hover{
+    color:#e30914;
+    font-size:24px
+}
+.index .uotv .tv .logo{
+    font-size:20px;
+    color:#e30914
+}
+.index .uotv .tv .events{
+    width:100%;
+    height:100%;
+    background:#3d3d3d;
+    position:absolute;
+    padding:10px 0;
+    display:none
+}
+.index .uotv .tv .events .list{
+    width:100%;
+    position:absolute;
+    padding:80px 0;
+    text-align:center
+}
+.index .uotv .tv .back{
+    cursor:pointer;
+    display:inline-block;
+    color:#777;
+    transition:all .2s;
+    height:30px;
+    line-height:30px;
+    width:100px;
+    float:left;
+    vertical-align:middle;
+    margin:5px 0 0 10px;
+    position:absolute;
+    z-index:15
+}
+.index .uotv .tv .back:hover{
+    color:#e30914
+}
+.index .uotv .tv .back i{
+    vertical-align:middle;
+    font-size:20px;
+    width:20px
+}
+.index .uotv .tv .news{
+    width:100%;
+    height:100%;
+    background:#3d3d3d;
+    position:absolute;
+    padding:10px 0;
+    display:none
+}
+.index .uotv .tv .news .list{
+    width:100%;
+    position:absolute;
+    padding:80px 0;
+    text-align:center
+}
+.index .uotv .tv .youtube{
+    width:100%;
+    height:100%;
+    background:#3d3d3d;
+    position:absolute;
+    padding:10px 0;
+    display:none
+}
+.index .uotv .tv .youtube .list{
+    width:100%;
+    position:absolute;
+    padding:40px 0;
+    text-align:center
+}
+.index .uotv .tv .youtube .list .cpagination{
+    position:absolute;
+    width:100%;
+    text-align:center;
+    top:5px;
+    font-size:20px
+}
+.index .uotv .tv .youtube .list .cpagination i{
+    cursor:pointer;
+    transition:all .2s
+}
+.index .uotv .tv .youtube .list .cpagination i:hover{
+    color:#e30914
+}
+.index .uotv .tv .youtube .list .channel{
+    width:100%;
+    height:23.2px;
+    background:#1d1d1d;
+    color:#fff;
+    border-bottom:1px solid #2d2d2d;
+    text-align:left;
+    padding-left:10px;
+    line-height:23.2px
+}
+.index .uotv .tv .youtube .list .channel .watch{
+    display:inline-block;
+    float:right;
+    padding-right:10px;
+    opacity:.7;
+    transition:all .2s;
+    color:#e52d27;
+    cursor:pointer
+}
+.index .uotv .tv .youtube .list .channel .watch:hover{
+    opacity:1;
+    font-weight:700
+}
+.index .uotv .tv .twitch{
+    width:100%;
+    height:100%;
+    background:#3d3d3d;
+    position:absolute;
+    padding:10px 0;
+    display:none
+}
+.index .uotv .tv .twitch .list{
+    width:100%;
+    position:absolute;
+    padding:40px 0;
+    text-align:center
+}
+.index .uotv .tv .twitch .list .cpagination{
+    position:absolute;
+    width:100%;
+    text-align:center;
+    top:5px;
+    font-size:20px
+}
+.index .uotv .tv .twitch .list .cpagination i{
+    cursor:pointer;
+    transition:all .2s
+}
+.index .uotv .tv .twitch .list .cpagination i:hover{
+    color:#e30914
+}
+.index .uotv .tv .twitch .list .channel{
+    width:100%;
+    height:23.2px;
+    background:#1d1d1d;
+    color:#fff;
+    border-bottom:1px solid rgba(50,0,50,.2);
+    text-align:left;
+    padding-left:10px;
+    line-height:23.2px
+}
+.index .uotv .tv .twitch .list .channel .watch{
+    display:inline-block;
+    float:right;
+    padding-right:10px;
+    opacity:.7;
+    transition:all .2s;
+    color:#e30914;
+    cursor:pointer
+}
+.index .uotv .tv .twitch .list .channel .watch:hover{
+    opacity:1;
+    font-weight:700
+}
+.index .logs{
+    margin:0px 0;
+    width:448px;
+    float:right;
+    height: 519px;
+    background:#141313d9;
+    padding:5px;
+    color:#fff;
+    position:relative;
+    box-shadow: 0 0 20px #fff;
+}
+.index .logs h2{
+    line-height:20px;
+    font-size:20px;
+    margin:5px 0 10px 5px;
+    font-weight:700
+}
+ .index .logs .text .discordLog {
+     background-color: rgba(145, 0, 255, 0.20);
+}
+ .index .logs .text .log {
+     width: 100%;
+     height: auto;
+     background-color: rgba(0, 200, 255, 0.20);
+     border-radius: 3px;
+     padding-left: 5px;
+     padding-bottom: 5px;
+     padding-right: 5px;
+     margin-bottom: 5px;
+}
+ .index .logs .text .log .destination {
+     float: right;
+     margin-right: 15px;
+     color: rgba(255, 0, 0, 1);
+     font-weight: bold;
+     font-size: 10px;
+}
+ .index .logs .text .log .info {
+     color: white;
+     font-size: 11px;
+     font-weight: bold;
+     margin-right: 7px;
+}
+ .index .logs .text .log .time {
+     color: rgba(80, 250, 255, 1);
+}
+ .index .logs .text{
+    width:99%;
+    padding:10px;
+    height: 462px;
+    overflow:auto;
+    color:#cbcbcb;
+    margin:0 auto;
+    background:#2d2d2d;
+    position:relative;
+}

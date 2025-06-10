@@ -1,0 +1,38 @@
+.menu {
+  background-color: #004a7f47;
+  color: white;
+  cursor: pointer;
+  padding: 18px;
+  width: 75%;
+  text-align: left;
+  border: none;
+  outline: none;
+  transition: 0.4s;
+  text-align:center;
+  margin-bottom: 5px;
+  position:relative;
+  left: 92px;
+  clip-path:polygon(0 0, 100% 0, 75% 100%, 25% 100%);
+}
+
+.active, .menu:hover {
+  background-color: green;
+  color:black;
+  clip-path:polygon(0 0, 100% 0, 60% 100%, 40% 100%);
+}
+
+.mission {
+	position:relative;
+	top: -30px;
+	left: 220px
+}
+
+
+.panel {
+  padding: 0 18px;
+  background-color: white;
+  display: none;
+  color:white;
+  height: 300px;
+  border-bottom: solid 2px #0a59ea99;
+}

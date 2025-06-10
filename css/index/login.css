@@ -1,0 +1,1346 @@
+/*fonts*/
+@font-face {
+  font-family: 'cfont1';
+  src: url('/fonts/CopperplateGothic-Bold.eot?#iefix') format('embedded-opentype'),  url('/fonts/CopperplateGothic-Bold.woff') format('woff'), url('/fonts/CopperplateGothic-Bold.ttf')  format('truetype'), url('/fonts/CopperplateGothic-Bold.svg#CopperplateGothic-Bold') format('svg');
+  font-weight: normal;
+  font-style: normal;
+}
+.main_login {
+    position: relative;
+    max-width: 1980px;
+}
+html, body{
+	overflow: hidden;
+}
+body {
+	position: relative;
+}
+
+/* SCROLLBAR */
+@media(min-width:650px){
+
+ ::-webkit-scrollbar {
+    width: 7px;
+}
+
+::-webkit-scrollbar-track {
+    -webkit-box-shadow: #000000;
+
+}
+
+::-webkit-scrollbar-track-piece {
+    background-color: #000000;
+}
+
+::-webkit-scrollbar-thumb {
+border-top: 1px solid #6fff00;
+border-bottom: 1px solid #9ab500;
+background: rgba(109,206,35,1);
+background: -moz-linear-gradient(top, rgba(109,206,35,1) 0%, rgba(123,145,0,1) 100%);
+background: -webkit-gradient(left top, left bottom, color-stop(0%, rgba(109,206,35,1)), color-stop(100%, rgba(123,145,0,1)));
+background: -webkit-linear-gradient(top, rgba(109,206,35,1) 0%, rgba(123,145,0,1) 100%);
+background: -o-linear-gradient(top, rgba(109,206,35,1) 0%, rgba(123,145,0,1) 100%);
+background: -ms-linear-gradient(top, rgba(109,206,35,1) 0%, rgba(123,145,0,1) 100%);
+background: linear-gradient(to bottom, rgba(109,206,35,1) 0%, rgba(123,145,0,1) 100%);
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#6dce23', endColorstr='#7b9100', GradientType=0 );
+}
+
+::-webkit-scrollbar-thumb:hover {
+border-top: 1px solid #6fff00;
+border-bottom: 1px solid #9ab500;
+background: rgba(111,255,0,1);
+background: -moz-linear-gradient(top, rgba(111,255,0,1) 0%, rgba(154,181,0,1) 100%);
+background: -webkit-gradient(left top, left bottom, color-stop(0%, rgba(111,255,0,1)), color-stop(100%, rgba(154,181,0,1)));
+background: -webkit-linear-gradient(top, rgba(111,255,0,1) 0%, rgba(154,181,0,1) 100%);
+background: -o-linear-gradient(top, rgba(111,255,0,1) 0%, rgba(154,181,0,1) 100%);
+background: -ms-linear-gradient(top, rgba(111,255,0,1) 0%, rgba(154,181,0,1) 100%);
+background: linear-gradient(to bottom, rgba(111,255,0,1) 0%, rgba(154,181,0,1) 100%);
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#6fff00', endColorstr='#9ab500', GradientType=0 );
+}
+
+::-webkit-scrollbar-thumb:window-inactive {
+border-top: 1px solid #4ca305;
+border-bottom: 1px solid #394200;
+background: rgba(76,163,5,1);
+background: -moz-linear-gradient(top, rgba(76,163,5,1) 0%, rgba(57,66,0,1) 75%, rgba(57,66,0,1) 100%);
+background: -webkit-gradient(left top, left bottom, color-stop(0%, rgba(76,163,5,1)), color-stop(75%, rgba(57,66,0,1)), color-stop(100%, rgba(57,66,0,1)));
+background: -webkit-linear-gradient(top, rgba(76,163,5,1) 0%, rgba(57,66,0,1) 75%, rgba(57,66,0,1) 100%);
+background: -o-linear-gradient(top, rgba(76,163,5,1) 0%, rgba(57,66,0,1) 75%, rgba(57,66,0,1) 100%);
+background: -ms-linear-gradient(top, rgba(76,163,5,1) 0%, rgba(57,66,0,1) 75%, rgba(57,66,0,1) 100%);
+background: linear-gradient(to bottom, rgba(76,163,5,1) 0%, rgba(57,66,0,1) 75%, rgba(57,66,0,1) 100%);
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#4ca305', endColorstr='#394200', GradientType=0 );
+}
+
+}
+
+/* SCROLLBAR */
+
+
+
+@media screen and (max-width: 1640px) and (min-width: 1441px) {
+.register-button {bottom: -1%!important;}
+}
+
+@media screen and (max-width:  1440px) {
+  ._details p.Paragraph--small {font-size: 93%!important;}
+  .Realm-info {
+    width: 28%!important;
+    margin-left: -46%!important;
+}
+
+
+}
+
+@media screen and (max-width: 1420px) and (min-width: 1201px) {
+  .register-button {bottom: -3%!important;}
+    .modal-dialog .modal-content {background-size: 180%!important;}
+}
+
+@media screen and (max-width: 1200px) and (min-width: 1070px) {
+  .modal-dialog .modal-content {background-size: 180%!important;}
+}
+
+@media screen and (max-width: 1200px) {
+
+  #r_i-1 {
+  width: 42%!important;
+}
+
+.fact-info{
+  display: none;
+}
+.fact-container {
+    left: 21%!important;
+}
+
+}
+
+@media screen and (max-width:  1100px) {
+  .Realm-details {
+  width: 100%!important;
+  left: 0!important;
+  margin-left: 0!important;
+  }
+  .Realm-info{
+    display: none!important;
+  }
+  .register-button {bottom: -4%!important;}
+
+  .modal-dialog .modal-content {background-size: 190%!important;}
+  #r_i-1 h3 {font-size: 18px!important;}
+.cl_b_panel {zoom: 0.8;}
+tr.cl_date {font-size: 26px!important;}
+}
+
+
+
+
+
+@media screen and (max-width: 1023px) and (min-width: 800px) {
+  .modal-dialog .modal-content {background-size: 215%!important;}
+}
+@media screen and (max-width: 920px) {
+.fact-container {
+  pointer-events: none!important;
+}
+}
+
+@media screen and (max-width: 799px) {
+  .Realm-details {
+  width: 100%!important;
+  left: 0;
+  margin-left: 0;
+  }
+.content {
+    height: 100%;
+    min-height: 550px;
+    background-repeat: no-repeat;
+}
+#top-img {display: none;}
+#bgvid {display: none!important;}
+
+
+
+.modal-dialog .modal-content {background-size: 280%!important;}
+#r_i-1 {width: 50%!important;}
+}
+
+@media screen and (max-width: 720px) and (min-width: 580px) {
+#d1:before,#d2:before,#d3:before,#d4:before{background-size: 150% auto!important;}
+
+}
+
+
+@media screen and (max-width: 700px) and (min-width: 579px) {
+#c1 {background-size: auto 100%!important;}
+.modal-dialog .modal-content {background-size: 315%!important;}
+}
+
+
+
+@media screen and (max-width: 579px) {
+#d1:before,#d2:before,#d3:before,#d4:before{background-size: 200% auto;}
+.content {
+  min-height: 650px!important;
+}
+.login-top-container {
+    top: 311px!important;
+
+}
+
+#fact-bg {
+    background-position: 50% 67%!important;
+}
+
+.login-top-content {
+    position: relative;
+    top: 88px!important;
+}
+
+.login-top-container {
+    z-index: 1000!important;
+}
+._img-details {
+    width: 60%!important;
+    height: 70px!important;
+}
+.Realm-info {
+    width: 100%!important;
+    margin-left: 50%!important;
+    background: none!important;
+    top: 0%!important;
+}
+.Realm-info h3 {
+    background-image: -webkit-linear-gradient(top, #e3ff00 0%, #769944 29.916667%, #9fb84a 37.5%, #e8e361 55%)!important;
+    font-size: 25px;
+}
+.Realm-details {
+    top: 0!important;
+  }
+
+  #video-top {
+      left: 48%!important;
+      width: 1470px!important;;
+    }
+
+    .fact-info{
+      display: none;
+    }
+    .fact-container {
+        left: 19%!important;
+    }
+
+.container_login {
+    zoom: 1!important;
+}
+
+.modal-dialog .modal-content {background-size: 360%!important;}
+#r_i-1 {
+    width: 100%!important;
+    padding: 0;
+    margin: 0;
+    top: 6%!important;
+    left: 0!important;
+}
+
+#r_i-1 table {overflow: scroll!important;}
+#r_i-1 td {font-size: 15px;}
+tr.cl_date td{font-size: 23px!important;}
+
+}
+
+
+@media screen and (max-width: 424px) and (min-width: 375px) {
+#d1:before,#d2:before,#d3:before,#d4:before{background-size: 300% auto!important;}
+
+.modal-dialog .modal-content {background-size: 440%!important;}
+._img-details {
+    height: 80px!important;
+}
+}
+
+@media screen and (max-width: 375px)  {
+#d1:before,#d2:before,#d3:before,#d4:before{background-size: 330% auto!important;}
+  .register-button {bottom: -1%!important;}
+
+
+  .modal-dialog .modal-content {background-size: 570%!important;}
+
+}
+
+.content{
+  background: url('/img/bg.jpg') no-repeat center center fixed; 
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+}
+
+#r_d-1 {
+    position: absolute;
+    width: 60%;
+    top: 15%;
+    left: 50%;
+    margin-left: -10%;
+    z-index: 10;
+}
+
+.d_legion {
+   cursor:pointer;
+}
+
+#d_legion_item {
+    position: absolute;
+    left: 50%;
+    bottom: 10%;
+    width: 60%;
+    margin-left: -10%;
+}
+
+#r_i-1 tr {
+    height: 30px;
+    background: rgba(27, 27, 27, 0.76);
+}
+
+body {margin: 0;background-color: black;overflow-x: hidden;}
+.divisor {position: relative;}
+#d1:before {background: url(/img/Divider.png) no-repeat; background-size: 100% auto;background-position: 50%;}
+#d2:before {background: url(/img/Divider.png) no-repeat; background-size: 100% auto;background-position: 50%;}
+#d3:before {background: url(/img/Divider.png) no-repeat; background-size: 100% auto;background-position: 50%;}
+#d4:before {background: url(/img/Divider.png) no-repeat; background-size: 100% auto;background-position: 50%;}
+
+.content{position:relative;}
+
+
+#c3 {
+  background: url(https://bnetcmsus-a.akamaihd.net/cms/template_resource/XGNDT1V0EURE1509567046736.jpg);
+}
+.divisor:before {
+    content: "";
+    display: block;
+    height: 5.2em;
+    left: 0;
+    position: absolute;
+    right: 0;
+    top: -2.7em;
+    z-index: 200;
+
+}
+
+.register-button {
+    position: absolute;
+    background: url(/images/b1.png) no-repeat;
+    width: 320px;
+    height: 123px;
+    z-index: 1;
+    background-size: 100%;
+    bottom: 1%;
+    left: 50%;
+    margin-left: -160px;
+}
+
+a.register {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+
+}
+
+#bgvid {
+    width: 100%;
+    display: block;
+    max-width: 100%;
+}
+
+.content-tittle {
+    font-family: cfont1;
+    line-height: 1.2;
+    text-transform: uppercase;
+    color: white;
+    position: absolute;
+    left: 50%;
+    top: 2%;
+    width: 80%;
+    margin-left: -40%;
+    text-align: center;
+    font-size: 21px;
+}
+
+@supports (-webkit-appearance:none) {
+
+#ct-2 h1{
+background-image: url(/img/FontStyleLegion.png);
+text-shadow: 0 0 0.001rem rgba(24, 177, 0, 0.49);
+}
+
+#r_i-1 h3 {
+    background-image: url(/img/FontStyleLegion.png);
+    text-shadow: 0 0 0.001rem rgba(24, 177, 0, 0.49);
+}
+
+#ct-3 h1{
+background-image: url(/img/FontStyleGarrisons.png);
+text-shadow: 0 0 0.001rem rgba(35, 255, 0, 0.19);
+}
+
+#ct-4 h1{
+background-image: url(/img/FontStyleLK.png);
+text-shadow: 0 0 0.001rem rgba(0, 123, 217, 0.64);
+}
+
+a#_login_b {background-image: url(/img/FontStyleLegion.png);}
+
+#login-form h1, #login-form h2, #login-form h3{background-image: url(/img/FontStyleLegion.png);}
+
+}
+
+#register-form h1, #register-form h2, #register-form h3{background-image: url(/img/FontStyleLegion.png);}
+
+}
+
+#ct-2 h1, #ct-3 h1, #ct-4 h1{
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: #e8e361;
+    background-position-y: 10px;
+    background-size: 28px;
+}
+
+
+.info-container {
+    width: 100%;
+    height: 100%;
+}
+
+
+.Realm-info {
+    position: absolute;
+    left: 50%;
+    top: 0;
+    width: 24%;
+    height: 100%;
+    margin-left: -43%;
+    z-index: 10;
+    background-size: 100%;
+    background-repeat: no-repeat;
+
+}
+
+
+video.VideoThumbnail-video {
+    width: 100%;
+    top: 2%;
+    position: relative;
+    background: black;
+    height: 100%;
+}
+
+#r_v-2:after {
+    background-image: url("images/f-video-mop.png");
+    background-size: 100%;
+    content: "";
+    position: absolute;
+    width: 102%;
+    height: 112%;
+    left: -4px;
+    background-repeat: no-repeat;
+}
+
+#r_v-3:after {
+    background-image: url("images/f-video-lk.png");
+    background-size: 100%;
+    content: "";
+    position: absolute;
+    width: 112%;
+    height: 123%;
+    left: -26px;
+    background-repeat: no-repeat;
+    top: -18px;
+}
+
+.Realm-details {
+    position: absolute;
+    left: 50%;
+    top: 2%;
+    width: 54%;
+    margin-left: -10%;
+    z-index: 10;
+}
+
+.Realm-details h3 {
+    color: white;
+    font-size: 2em;
+    text-shadow: 0px 0px 2px rgb(0, 0, 0);
+    margin-bottom: none!important;
+    text-align: left;
+    width: 90%;
+}
+.Realm-details p {
+    color: white;
+    font-size: 1.4em;
+    line-height: 1.4em;
+    padding: 20px;
+    text-shadow: 0px 3px 4px rgb(0, 0, 0);
+    text-align: left;
+    width: 90%;
+    padding-top:none!important;
+}
+
+._details {
+    position: relative;
+    width: 33%;
+    float: left;
+    cursor: pointer;
+
+}
+
+
+
+._img-details {
+    width: 60%;
+    height: 120px;
+    position: relative;
+    margin: auto;
+    background-position: 50%;
+    background-repeat: no-repeat;
+}
+
+
+
+._details img.icon-details {
+      display: block;
+      margin: auto;
+      width: 100%;
+}
+
+
+
+
+
+.button {
+    width: 100%;
+    height: 100%;
+    cursor: pointer;
+  &:hover {
+    fill: white;
+  }
+}
+
+.defs {
+  position: absolute;
+  top: -9999px;
+  left: -9999px;
+}
+
+
+
+/* "Fancy-Box" Pure CSS */
+
+div#_login_b_c {
+     background: black;
+    position: absolute;
+    right: 10px;
+    top: 10px;
+    padding: 4px;
+    border-radius: 4px;
+    border: 1px solid;
+    color: #30c311;
+    cursor: pointer;
+    z-index: 2;
+}
+
+
+
+
+
+
+
+@-webkit-keyframes example {
+    from {top:-100px;opacity: 0;}
+    to {top:0px;opacity:1;}
+}
+
+
+@keyframes example {
+    from {top:-100px;opacity: 0;}
+    to {top:0px;opacity:1;}
+}
+
+
+.modal {
+  display: none;
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 2000px;
+  overflow: auto;
+  z-index : 1000;
+}
+
+
+.modal:target {
+  display: block;
+  position: absolute;
+}
+
+
+#pause-button {
+   fill: #d8d000;
+   top: 30px;
+
+}
+#pause-button2{
+    fill: #0065a8;
+    top: 30px;
+}
+svg#play-button, svg#play-button2 {
+    position: absolute;
+    width: 100%;
+    height: 40%;
+    opacity: 0;
+    z-index: 10;
+}
+
+
+.modal-dialog .modal-content {
+  margin: auto;
+    position: absolute;
+    padding: 0;
+    outline: 0;
+    width: 100%;
+    height: 100%;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    -webkit-animation-name: example;
+    -webkit-animation-duration: 0.5s;
+    animation-name: example;
+    animation-duration: 0.5s;
+    background: #000000c7;
+}
+
+#_videobg {
+   background: #0e0f0e url("images/repeat-bg.jpg") no-repeat 50% 100%!important;
+}
+
+
+
+.closebtn {
+    text-decoration: none;
+    float: right;
+    font-size: 70px;
+    font-weight: bold;
+    color: #817b6e;
+    position: relative;
+    top: 14px;
+}
+
+.closebtn:hover,
+.closebtn:focus {
+  color: white;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+
+.container-video-float {
+    position: relative;
+    width: 80%;
+    height: 80%;
+    margin: auto;
+    top: 7%;
+
+}
+
+#c-v-mop {
+  -webkit-box-shadow: 2px 14px 107px -15px rgba(255,221,0,0.62);
+-moz-box-shadow: 2px 14px 107px -15px rgba(255,221,0,0.62);
+box-shadow: 2px 14px 107px -15px rgba(255,221,0,0.62);
+}
+#c-v-lk {
+
+-webkit-box-shadow: 2px 14px 107px -15px rgba(0,136,255,1);
+-moz-box-shadow: 2px 14px 107px -15px rgba(0,136,255,1);
+box-shadow: 2px 14px 107px -15px rgba(0,136,255,1);
+}
+/* LOGIN HERE! */
+
+
+#login-form h1, #login-form h2, #login-form h3{
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: #817b6e;
+    background-position-y: -2px;
+    background-size: 24px;
+    text-shadow: 0 0 0.001rem rgb(129, 123, 109);
+    font-family: cfont1;
+    font-size: 18px;
+    margin: 0;
+
+}
+
+#register-form h1, #register-form h2, #register-form h3{
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: #817b6e;
+  background-position-y: -2px;
+  background-size: 24px;
+  text-shadow: 0 0 0.001rem rgb(129, 123, 109);
+  font-family: cfont1;
+  font-size: 18px;
+  margin: 0;
+
+}
+
+
+#login-form h2 {
+    text-align: center;
+    position: relative;
+    top: -30px;
+}
+
+#register-form h2 {
+  text-align: center;
+  position: relative;
+  top: -30px;
+}
+
+#login-form h3 {
+    position: relative;
+    top: -13px;
+}
+
+#register-form h3 {
+  position: relative;
+  top: -13px;
+}
+
+#loginsubmit {
+    position: relative;
+    width: 100%;
+    z-index: 1;
+    opacity: 0;
+}
+
+#login-form input {
+    background-color: #000000;
+    padding: 0px 5px;
+    color: #817b6e;
+}
+
+#register-form input {
+  background-color: #000000;
+  padding: 0px 5px;
+  color: #817b6e;
+}
+
+input:-webkit-autofill, textarea:-webkit-autofill, select:-webkit-autofill {
+    background-color: #252525!IMPORTANT;
+    background-image: none;
+    color: rgb(0, 0, 0);
+}
+
+
+
+#login-form td {
+    display: table-row;
+    vertical-align: top;
+    float: left;
+    position: relative;
+    height: 34px;
+}
+
+#register-form td {
+  display: table-row;
+  vertical-align: top;
+  float: left;
+  position: relative;
+  height: 34px;
+}
+
+td#td2 {
+    float: right;
+}
+td#delog {
+    left: 34px;
+    top: 2px;
+}
+
+#login-form img {
+    position: relative;
+    width: 100%;
+    z-index: 1;
+    opacity: 0;
+}
+
+#register-form img {
+  position: relative;
+  width: 100%;
+  z-index: 1;
+  opacity: 0;
+}
+
+label {
+    background-color: #000;
+    border: 1px solid #289013;
+    padding: 6px;
+    display: inline-block;
+    position: relative;
+    margin-left: 3px;
+    top: 4px;
+    left: 4px;
+}
+
+input#loginremember {
+    display:none;
+    }
+
+#loginremember:checked + label:after {
+    content: '\2714';
+    font-size: 12px;
+    position: absolute;
+    top: -3px;
+    left: 1px;
+    color: #817b6e;
+}
+
+.input, .input-ff, textarea, select {
+    margin: 2px 0 0 0;
+    padding: 2px;
+    color: #817b6e;
+    font-family: Tahoma, Verdana, Arial, serif;
+    font-size: 11px;
+    line-height: 12px;
+}
+
+.input, .input-ff, textarea, select {
+    border: 1px solid #817b6e;
+}
+
+
+
+
+
+
+.container_login {
+    max-width: 300px;
+    position: relative;
+    height: 150px;
+    top: 200px;
+    background: black;
+    padding: 30px;
+}
+.container_register {
+  max-width: 650px;
+  height: 370px;
+  top: 200px;
+  position: relative;
+  background-color: black;
+  padding: 10px;
+}
+.container_login:after, .container_register:after {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    border-style: solid;
+    border-width: 0;
+    border-image-source: url("/img/frame-border.png");
+    border-image-repeat: round;
+    border-image-slice: 108 fill;
+    border-image-width: 56px;
+    border-image-outset: 34px;
+    content: "";
+    display: block;
+    z-index: 1;
+    pointer-events: none;
+}
+
+
+#_lang_b_c {
+   background: black;
+   position: absolute;
+   right: 10px;
+   top: 10px;
+   padding: 10px;
+   border-radius: 4px;
+   border: 2px solid #8a8a8a;
+   cursor: pointer;
+   z-index: 2;
+   line-height: 10px;
+}
+
+#_lang_b_c a{
+   -webkit-filter: grayscale(100%); /* Safari 6.0 - 9.0 */
+    filter: grayscale(100%);
+}
+
+#_lang_b_c a:first-child{
+  margin-right: 8px;
+}
+
+#_lang_b_c a img{
+  width: 26px;
+}
+
+.lang_active {
+  -webkit-filter: none!important; /* Safari 6.0 - 9.0 */
+   filter: none!important;
+}
+
+.logo{
+  padding-bottom: 20px;
+}
+
+.login-top-container{
+    position: relative;
+    max-width: 520px;
+    top: 200px;
+    height: 400px;
+    z-index: 10;
+}
+
+.login-top-buttons {
+    width: 100%;
+    position: relative;
+    height: 162px;
+}
+
+.login-login {
+    margin-bottom: 15px;
+}
+.login-login, .login-register {
+    position: relative;
+    width: 340px;
+    height: 70px;
+    background-image: url("/img/button-login.png");
+    background-size: 100%;
+    background-repeat: no-repeat;
+}
+
+#_login_b {
+    text-decoration: none;
+    font-size: 28px;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: #817b6e;
+    background-position-y: -2px;
+    background-size: 24px;
+    text-shadow: 0 0 0.001rem #817b6e;
+    font-family: cfont1;
+    margin: 10px;
+    position: relative;
+    top: 27px;
+}
+
+.login-top-content {
+    margin-top: 15px;
+    color: white;
+    font-family: Tahoma, Verdana, Arial, serif;
+    text-shadow: 0px 0px 2px rgb(0, 0, 0);
+}
+.login-top-title {
+  margin-bottom: 0!important;
+}
+
+#c7 .Realm-details h3,#c7 .Realm-details p {
+  text-align: center!important;
+}
+.login-top-title, .fact-info-title, .Realm-details h3 {
+    margin-bottom: -5px;
+    font-size: 28px;
+    text-transform: uppercase;
+    font-weight: 600;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-image: -webkit-linear-gradient(top,#fff 0,#c6c6c6 7%,#fff 20%,#cfcfcf 38%,#fef9ef 68%,#c7beac 83%,#dccdbc 100%);
+    background-size: 1em 1em;
+    background-position: center;
+    color: #c6c6c6;
+    display: inline-block;
+    line-height: 1.3em;
+    text-shadow: none;
+    position: relative;
+}
+
+.login-top-title:before, .fact-info-title:before, .Realm-details h3:before{
+    display: inline-block;
+    content: attr(data-text);
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    z-index: -1;
+    text-shadow: 0 1px 9px rgba(0,0,0,.7), 0 1px 9px rgba(0,0,0,.7);
+}
+
+.login-top-desc {
+  margin: 20px;
+  font-size: 18px;
+  line-height: 18px;
+}
+
+
+#fact-bg {
+  width: 100%;
+  background-image: url('images/bg-f-1.png');
+  height: 1000px;
+  top: 550px;
+  position: absolute;
+  background-position: 50% 50%;
+  background-repeat: no-repeat;
+  background-size: 1980px;
+  z-index: 20;
+}
+
+.register-title {
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: #817b6e;
+    background-position-y: -2px;
+    background-size: 24px;
+    text-shadow: 0 0 0.001rem rgb(129, 123, 109);
+    font-family: cfont1;
+    font-size: 18px;
+    margin: 0;
+}
+
+
+#c-top {
+  height: 1550px;
+  overflow: hidden;
+}
+
+#video-top-container {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background-color: #000;
+    overflow: hidden;
+    z-index: 1!important;
+}
+
+#video-top {
+    position: absolute;
+    top: 0;
+    left: 49.5%;
+    width: 1980px;
+    -webkit-transform: translate(-50%);
+    transform: translate(-50%);
+}
+
+
+
+
+.fact-container {
+    position: absolute;
+    width: 1200px;
+    height: 700px;
+    margin: 0 auto;
+    bottom: 0;
+    left: 50%;
+    margin-left: -600px;
+}
+
+.fact-info {
+  position: absolute;
+  top: calc(50% - 100px);
+  width: 400px;
+  height: 200px;
+  color: white;
+  font-family: Tahoma, Verdana, Arial, serif;
+  padding: 10px;
+}
+
+.fact-info-title {
+  padding-bottom: 15px!important;
+  font-size: 28px;
+  text-transform: uppercase;
+  text-align: left;
+  width: 100%;
+
+}
+
+.fact-info-content {
+  max-width: 410px;
+  line-height: 17px;
+  font-size: 18px;
+  text-align: left;
+}
+
+.fact-characters-container{
+  right: 0;
+  position: absolute;
+  height: 100%;
+  width: 730px;
+  right: 65px;
+}
+
+.fact-character {
+  position: absolute;
+  transition: all 0.7s;
+  -webkit-filter: grayscale(30%);
+  filter: grayscale(30%);
+}
+
+.fact-character div {
+    opacity: 0;
+    position: absolute;
+    width: 230px;
+    height: 90px;
+    background-image: url(./images/char-tt.png);
+    background-repeat: no-repeat;
+    background-size: 100%;
+    top: -80px;
+    left: 50%;
+    margin-left: -115px;
+    transition: opacity 1s;
+}
+
+.fact-character:hover div {
+    opacity: 1;
+}
+
+.fact-character div img {
+    position: relative;
+    width: auto;
+    height: 28px;
+    top: 14px;
+}
+
+.fact-character div p {
+    font-size: 14px;
+    color: white;
+    margin: 0;
+    position: relative;
+    top: 25px;
+}
+
+
+.fact-character img{
+  width: 100%;
+  image-rendering: crisp-edges;
+}
+
+.fact-character:hover {
+  transform: scale(1.2);
+  z-index: 100;
+  -webkit-filter: grayscale(0%);
+  filter: grayscale(0%);
+
+}
+
+.fact-1 {
+  position: absolute;
+  width: 290px;
+  top: 120px;
+  z-index: 1;
+}
+.fact-2 {
+  position: absolute;
+  width: 150px;
+  left: 260px;
+  top: 120px;
+  z-index: 2;
+}
+
+.fact-3 {
+  position: absolute;
+  width: 140px;
+  left: 380px;
+  top: 170px;
+  z-index: 3;
+}
+.fact-4 {
+  position: absolute;
+  width: 220px;
+  left: 480px;
+  top: 120px;
+  z-index: 2;
+}
+.fact-5 {
+  position: absolute;
+  width: 250px;
+  left: 510px;
+  top: 320px;
+  z-index: 5;
+}
+
+.fact-6 {
+  position: absolute;
+  width: 270px;
+  left: 640px;
+  top: 120px;
+  z-index: 3;
+}
+#c1,#c2,#c3,#c4,#c5,#c6 {
+  background-position: center;
+}
+
+#c1 {background-image: url("images/bg-fact-1.jpg")!important;}
+#c2 {background-image: url("images/Olympo3.jpg");}
+#c3 {background-image: url("images/SinRostro2.jpg");}
+#c4 {background-image: url("images/Ancestros2.jpg");}
+#c5 {background-image: url("images/Steamclank6.jpg");}
+#c6 {background-image: url("images/Archivistas2.jpg");}
+#c7 {
+    background-image: url("images/assora-bg.jpg");
+    background-position: 50% 50%!important;
+    height: 680px!important;
+}
+
+.Realm-info, .fact-character img {
+  -webkit-filter: drop-shadow(3px 6px 2px #000000b0);
+ filter: drop-shadow(3px 6px 2px #000000b0);
+}
+
+#c1 .Realm-info {
+    background-image: url(./images/char-1.png);
+}
+
+#c2 .Realm-info {
+    background-image: url(./images/char-6.png);
+    -webkit-transform: scaleX(-1);
+    -moz-transform: scaleX(-1);
+    transform: scaleX(-1);
+}
+
+#c3 .Realm-info {
+    background-image: url(./images/char-3.png);
+    background-size: 50%;
+    background-position: 50% 10px;
+    -webkit-transform: scaleX(-1);
+    -moz-transform: scaleX(-1);
+    transform: scaleX(-1);
+}
+
+#c4 .Realm-info {
+    background-image: url(./images/char-4.png);
+    background-size: 70%;
+    background-position: 50% 50%;
+}
+#c5 .Realm-info {
+    background-image: url(./images/char-5.png);
+    background-size: 100%;
+    background-position: 50%;
+}
+
+#c6 .Realm-info {
+    background-image: url(./images/char-2.png);
+    background-size: 50%;
+    background-position: 50% 10px;
+}
+
+#c7 .Realm-details {
+    width: 50%;
+    left: 25%;
+    margin-left: 0!important;
+    top: 30px;
+}
+
+#c7 .Realm-details ._details {
+  margin-bottom: 54px;
+}
+
+
+/* Gallery */
+
+/* The Modal (background) */
+._modal {
+  display: none;
+  position: fixed;
+  z-index: 1000;
+  padding-top: 100px;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: #000000e8;
+}
+
+/* Modal Content */
+._modal-content {
+  position: relative;
+  background-color: #fefefe;
+  margin: auto;
+  padding: 0;
+  width: 90%;
+}
+
+._modal-content:after, ._img-details:after {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    border-style: solid;
+    border-width: 0;
+    border-image-source: url("/img/frame-border.png");
+    border-image-repeat: round;
+    border-image-slice: 108 fill;
+    border-image-width: 56px;
+    border-image-outset: 34px;
+    content: "";
+    display: block;
+    z-index: 1;
+    pointer-events: none;
+}
+
+ ._assora:after {
+border-image-source: url("/img/frame-border.png")!important;
+ }
+
+
+/* The Close Button */
+.close {
+  color: white;
+  position: absolute;
+  top: 10px;
+  right: 25px;
+  font-size: 35px;
+  font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+  color: #999;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+/* Hide the slides by default */
+#mySlides {
+  display: none;
+}
+
+
+
+.social-links {
+    width: 270px;
+    height: 50px;
+    position: relative;
+    top: 30px;
+}
+.social-links a{
+    padding: 10px;
+}
+
+.social-links a img{
+    width: 30px;
+}
+
+#login-footer{
+  height: 150px!important;
+  min-height: 150px!important;
+}
+
+
+#login-footer p{
+position: relative;
+top: 30px;
+color: rgba(255,255,255,.7);
+font-family: "Open Sans",Helvetica,Arial,sans-serif;
+}

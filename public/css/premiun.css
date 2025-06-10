@@ -1,0 +1,710 @@
+.auction-container .auction .rightContainer .itemInfo .auctionButtons .bet button{
+    margin-top:2.5pc;
+}
+[class~=auction-container] [class~=auction] [class~=rightContainer] [class~=auctionTimer] [class~=timer]{
+    padding-top:.010416667in;
+}
+[class~=auction-container] [class~=tabs] [class~=tab]:hover{
+    transform:scale(1.05);
+}
+[class~=auction-container] [class~=tabs] [class~=tab]{
+    width:150px;
+}
+[class~=auction-container] [class~=auction] [class~=rightContainer] [class~=auctionTimer] [class~=timer]{
+    height:.208333333in;
+}
+[class~=auction-container] [class~=auction] [class~=rightContainer] [class~=auctionTimer] [class~=timer]{
+    width:135pt;
+}
+[class~=auction-container] [class~=tabs] [class~=tab]{
+    height:1.875pc;
+}
+[class~=auction-container] [class~=tabs] [class~=tab]{
+    background-color:#444;
+}
+[class~=auction-container] [class~=auction] [class~=rightContainer] [class~=auctionTimer] [class~=timer],[class~=auction-container] [class~=tabs] [class~=tab]{
+    text-align:center;
+}
+[class~=auction-container] [class~=auction] [class~=auctionItemList] th{
+    font-family:Arial;
+}
+[class~=auction-container] [class~=auction] [class~=rightContainer] [class~=itemInfo] [class~=itemInfos] [class~=amount]{
+    margin-top:3px;
+}
+[class~=auction-container] [class~=auction] [class~=rightContainer] [class~=auctionTimer] [class~=timer]{
+    font-size:14px;
+}
+[class~=auction-container] [class~=auction] [class~=rightContainer] [class~=itemInfo] [class~=auctionButtons] [class~=bet] [class~=creditsamount]{
+    margin-top:.104166667in;
+}
+[class~=auction-container] [class~=tabs] [class~=tab]{
+    padding-top:4px;
+}
+[class~=auction-container] [class~=tabs] [class~=tab]{
+    margin-left:.072916667in;
+}
+[class~=auction-container] [class~=auction] [class~=rightContainer] [class~=itemInfo] [class~=auctionButtons] [class~=bet] [class~=creditsamount],.auction-container .auction .rightContainer .itemInfo .auctionButtons .bet button{
+    margin-left:.104166667in;
+}
+[class~=auction-container] [class~=auction] [class~=auctionItemList] th{
+    font-size:10px;
+}
+[class~=auction-container] [class~=auction]{
+    width:100%;
+}
+[class~=auction-container] [class~=auction] [class~=auctionItemList] th{
+    color:#a4d3ff;
+}
+[class~=auction-container] [class~=auction] [class~=auctionItemList] [class~=items] tr{
+    display:table;
+}
+[class~=auction-container] [class~=tabs] [class~=tab],[class~=auction-container] [class~=auction] [class~=rightContainer] [class~=auctionTimer] [class~=timer]{
+    font-weight:bold;
+}
+[class~=auction-container] [class~=auction] [class~=rightContainer] [class~=auctionTimer] [class~=timer],.auction-container .auction .rightContainer .itemInfo .auctionButtons .bet button,[class~=auction-container] [class~=auction] [class~=rightContainer] [class~=itemInfo] [class~=itemImage] img,[class~=auction-container] [class~=auction] [class~=rightContainer] [class~=itemInfo] [class~=auctionButtons] [class~=bet] [class~=creditsamount]{
+    position:absolute;
+}
+[class~=auction-container] [class~=auction] [class~=rightContainer] [class~=itemInfo] [class~=itemInfos] [class~=amount]{
+    width:148px;
+}
+[class~=auction-container] [class~=tabs] [class~=tab],[class~=auction-container] [class~=auction] [class~=rightContainer] [class~=itemInfo] [class~=itemImage],.auction-container .auction .rightContainer .itemInfo .auctionButtons .bet button{
+    border-radius:2.25pt;
+}
+[class~=auction-container] [class~=tabs] [class~=tab],[class~=auction-container] [class~=auction] [class~=rightContainer] [class~=itemInfo] [class~=itemInfos] [class~=amount]{
+    color:white;
+}
+[class~=auction-container] [class~=auction] [class~=rightContainer] [class~=auctionTimer] [class~=timer],[class~=auction-container] [class~=tabs] [class~=tabActive]{
+    color:yellow;
+}
+.auction-container .auction .auctionItemList .items tr:nth-child(odd){
+    background-color:rgba(255,255,255,.05);
+}
+.auction-container .auction .rightContainer .itemInfo .auctionButtons .bet button{
+    width:1.354166667in;
+}
+[class~=auction-container] [class~=auction] [class~=auctionItemList] th{
+    height:17.25pt;
+}
+[class~=auction-container] [class~=tabs] [class~=tab]{
+    display:inline-block;
+}
+[class~=auction-container] [class~=auction] [class~=auctionItemList] th{
+    text-align:left;
+}
+[class~=auction-container] [class~=tabs] [class~=tab],[class~=auction-container] [class~=auction] [class~=rightContainer] [class~=itemInfo] [class~=itemImage],.auction-container .auction .rightContainer .itemInfo .auctionButtons .bet button{
+    border-left-width:.75pt;
+}
+[class~=auction-container] [class~=auction] [class~=auctionItemList] th,[class~=auction-container] [class~=auction] [class~=rightContainer] [class~=itemInfo] [class~=itemImage],[class~=auction-container] [class~=tabs] [class~=tab],.auction-container .auction .rightContainer .itemInfo .auctionButtons .bet button{
+    border-bottom-width:.75pt;
+}
+[class~=auction-container] [class~=auction] [class~=rightContainer] [class~=itemInfo] [class~=itemImage]{
+    height:7.5pc;
+}
+[class~=auction-container] [class~=auction] [class~=rightContainer] [class~=itemInfo] [class~=itemImage],[class~=auction-container] [class~=tabs] [class~=tab],.auction-container .auction .rightContainer .itemInfo .auctionButtons .bet button{
+    border-right-width:.75pt;
+}
+[class~=auction-container] [class~=auction] [class~=refreshSection]:hover{
+    background-color:rgba(255,255,255,.35);
+}
+[class~=auction-container] [class~=auction] [class~=rightContainer] [class~=itemInfo] [class~=itemImage],[class~=auction-container] [class~=tabs] [class~=tab]{
+    border-top-width:.75pt;
+}
+[class~=auction-container] [class~=tabs] [class~=tab],[class~=auction-container] [class~=auction] [class~=rightContainer] [class~=itemInfo] [class~=itemImage]{
+    border-left-style:solid;
+}
+[class~=auction-container] [class~=auction] [class~=rightContainer] [class~=itemInfo] [class~=itemImage]{
+    width:7.5pc;
+}
+.auction-container .auction .rightContainer .itemInfo .auctionButtons .bet button{
+    height:18.75pt;
+}
+[class~=auction-container] [class~=auction] [class~=rightContainer] [class~=itemInfo] [class~=itemImage]{
+    margin-left:24.75pt;
+}
+[class~=auction-container] [class~=tabs] [class~=tab],[class~=auction-container] [class~=auction] [class~=rightContainer] [class~=itemInfo] [class~=itemImage],[class~=auction-container] [class~=auction] [class~=auctionItemList] th{
+    border-bottom-style:solid;
+}
+[class~=auction-container] [class~=auction] [class~=rightContainer] [class~=itemInfo] [class~=itemImage],[class~=auction-container] [class~=tabs] [class~=tab]{
+    border-right-style:solid;
+}
+[class~=auction-container] [class~=auction] [class~=rightContainer] [class~=itemInfo] [class~=itemImage],[class~=auction-container] [class~=tabs] [class~=tab]{
+    border-top-style:solid;
+}
+[class~=auction-container] [class~=tabs] [class~=tab]{
+    border-left-color:grey;
+}
+[class~=auction-container] [class~=auction] [class~=rightContainer] [class~=itemInfo] [class~=itemImage]{
+    margin-top:11.25pt;
+}
+[class~=page]{
+    margin-left:auto;
+}
+[class~=auction-container] [class~=tabs] [class~=tab]{
+    border-bottom-color:grey;
+}
+[class~=auction-container] [class~=auction] [class~=rightContainer] [class~=itemInfo] [class~=itemImage],.auction-container .auction .itemList{
+    background-color:rgba(255,255,255,.25);
+}
+[class~=auction-container] [class~=tabs] [class~=tab]{
+    border-right-color:grey;
+}
+[class~=auction-container] [class~=tabs] [class~=tab]{
+    border-top-color:grey;
+}
+[class~=auction-container] [class~=tabs] [class~=tab]{
+    border-image:none;
+}
+[class~=auction-container] [class~=tabs] [class~=tab]{
+    transition:all .1s ease-in;
+}
+[class~=auction-container] [class~=auction] [class~=rightContainer] [class~=itemInfo] [class~=itemInfos] [class~=amount]{
+    height:1.25pc;
+}
+[class~=auction-container] [class~=tabs] [class~=tabActive]{
+    transform:scale(1.025);
+}
+.auction-container .auction .itemList,.auction-container .tabs{
+    margin-top:.052083333in;
+}
+.auction-container .tabs,.auction-container .auction .itemList,.auction-container .auction .rightContainer .itemInfo .itemInfos .description{
+    margin-left:5px;
+}
+[class~=auction-container] [class~=auction] [class~=rightContainer] [class~=itemInfo] [class~=itemInfos] [class~=amount]{
+    font-weight:bold;
+}
+.auction-container .auction .itemList{
+    width:600pt;
+}
+[class~=auction-container] [class~=auction] [class~=auctionItemList] th{
+    border-bottom-color:#a4d3ff;
+}
+.auction-container .auction .itemList{
+    height:27.3125pc;
+}
+[class~=page]{
+    margin-bottom:0;
+}
+[class~=auction-container] [class~=auction] [class~=auctionItemList] th{
+    border-image:none;
+}
+[class~=auction-container] [class~=auction] [class~=rightContainer] [class~=itemInfo] [class~=itemInfos] [class~=amount]{
+    text-align:center;
+}
+.auction-container .auction .itemList{
+    border-radius:0px 0px 0pc .052083333in;
+}
+.auction-container .auction .itemList{
+    display:inline-block;
+}
+.auction-container .auction .rightContainer .itemInfo .itemInfos .description,[class~=auction-container] [class~=auction] [class~=auctionItemList] [class~=items]{
+    position:relative;
+}
+[class~=auction-container] [class~=auction] [class~=refreshSection],.auction-container .auction .itemList{
+    color:white;
+}
+[class~=page]{
+    margin-right:auto;
+}
+[class~=auction-container] [class~=auction] [class~=refreshSection],[class~=auction-container] [class~=auction] [class~=auctionItemList] td{
+    cursor:pointer;
+}
+[class~=auction-container] [class~=auction]{
+    height:100%;
+}
+[class~=page]{
+    margin-top:0pt;
+}
+[class~=auction-container] [class~=auction] [class~=refreshSection]{
+    margin-left:.260416667in;
+}
+[class~=auction-container] [class~=auction] [class~=refreshSection]{
+    margin-top:.125pc;
+}
+[class~=auction-container] [class~=auction] [class~=rightContainer] [class~=itemInfo] [class~=itemImage]{
+    border-left-color:black;
+}
+.auction-container .auction .auctionItemList .items tr:nth-child(even){
+    background-color:rgba(255,255,255,.1);
+}
+[class~=auction-container] [class~=auction] [class~=disabled]:hover{
+    background-color:rgba(255,255,255,.15);
+}
+[class~=auction-container] [class~=auction] [class~=rightContainer] [class~=itemInfo] [class~=itemImage]{
+    border-bottom-color:black;
+}
+[class~=auction-container] [class~=auction] [class~=rightContainer] [class~=itemInfo] [class~=itemImage]{
+    border-right-color:black;
+}
+[class~=auction-container] [class~=auction] [class~=rightContainer] [class~=itemInfo] [class~=itemImage]{
+    border-top-color:black;
+}
+[class~=auction-container] [class~=auction] [class~=refreshSection],[class~=auction-container] [class~=auction] [class~=rightContainer] [class~=itemInfo] [class~=itemName]{
+    position:absolute;
+}
+[class~=auction-container] [class~=auction] [class~=rightContainer] [class~=itemInfo] [class~=itemImage]{
+    border-image:none;
+}
+[class~=page],[class~=auction-container]{
+    width:62.5pc;
+}
+.auction-container .auction .rightContainer .itemInfo .itemInfos .description{
+    margin-top:3px;
+}
+.auction-container .auction .rightContainer .itemInfo .auctionButtons .bet button{
+    border-top-width:.0625pc;
+}
+[class~=auction-container],[class~=page]{
+    height:31.25pc;
+}
+[class~=auction-container] [class~=auction] [class~=auctionItemList] th{
+    margin-bottom:15pt;
+}
+[class~=auction-container] [class~=auction] [class~=refreshSection]{
+    background-color:rgba(255,255,255,.25);
+}
+[class~=auction-container] [class~=auction] [class~=rightContainer] [class~=itemInfo] [class~=itemImage]{
+    box-shadow:0 0 7.5pt .104166667in rgba(0,0,0,.1);
+}
+[class~=auction-container] [class~=auction] [class~=rightContainer] [class~=itemInfo] [class~=itemImage]{
+    -moz-box-shadow:0 0 .104166667in 7.5pt rgba(0,0,0,.1);
+}
+.auction-container .auction .rightContainer .itemInfo .auctionButtons .bet button{
+    border-left-style:solid;
+}
+[class~=auction-container] [class~=auction] [class~=refreshSection]{
+    width:.1875in;
+}
+[class~=auction-container] [class~=auction] [class~=rightContainer] [class~=itemInfo] [class~=itemImage]{
+    -webkit-box-shadow:0 0 10px 10px rgba(0,0,0,.1);
+}
+[class~=auction-container] [class~=auction] [class~=refreshSection]{
+    height:.1875in;
+}
+[class~=auction-container] [class~=auction] [class~=rightContainer] [class~=itemInfo] [class~=auctionButtons] [class~=bet] [class~=creditsamount],[class~=auction-container] [class~=auction] [class~=refreshSection]{
+    border-radius:.03125in;
+}
+[class~=auction-container] [class~=auction] [class~=rightContainer] [class~=itemInfo] [class~=itemImage]{
+    -o-box-shadow:0 0 .104166667in .104166667in rgba(0,0,0,.1);
+}
+.auction-container .auction .rightContainer .itemInfo .itemInfos .description{
+    padding-right:10px;
+}
+[class~=auction-container] [class~=auction] [class~=refreshSection]{
+    padding-left:.1875pc;
+}
+[class~=auction-container] [class~=auction] [class~=refreshSection]{
+    padding-top:.225pt;
+}
+[class~=auction-container] [class~=auction] [class~=refreshSection]{
+    font-size:12px;
+}
+[class~=auction-container] [class~=auction] [class~=auctionItemList] td{
+    height:1.875pc;
+}
+.auction-container .tabs{
+    width:988.5px;
+}
+[class~=auction-container] [class~=auction] [class~=disabled]{
+    background-color:rgba(255,255,255,.15);
+}
+[class~=auction-container] [class~=auction] [class~=auctionItemList] [class~=items]{
+    padding-top:10px;
+}
+[class~=auction-container] [class~=auction] [class~=disabled]{
+    color:rgba(255,255,255,.35);
+}
+[class~=auction-container] [class~=auction] [class~=disabled]{
+    cursor:default;
+}
+[class~=auction-container] [class~=auction] [class~=auctionItemList] [class~=items]{
+    height:417px;
+}
+[class~=auction-container] [class~=auction] [class~=rightContainer] [class~=itemInfo] [class~=itemImage]{
+    padding-left:7.5pt;
+}
+.auction-container .auction .rightContainer .itemInfo .itemInfos .description{
+    width:140px;
+}
+.auction-container .auction .rightContainer .itemInfo .itemInfos .description{
+    height:122px;
+}
+[class~=auction-container] [class~=auction] [class~=rightContainer] [class~=itemInfo] [class~=itemName]{
+    width:5.9375pc;
+}
+[class~=auction-container] [class~=auction] [class~=rightContainer] [class~=itemInfo] [class~=itemName]{
+    margin-top:92px;
+}
+[class~=auction-container] [class~=auction] [class~=auctionItemList] td{
+    padding-top:.052083333in;
+}
+[class~=auction-container] [class~=auction] [class~=auctionItemList]{
+    table-layout:fixed;
+}
+[class~=auction-container] [class~=loader] [class~=content] i{
+    font-size:2.5pc;
+}
+.auction-container .auction .rightContainer .itemInfo .itemInfos .description,[class~=auction-container] [class~=auction] [class~=rightContainer] [class~=itemInfo] [class~=itemName]{
+    color:white;
+}
+[class~=auction-container]{
+    background:#1d1d1d;
+}
+[class~=auction-container] [class~=auction] [class~=auctionItemList]{
+    width:600pt;
+}
+[class~=auction-container] [class~=auction] [class~=rightContainer] [class~=itemInfo] [class~=auctionButtons] [class~=bet] [class~=creditsamount]{
+    width:1.09375in;
+}
+[class~=auction-container] [class~=auction] [class~=rightContainer] [class~=itemInfo] [class~=itemName]{
+    text-align:center;
+}
+[class~=auction-container] [class~=auction] [class~=firstCol_history],.auction-container .auction .firstColumn,[class~=auction-container] [class~=auction] [class~=auction_item_name],[class~=auction-container] [class~=auction] [class~=auction_history_name]{
+    padding-left:.15625in;
+}
+.auction-container .auction .rightContainer .itemInfo .itemInfos .description,[class~=auction-container] [class~=auction] [class~=rightContainer] [class~=itemInfo] [class~=itemName]{
+    font-weight:bold;
+}
+[class~=auction-container]{
+    position:relative;
+}
+.noselect{
+    -webkit-touch-callout:none;
+}
+.noselect{
+    -webkit-user-select:none;
+}
+[class~=auction-container] [class~=auction] [class~=rightContainer] [class~=itemInfo] [class~=itemInfos]{
+    margin-top:.9375pc;
+}
+.auction-container .tabs{
+    height:.46875in;
+}
+[class~=auction-container] [class~=auction] [class~=auctionItemList] [class~=items]{
+    display:block;
+}
+[class~=auction-container] [class~=auction] [class~=rightContainer] [class~=itemInfo] [class~=itemInfos],.auction-container .auction .rightContainer .itemInfo .auctionButtons .bet button{
+    border-bottom-style:solid;
+}
+[class~=auction-container] [class~=auction] [class~=auction_first]{
+}
+[class~=auction-container] [class~=auction] [class~=firstColumn]{
+    min-width:78.75pt;
+}
+[class~=auction-container] [class~=auction] [class~=rightContainer] [class~=itemInfo] [class~=itemInfos],.auction-container .tabs{
+    background-color:rgba(255,255,255,.25);
+}
+[class~=auction-container] [class~=auction] [class~=rightContainer] [class~=itemInfo] [class~=auctionButtons] [class~=bet] [class~=creditsamount]{
+    height:25px;
+}
+[class~=auction-container] [class~=auction] [class~=firstColumn]{
+    max-width:105px;
+}
+[class~=auction-container] [class~=auction] [class~=rightContainer] [class~=itemInfo] [class~=itemInfos]{
+    margin-left:16px;
+}
+[class~=auction-container] [class~=auction] [class~=rightContainer] [class~=itemInfo] [class~=itemInfos]{
+    position:absolute;
+}
+.auction-container .tabs{
+    padding-top:5.25pt;
+}
+[class~=auction-container] [class~=auction] [class~=auction_item_name]{
+    width:12.5pc;
+}
+[class~=auction-container] [class~=auction] [class~=auction_item_name]{
+    padding-left:78pt;
+}
+[class~=auction-container] [class~=auction] [class~=rightContainer] [class~=itemInfo] [class~=itemInfos],[class~=auction-container] [class~=auction] [class~=auction_item_type]{
+    width:9.375pc;
+}
+.auction-container .auction .auction_item_name_col{
+    min-width:.989583333in;
+}
+[class~=auction-container] [class~=auction] [class~=rightContainer] [class~=itemInfo] [class~=itemInfos],.auction-container .auction .rightContainer .itemInfo .auctionButtons .bet button{
+    border-right-style:solid;
+}
+[class~=auction-container] [class~=auction] [class~=rightContainer] [class~=itemInfo] [class~=itemInfos]{
+    height:9.375pc;
+}
+.auction-container .auction .auction_item_name_col{
+    max-width:5.9375pc;
+}
+[class~=auction-container] [class~=auction] [class~=auctionItemList] [class~=items]{
+    height:4.291666667in !important;
+}
+[class~=auction-container] [class~=auction] [class~=rightContainer] [class~=itemInfo] [class~=itemInfos]{
+    border-radius:2.25pt;
+}
+[class~=auction-container] [class~=auction] [class~=rightContainer] [class~=itemInfo] [class~=itemInfos]{
+    border-left-width:.75pt;
+}
+[class~=auction-container] [class~=auction] [class~=auctionItemList] [class~=items]{
+    width:8.333333333in !important;
+}
+[class~=auction-container] [class~=auction] [class~=rightContainer] [class~=itemInfo] [class~=auctionButtons] [class~=bet] [class~=creditsIcon]{
+    margin-top:.625pc;
+}
+[class~=auction-container] [class~=auction] [class~=auction_item_type_col]{
+    min-width:9.375pc;
+}
+[class~=auction-container] [class~=auction] [class~=rightContainer] [class~=itemInfo] [class~=itemInfos]{
+    border-bottom-width:.75pt;
+}
+[class~=auction-container] [class~=auction] [class~=auction_item_type_col]{
+    max-width:1.5625in;
+}
+.auction-container .auction .rightContainer .itemInfo .auctionButtons .bet button,[class~=auction-container] [class~=auction] [class~=rightContainer] [class~=itemInfo] [class~=itemInfos]{
+    border-top-style:solid;
+}
+.auction-container .auction .auction_item_highest{
+    width:130px;
+}
+.auction-container .auction .rightContainer .itemInfo .auctionButtons .bet button{
+    border-left-color:rgba(255,255,255,.25);
+}
+[class~=auction-container] [class~=auction] [class~=rightContainer] [class~=auctionTimer]{
+    margin-top:0in;
+}
+[class~=auction-container] [class~=auction] [class~=rightContainer] [class~=itemInfo] [class~=itemInfos]{
+    border-right-width:.75pt;
+}
+.auction-container .auction .rightContainer .itemInfo .auctionButtons .bet button{
+    border-bottom-color:rgba(255,255,255,.25);
+}
+[class~=auction-container] [class~=auction] [class~=rightContainer] [class~=auctionTimer]{
+    margin-left:.00625pc;
+}
+.auction-container .auction .rightContainer .itemInfo .auctionButtons .bet button{
+    border-right-color:rgba(255,255,255,.25);
+}
+[class~=auction-container] [class~=auction] [class~=rightContainer] [class~=itemInfo] [class~=itemInfos]{
+    border-top-width:.75pt;
+}
+[class~=auction-container] [class~=auction] [class~=auction_item_highest_col]{
+    min-width:8.125pc;
+}
+[class~=auction-container] [class~=auction] [class~=auction_item_highest_col]{
+    max-width:8.125pc;
+}
+[class~=auction-container] [class~=auction] [class~=rightContainer] [class~=auctionTimer]{
+    width:185px;
+}
+[class~=auction-container] [class~=auction] [class~=rightContainer] [class~=itemInfo] [class~=itemInfos]{
+    border-left-style:solid;
+}
+[class~=auction-container] [class~=auction] [class~=auction_item_highest_col]{
+    text-overflow:ellipsis;
+}
+[class~=auction-container] [class~=auction] [class~=auction_item_highest_col],.auction-container .auction .rightContainer .itemInfo .itemInfos .description{
+    overflow:hidden;
+}
+[class~=auction-container] [class~=auction] [class~=auction_item_you],[class~=auction-container] [class~=auction] [class~=auction_item_current]{
+    width:120px;
+}
+.auction-container .tabs{
+    padding-left:.625pc;
+}
+[class~=auction-container] [class~=auction] [class~=rightContainer] [class~=auctionTimer]{
+    height:.229166667in;
+}
+.auction-container .auction .rightContainer .itemInfo .itemInfos .description{
+    font-size:.125in;
+}
+[class~=auction-container] [class~=auction] [class~=rightContainer] [class~=itemInfo] [class~=auctionButtons] [class~=bet] [class~=creditsIcon]{
+    margin-left:7.5pc;
+}
+[class~=auction-container] [class~=auction] [class~=auction_item_you_col],[class~=auction-container] [class~=auction] [class~=auction_item_current_col]{
+    min-width:7.5pc;
+}
+[class~=auction-container] [class~=auction] [class~=auction_item_you_col],[class~=auction-container] [class~=auction] [class~=auction_item_current_col]{
+    max-width:120px;
+}
+[class~=auction-container] [class~=auction] [class~=rightContainer] [class~=itemInfo] [class~=itemInfos]{
+    border-left-color:black;
+}
+.auction-container .auction .rightContainer .itemInfo .auctionButtons .bet button{
+    border-top-color:rgba(255,255,255,.25);
+}
+[class~=auction-container] [class~=auction] [class~=rightContainer] [class~=auctionTimer],[class~=auction-container] [class~=auction] [class~=rightContainer] [class~=itemInfo] [class~=auctionButtons] [class~=disabled]{
+    background-color:rgba(255,255,255,.25);
+}
+[class~=auction-container] [class~=auction] [class~=rightContainer] [class~=itemInfo] [class~=itemInfos]{
+    border-bottom-color:black;
+}
+[class~=auction-container] [class~=auction] [class~=rightContainer] [class~=auctionTimer]{
+    padding-left:.03125in;
+}
+.auction-container .auction .rightContainer .itemInfo .auctionButtons .bet button{
+    border-image:none;
+}
+.auction-container .auction .rightContainer .itemInfo .itemInfos .description{
+    text-align:left;
+}
+[class~=auction-container] [class~=auction] [class~=auctionItemList] [class~=items] th{
+    display:table !important;
+}
+[class~=auction-container] [class~=auction] [class~=auction_item_instant]{
+    min-width:45pt;
+}
+[class~=auction-container] [class~=auction] [class~=rightContainer] [class~=itemInfo] [class~=itemInfos]{
+    border-right-color:black;
+}
+[class~=auction-container] [class~=auction] [class~=rightContainer] [class~=itemInfo] [class~=itemInfos]{
+    border-top-color:black;
+}
+.auction-container .tabs{
+    border-radius:5px 3.75pt 0px 0pc;
+}
+[class~=auction-container] [class~=auction] [class~=rightContainer] [class~=itemInfo] [class~=itemInfos]{
+    border-image:none;
+}
+[class~=auction-container] [class~=auction] [class~=rightContainer] [class~=auctionTimer]{
+    padding-top:.75pt;
+}
+[class~=auction-container] [class~=auction] [class~=rightContainer] [class~=itemInfo] [class~=auctionButtons] [class~=bet] [class~=creditsIcon],[class~=auction-container] [class~=loader] [class~=content],[class~=auction-container] [class~=loader],.auction-container .auction .rightContainer .itemInfo .auctionButtons,.auction-container .auction .rightContainer .itemInfo{
+    position:absolute;
+}
+[class~=auction-container] [class~=auction] [class~=auction_item_instant]{
+    max-width:.625in;
+}
+[class~=auction-container] [class~=auction] [class~=rightContainer] [class~=itemInfo] [class~=itemInfos]{
+    box-shadow:0 0 .104166667in 10px rgba(0,0,0,.1);
+}
+[class~=auction-container] [class~=auction] [class~=auction_item_instant_col]{
+    min-width:5pc;
+}
+.noselect{
+    -khtml-user-select:none;
+}
+[class~=auction-container] [class~=auction] [class~=rightContainer] [class~=itemInfo] [class~=itemInfos]{
+    -moz-box-shadow:0 0 7.5pt 10px rgba(0,0,0,.1);
+}
+.noselect{
+    -moz-user-select:none;
+}
+[class~=auction-container] [class~=auction] [class~=auction_item_instant_col]{
+    max-width:80px;
+}
+.auction-container .auction .rightContainer{
+    margin-top:3.75pt;
+}
+[class~=auction-container] [class~=auction] [class~=rightContainer] [class~=itemInfo] [class~=itemInfos]{
+    -webkit-box-shadow:0 0 .625pc 7.5pt rgba(0,0,0,.1);
+}
+[class~=auction-container] [class~=auction] [class~=auctionItemList] [class~=items] tr:first-child td:first-child{
+    padding-top:10px;
+}
+[class~=auction-container] [class~=auction] [class~=rightContainer] [class~=itemInfo] [class~=itemInfos]{
+    -o-box-shadow:0 0 10px .104166667in rgba(0,0,0,.1);
+}
+.noselect{
+    -ms-user-select:none;
+}
+.auction-container .auction .rightContainer,.auction-container .auction .rightContainer .itemInfo{
+    margin-left:.075pt;
+}
+.auction-container .auction .rightContainer,.auction-container .auction .rightContainer .itemInfo{
+    width:11.5625pc;
+}
+.auction-container .auction .rightContainer{
+    height:4.552083333in;
+}
+.auction-container .auction .rightContainer .itemInfo .auctionButtons{
+    margin-top:165px;
+}
+.auction-container .auction .rightContainer .itemInfo{
+    margin-top:3pt;
+}
+.auction-container .tabs{
+    cursor:pointer;
+}
+.auction-container .auction .rightContainer .itemInfo .auctionButtons{
+    margin-left:16px;
+}
+.auction-container .auction .rightContainer .itemInfo,.auction-container .auction .rightContainer{
+    display:inline-block;
+}
+[class~=auction-container] [class~=loader] [class~=content]{
+    padding-left:0;
+}
+.noselect{
+    user-select:none;
+}
+[class~=auction-container] [class~=loader],[class~=auction-container] [class~=loader] [class~=content]{
+    width:100%;
+}
+.auction-container .auction .rightContainer .itemInfo .auctionButtons{
+    width:9.375pc;
+}
+.auction-container .auction .rightContainer .itemInfo .auctionButtons{
+    height:120px;
+}
+[class~=auction-container] [class~=loader] [class~=content]{
+    padding-bottom:0;
+}
+[class~=auction-container] [class~=auction] [class~=rightContainer] [class~=itemInfo] [class~=auctionButtons] [class~=disabled]{
+    cursor:default;
+}
+[class~=auction-container] [class~=loader] [class~=content]{
+    padding-right:0;
+}
+[class~=selected]{
+    background-color:rgba(100,115,130,1) !important;
+}
+[class~=auction-container] [class~=loader] [class~=content]{
+    padding-top:12.5pc;
+}
+[class~=auction-container] [class~=auction] [class~=rightContainer] [class~=itemInfo] [class~=auctionButtons] [class~=betInfo]{
+    margin-top:5pc;
+}
+[class~=auction-container] [class~=loader] [class~=content]{
+    font-size:.208333333in;
+}
+[class~=auction-container] [class~=loader] [class~=content]{
+    color:#fff;
+}
+[class~=auction-container] [class~=loader]{
+    height:100%;
+}
+[class~=auction-container] [class~=auction] [class~=rightContainer] [class~=itemInfo] [class~=auctionButtons] [class~=betInfo]{
+    font-weight:bold;
+}
+.auction-container .auction .rightContainer .itemInfo{
+    height:25.6875pc;
+}
+[class~=auction-container] [class~=auction] [class~=rightContainer] [class~=itemInfo] [class~=auctionButtons] [class~=betInfo]{
+    font-size:.59375pc;
+}
+.auction-container .auction .rightContainer .itemInfo{
+    background-color:rgba(255,255,255,.25);
+}
+[class~=auction-container] [class~=auction] [class~=rightContainer] [class~=itemInfo] [class~=auctionButtons] [class~=betInfo]{
+    color:red;
+}
+.auction-container .auction .rightContainer .itemInfo{
+    border-radius:0px 0in .3125pc 0pc;
+}
+[class~=auction-container] [class~=auction] [class~=rightContainer] [class~=itemInfo] [class~=auctionButtons] [class~=bet] [class~=creditsIcon]{
+    border-radius:3px;
+}
+[class~=auction-container] [class~=loader]{
+    background:rgba(0,0,0,.9);
+}
+[class~=auction-container] [class~=auction] [class~=rightContainer] [class~=itemInfo] [class~=auctionButtons] [class~=bet] [class~=creditsIcon]{
+    width:6.5625pc;
+}
+[class~=auction-container] [class~=loader]{
+    z-index:10;
+}
+[class~=auction-container] [class~=loader]{
+    text-align:center;
+}
+[class~=auction-container] [class~=loader]{
+    display:none;
+}
+[class~=auction-container] [class~=auction] [class~=rightContainer] [class~=itemInfo] [class~=auctionButtons] [class~=bet] [class~=creditsIcon]{
+    height:1.5625pc;
+}
+[class~=auction-container] [class~=auction] [class~=auctionItemList] [class~=items] tr[class~=auctionItemRow]:hover td{
+    background-color:rgba(255,255,255,.15);
+}
