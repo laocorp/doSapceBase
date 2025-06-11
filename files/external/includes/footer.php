@@ -678,7 +678,7 @@ function message(error, message){
   });
 </script>
 <script type="text/javascript">
-  <?php if (count($array) >= 1) { ?>
+  <?php if (isset($array) && is_array($array) && count($array) >= 1) { ?>
 
   var currentWpClanName = '%clan_name%';
   var currentWpClanId = 0;
@@ -2342,3 +2342,5 @@ $.ajax({
 </html>
 
 
+
+[end of files/external/includes/footer.php]
