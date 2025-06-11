@@ -46,7 +46,7 @@ $player = Functions::GetPlayer();
 <div class="nav-left">
 
 <?php foreach ($category as $value) { ?>
-<a  class="ammo-button" onclick="menuContent('<?php echo $value['category']; ?>')" style = 'text-transform: uppercase;'><?php echo $value['category']; ?></a>	
+<a  class="ammo-button" onclick="menuContent('<?php echo htmlspecialchars($value['category'], ENT_QUOTES, 'UTF-8'); ?>')" style = 'text-transform: uppercase;'><?php echo htmlspecialchars($value['category'], ENT_QUOTES, 'UTF-8'); ?></a>
 <?php } ?>
 
 </div>
@@ -54,14 +54,14 @@ $player = Functions::GetPlayer();
 <div class="items ps-scrollbar-y ps-container ps-active-y" style = 'overflow: auto; width:837px !important;'>
 
  <div  class="w3-container w3-border city"><center>
-   <h1><blink> <p style="color:#5d5dd8;">Welcome <b><?= $player['username']; ?> to new admin zone.</b></p></blink></h1><br>
+   <h1><blink> <p style="color:#5d5dd8;">Welcome <b><?= htmlspecialchars($player['username'], ENT_QUOTES, 'UTF-8'); ?> to new admin zone.</b></p></blink></h1><br>
    <h2><p style="color:white;">This tool is in beta. So it may contain bugs. In case you find a bug contact me at discord <b>- starorbit#8582</b>.</p><h2>
  </center> </div>
   
 <?php foreach ($category as $value) { ?>
-<div id="<?php echo $value['category']; ?>" class="<?php echo $value['category']; ?> city" style="display:none">
+<div id="<?php echo htmlspecialchars($value['category'], ENT_QUOTES, 'UTF-8'); ?>" class="<?php echo htmlspecialchars($value['category'], ENT_QUOTES, 'UTF-8'); ?> city" style="display:none">
 
-<div style="margin:auto;font-weight:bold;font-size: x-large;text-align:center;margin-bottom:15px;"><?= $value['category']; ?></div>
+<div style="margin:auto;font-weight:bold;font-size: x-large;text-align:center;margin-bottom:15px;"><?= htmlspecialchars($value['category'], ENT_QUOTES, 'UTF-8'); ?></div>
 
 <?php if ($value['cc'] == 'events'){ ?>
 
@@ -74,21 +74,19 @@ $player = Functions::GetPlayer();
 <div id="buttonsEvent" style="border:1px dashed #5d5dd8;height: 400px; padding:25px;">
 
 <?php
-
-$getEvents = $mysqli->query("SELECT * FROM manage_events");
+$stmt_events = $mysqli->prepare("SELECT event FROM manage_events");
+// No parameters to bind for this specific query
+$stmt_events->execute();
+$getEvents = $stmt_events->get_result();
 
 if ($getEvents->num_rows > 0){
-
     while($row = $getEvents->fetch_assoc()){
-
         ?>
-            <a id="event_<?= $row['event']; ?>" onclick="startEvent('<?= $row['event']; ?>');" style="width: 129px;line-height: 50px;color: #fff;text-align:center;font-size: 19px;display: inline-block;height: 50px;transition: all .2s ease-in;font-weight: 600;position: relative;cursor: pointer;margin-top: -2px;background: #5d5dd8; margin-top:5px;"><?= $row['event']; ?></a>
+            <a id="event_<?= htmlspecialchars($row['event'], ENT_QUOTES, 'UTF-8'); ?>" onclick="startEvent('<?= htmlspecialchars($row['event'], ENT_QUOTES | ENT_JS, 'UTF-8'); ?>');" style="width: 129px;line-height: 50px;color: #fff;text-align:center;font-size: 19px;display: inline-block;height: 50px;transition: all .2s ease-in;font-weight: 600;position: relative;cursor: pointer;margin-top: -2px;background: #5d5dd8; margin-top:5px;"><?= htmlspecialchars($row['event'], ENT_QUOTES, 'UTF-8'); ?></a>
         <?php
-
     }
-
 }
-
+$stmt_events->close();
 ?>
 
 </div>
@@ -157,7 +155,7 @@ if ($getEvents->num_rows > 0){
         if ($dataShips && is_array($dataShips)){
             foreach($dataShips as $ships){
             ?>
-        <option value="<?= $ships['shipID']; ?>"><?= $ships['lootID']; ?></option>
+        <option value="<?= htmlspecialchars($ships['shipID'], ENT_QUOTES, 'UTF-8'); ?>"><?= htmlspecialchars($ships['lootID'], ENT_QUOTES, 'UTF-8'); ?></option>
         <?php } } ?>
     </select>
     </div>
@@ -181,7 +179,11 @@ if ($getEvents->num_rows > 0){
 <div style="border:1px solid gray; border-radius: 5px; width:100%; height:360px; overflow-y: scroll;">
 
     <?php 
-    $queryLogs = $mysqli->query("SELECT * FROM admin_log ORDER by id DESC");
+    $stmt_logs = $mysqli->prepare("SELECT adminId, toUserId, logComplet, date FROM admin_log ORDER by id DESC");
+    // No parameters to bind
+    $stmt_logs->execute();
+    $queryLogs = $stmt_logs->get_result();
+
     if ($queryLogs->num_rows > 0){
     ?>
 
@@ -195,12 +197,19 @@ if ($getEvents->num_rows > 0){
         </tr>
     </thead>
     <tbody>
-    <?php while($dataLogs = $queryLogs->fetch_assoc()){ ?>
+    <?php while($dataLogs = $queryLogs->fetch_assoc()){
+        $adminUsername = Functions::GetPlayerById($dataLogs['adminId'])['username'] ?? 'Unknown Admin';
+        $toUsername = "WebSite";
+        if ($dataLogs['toUserId'] > 0) {
+            $toUserData = Functions::GetPlayerById($dataLogs['toUserId']);
+            $toUsername = ($toUserData['username'] ?? 'Unknown User') . " (ID: " . htmlspecialchars($dataLogs['toUserId'], ENT_QUOTES, 'UTF-8') . ")";
+        }
+    ?>
         <tr>
-        <th scope="row"><?= Functions::GetPlayerById($dataLogs['adminId'])['username']; ?> (ID: <?= $dataLogs['adminId']; ?>)</th>
-        <td><?= (Functions::GetPlayerById($dataLogs['toUserId'] > 0)) ? Functions::GetPlayerById($dataLogs['toUserId'])['username']." (ID: ".$dataLogs['toUserId'].")" : "WebSite"; ?></td>
-        <td><?= $dataLogs['logComplet']; ?></td>
-        <td><?= $dataLogs['date']; ?></td>
+        <th scope="row"><?= htmlspecialchars($adminUsername, ENT_QUOTES, 'UTF-8'); ?> (ID: <?= htmlspecialchars($dataLogs['adminId'], ENT_QUOTES, 'UTF-8'); ?>)</th>
+        <td><?= htmlspecialchars($toUsername, ENT_QUOTES, 'UTF-8'); ?></td>
+        <td><?= htmlspecialchars($dataLogs['logComplet'], ENT_QUOTES, 'UTF-8'); ?></td>
+        <td><?= htmlspecialchars($dataLogs['date'], ENT_QUOTES, 'UTF-8'); ?></td>
         </tr>
     <?php } ?>
     </tbody>
@@ -210,6 +219,7 @@ if ($getEvents->num_rows > 0){
     } else {
         echo "<div style='border: 1px solid yellow; padding:15px; width:60%; text-align:center; margin:15px auto; border-radius: 5px;'>No data available.</div>";
     }
+    $stmt_logs->close();
     ?>
 
 </div>

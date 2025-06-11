@@ -20,48 +20,29 @@
   </tr>
 
 <?php
-$numero = 0;
+$dataRankingPvp = Functions::getDataRankingPvp(30); // Call the refactored function
 
-$query = $mysqli->query("SELECT COUNT(killer_id) as total_kills, killer_id FROM log_player_kills GROUP BY `killer_id` ORDER by total_kills DESC LIMIT 30");
-
-while($value = $query->fetch_array()){
-
-$query3 = $mysqli->query("SELECT userId, pilotName, factionId, rankId FROM player_accounts WHERE userId = '$value[killer_id]'");
-
-$query2 = $mysqli->query("SELECT type FROM chat_permissions WHERE userId = '$value[killer_id]'");
-
-$dataPlayer = $query3->fetch_array();
-
-$seeRank = 1;
-
-if ($query2->num_rows > 0 AND $query2->fetch_array()['type'] == 1){
-    $seeRank = 0;
-}
-
-if ($seeRank){
-
-$numero++;
-if ($numero == 1){
-    $estilo = "#4f4731"; // Oro.
-}elseif ($numero == 2){
-    $estilo = "#595959"; // Plata.
-}elseif($numero == 3){
-     $estilo = "#594a3d"; //Bronce
-}elseif($numero%2==0){
-    $estilo = "#2d2d2d"; // Pares.
-}else{
-    $estilo = "#1d1d1d"; // Impares.
-}
+if ($dataRankingPvp['data'] != null){
+  // The 'rank' key is already provided by getDataRankingPvp, which includes the $numero logic.
+  // The 'color' key is also provided for styling.
+  foreach ($dataRankingPvp['data'] as $data){
 ?>
-  <tr>
-    <td><?php echo $numero; ?></td>
-    <td><?php echo $dataPlayer['pilotName']; ?></td>
-    <td><img src="/img/companies/logo_<?php echo ($dataPlayer['factionId'] == 1 ? 'mmo' : ($dataPlayer['factionId'] == 2 ? 'eic' : 'vru')); ?>_mini.png"></td>
-    <td><img src="<?php echo DOMAIN; ?>img/ranks/rank_<?php echo $dataPlayer['rankId']; ?>.png"></td>
-    <td><?php echo number_format($value['total_kills'], 0, ',', '.'); ?></td>
+  <tr style="background-color:<?= htmlspecialchars($data['color'], ENT_QUOTES, 'UTF-8'); ?>;">
+    <td><?php echo htmlspecialchars($data['rank'], ENT_QUOTES, 'UTF-8'); ?></td>
+    <td><?php echo htmlspecialchars($data['pilotName'], ENT_QUOTES, 'UTF-8'); ?></td>
+    <td><img src="/img/companies/logo_<?php echo ($data['factionId'] == 1 ? 'mmo' : ($data['factionId'] == 2 ? 'eic' : 'vru')); ?>_mini.png"></td>
+    <td><img src="<?php echo DOMAIN; ?>img/ranks/rank_<?php echo htmlspecialchars($data['rankId'], ENT_QUOTES, 'UTF-8'); ?>.png"></td>
+    <td><?php echo number_format($data['rankPoints'], 0, ',', '.'); // PvP kills are in 'rankPoints' in the function's output ?></td>
   </tr>
 
- <?php } } ?>
+ <?php
+  } // End foreach
+} else {
+?>
+  <tr><td colspan="5">No data available in PvP ranking.</td></tr>
+<?php
+} // End if
+?>
 
 </table>
 

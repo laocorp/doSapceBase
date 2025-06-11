@@ -20,46 +20,29 @@
   </tr>
 
 <?php
-$numero = 0;
+$dataRankingUba = Functions::getDataRankingUba(100); // Call the refactored function
 
-$sql = $mysqli->query("SELECT pilotName, userId, factionId, warPoints, rankId FROM player_accounts WHERE warPoints > 0 ORDER by warPoints DESC LIMIT 100");
-
-while($data = $sql->fetch_assoc()){
-
-  $query2 = $mysqli->query("SELECT * FROM chat_permissions WHERE userId = $data[userId]");
-  $seeRank = 1;
-
-  if ($query2->num_rows > 0 AND $query2->fetch_array()['type'] == 1){
-    $seeRank = 0;
-  }
-
-  $numero++;
-
-  if ($seeRank){
-
-    if ($numero == 1){
-        $estilo = "#4f4731"; // Oro.
-    }elseif ($numero == 2){
-        $estilo = "#595959"; // Plata.
-    }elseif($numero == 3){
-        $estilo = "#594a3d"; //Bronce
-    }elseif($numero%2==0){
-        $estilo = "#2d2d2d"; // Pares.
-    }else{
-        $estilo = "#1d1d1d"; // Impares.
-    }
-
+if ($dataRankingUba['data'] != null){
+  // The 'rank' key is already provided by getDataRankingUba, which includes the $numero logic.
+  // The 'color' key is also provided.
+  foreach ($dataRankingUba['data'] as $data){
 ?>
-  <tr>
-
-  <td><?php echo $data['pilotName']; ?></td>
-  <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src="/img/companies/logo_<?php echo ($data['factionId'] == 1 ? 'mmo' : ($data['factionId'] == 2 ? 'eic' : 'vru')); ?>_mini.png"></td>
-  <td>&nbsp;<?php echo number_format($data['warPoints'], 0, ',', '.'); ?></td>
-  <td>&nbsp;<?php echo $numero; ?></td>
-  <td>&nbsp;&nbsp;<img src="<?php echo DOMAIN; ?>img/ranks/rank_<?php echo $data['rankId']; ?>.png"></td>
+  <tr style="background-color:<?= htmlspecialchars($data['color'], ENT_QUOTES, 'UTF-8') ?>;">
+    <td><?php echo htmlspecialchars($data['pilotName'], ENT_QUOTES, 'UTF-8'); ?></td>
+    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src="/img/companies/logo_<?php echo ($data['factionId'] == 1 ? 'mmo' : ($data['factionId'] == 2 ? 'eic' : 'vru')); ?>_mini.png"></td>
+    <td>&nbsp;<?php echo number_format($data['puntos_totales'], 0, ',', '.'); // Warpoints is 'puntos_totales' in getDataRankingUba ?></td>
+    <td>&nbsp;<?php echo htmlspecialchars($data['rank'], ENT_QUOTES, 'UTF-8'); // This is $numero from the function ?></td>
+    <td>&nbsp;&nbsp;<img src="<?php echo DOMAIN; ?>img/ranks/rank_<?php echo htmlspecialchars($data['rankId'], ENT_QUOTES, 'UTF-8'); ?>.png"></td>
   </tr>
 
- <?php } } ?>
+ <?php
+  } // End foreach
+} else {
+?>
+  <tr><td colspan="5">No data available in UBA ranking.</td></tr>
+<?php
+} // End if
+?>
 
 </table>
 

@@ -18,11 +18,11 @@ Loading
 <div class="drones" style="display: block;">
 <div style="width:100%; height:50%; border: 1px dashed rebeccapurple; margin-bottom:15px;">
 <br>
-Hello <b><?= $player['pilotName']; ?></b>, please need activate the account.
+Hello <b><?= htmlspecialchars($player['pilotName'], ENT_QUOTES, 'UTF-8'); ?></b>, please need activate the account.
 <div id="form" style="padding-top: 25px;">
-<input id="title_name" type="text" value=" !activate<?= Functions::generateActivationKey()['key'];?>" class="white-text" style="border:1px solid gray; min-width:50%; background:rgba(30,30,30,0.6); height:30px;" readonly>
+<input id="title_name" type="text" value=" !activate<?= htmlspecialchars(Functions::generateActivationKey()['key'], ENT_QUOTES, 'UTF-8');?>" class="white-text" style="border:1px solid gray; min-width:50%; background:rgba(30,30,30,0.6); height:30px;" readonly>
 </div>
-<div style="font-weight: bold; color:red; padding-top:15px;">Type this command in #activation channel: <font color='white'>!activate <?= Functions::generateActivationKey()['key']; ?><b></b></font></div>
+<div style="font-weight: bold; color:red; padding-top:15px;">Type this command in #activation channel: <font color='white'>!activate <?= htmlspecialchars(Functions::generateActivationKey()['key'], ENT_QUOTES, 'UTF-8'); ?><b></b></font></div>
 <div style="font-weight: bold; color:red; padding-top:15px;">Account status: <font color='white'><?= (Functions::generateActivationKey()['actived'] == 1) ? "<font color=green>Active</color>" : "<font color=red>No active</color>"; ?><b></b></font></div>
 <div style="font-weight: bold; color:red; padding-top:15px;">Go to discord to activate: <font color='white'><a href="https://discord.gg/7BXZk8tf" target="_blank">!CLICK HERE!</a> <b></b></font></div>
 <div id="message" style="text-align:center; border: 1px dashed green; padding:15px; margin:auto; width:50%; margin-top:15px; display:none;"></div>

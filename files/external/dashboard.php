@@ -6,6 +6,6 @@ require "loginCheck.php"
 	<title>Dashobaord</title>
 </head>
 <body>
-	Welcome <?php echo $_SESSION["email"];?>
+	Welcome <?php echo htmlspecialchars($_SESSION["email"], ENT_QUOTES, 'UTF-8');?>
 </body>
 </html>

@@ -20,42 +20,29 @@
   </tr>
 
 <?php
-$numero = 0;
+$dataRankingPlayers = Functions::getDataRankingPlayers(30); // Call the refactored function
 
-foreach ($mysqli->query("SELECT * FROM player_accounts WHERE rankId != 22 AND rank > 0 ORDER BY rank ASC LIMIT 30") as $value) { 
-
-$query2 = $mysqli->query("SELECT * FROM chat_permissions WHERE userId = $value[userId]");
-
-$seeRank = 1;
-
-if ($query2->num_rows > 0 AND $query2->fetch_array()['type'] == 1){
-    $seeRank = 0;
-}
-
-if ($seeRank){
-
-$numero++;
-if ($numero == 1){
-    $estilo = "#4f4731"; // Oro.
-}elseif ($numero == 2){
-    $estilo = "#595959"; // Plata.
-}elseif($numero == 3){
-     $estilo = "#594a3d"; //Bronce
-}elseif($numero%2==0){
-    $estilo = "#2d2d2d"; // Pares.
-}else{
-    $estilo = "#1d1d1d"; // Impares.
-}
+if ($dataRankingPlayers['data'] != null){
+  // The 'rank' key is already provided by getDataRankingPlayers, which includes the $numero logic.
+  // The 'color' key is also provided for styling.
+  foreach ($dataRankingPlayers['data'] as $data){
 ?>
-  <tr>
-    <td><?php echo $numero; ?></td>
-    <td><?php echo $value['pilotName']; ?></td>
-    <td><img src="/img/companies/logo_<?php echo ($value['factionId'] == 1 ? 'mmo' : ($value['factionId'] == 2 ? 'eic' : 'vru')); ?>_mini.png"></td>
-    <td><img src="<?php echo DOMAIN; ?>img/ranks/rank_<?php echo $value['rankId']; ?>.png"></td>
-    <td><?php echo number_format($value['rankPoints'], 0, ',', '.'); ?></td>
+  <tr style="background-color:<?= htmlspecialchars($data['color'], ENT_QUOTES, 'UTF-8') ?>;">
+    <td><?php echo htmlspecialchars($data['rank'], ENT_QUOTES, 'UTF-8'); ?></td>
+    <td><?php echo htmlspecialchars($data['pilotName'], ENT_QUOTES, 'UTF-8'); ?></td>
+    <td><img src="/img/companies/logo_<?php echo ($data['factionId'] == 1 ? 'mmo' : ($data['factionId'] == 2 ? 'eic' : 'vru')); ?>_mini.png"></td>
+    <td><img src="<?php echo DOMAIN; ?>img/ranks/rank_<?php echo htmlspecialchars($data['rankId'], ENT_QUOTES, 'UTF-8'); ?>.png"></td>
+    <td><?php echo number_format($data['rankPoints'], 0, ',', '.'); ?></td>
   </tr>
 
- <?php } } ?>
+ <?php
+  } // End foreach
+} else {
+?>
+  <tr><td colspan="5">No data available in player ranking.</td></tr>
+<?php
+} // End if
+?>
 
 </table>
 

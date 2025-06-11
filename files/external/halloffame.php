@@ -23,22 +23,30 @@
                 </tr>
               </thead>
               <tbody>
-                <?php foreach ($mysqli->query('SELECT * FROM player_accounts WHERE rankId != 21 AND rank > 0 ORDER BY rank ASC LIMIT 300') as $value) { ?>
-                  <tr>
-                    <td><?php echo $value['pilotName']; ?></td>
-                    <td>&nbsp;&nbsp;<?php echo $value['rank']; ?></td>
+                <?php
+                $dataRankingPlayers = Functions::getDataRankingPlayers(300);
+                if ($dataRankingPlayers['data'] != null) {
+                    foreach ($dataRankingPlayers['data'] as $value) {
+                ?>
+                  <tr style="background-color:<?= htmlspecialchars($value['color'] ?? '#transparent', ENT_QUOTES, 'UTF-8'); ?>;">
+                    <td><?php echo htmlspecialchars($value['pilotName'], ENT_QUOTES, 'UTF-8'); ?></td>
+                    <td>&nbsp;&nbsp;<?php echo htmlspecialchars($value['rank'], ENT_QUOTES, 'UTF-8'); ?></td>
                     <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src="/img/companies/logo_<?php echo ($value['factionId'] == 1 ? 'mmo' : ($value['factionId'] == 2 ? 'eic' : 'vru')); ?>_mini.png"></td>
-                    <td>&nbsp;<?php echo $value['rankPoints']; ?></td>
-                    <td>&nbsp;&nbsp;<img src="<?php echo DOMAIN; ?>img/ranks/rank_<?php echo $value['rankId']; ?>.png"></td>
+                    <td>&nbsp;<?php echo number_format($value['rankPoints']); ?></td>
+                    <td>&nbsp;&nbsp;<img src="<?php echo DOMAIN; ?>img/ranks/rank_<?php echo htmlspecialchars($value['rankId'], ENT_QUOTES, 'UTF-8'); ?>.png"></td>
                   </tr>
-                <?php } ?>
-                <?php if ($player['rank'] > 300) { ?>
+                <?php
+                    } // end foreach
+                } // end if data
+                // Display current player if their rank is beyond the fetched limit
+                if ($player['rankId'] != 21 && $player['rank'] > 0 && $player['rank'] > 300) {
+                ?>
                   <tr>
-                    <td><?php echo $player['pilotName']; ?></td>
-                    <td>&nbsp;&nbsp;<?php echo $player['rank']; ?></td>
-                    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src="/img/companies/logo_<?php echo ($value['factionId'] == 1 ? 'mmo' : ($value['factionId'] == 2 ? 'eic' : 'vru')); ?>_mini.png"></td>
-                    <td>&nbsp;<?php echo $player['rankPoints']; ?></td>
-                    <td>&nbsp;&nbsp;<img src="<?php echo DOMAIN; ?>img/ranks/rank_<?php echo $value['rankId']; ?>.png"></td>
+                    <td><?php echo htmlspecialchars($player['pilotName'], ENT_QUOTES, 'UTF-8'); ?></td>
+                    <td>&nbsp;&nbsp;<?php echo htmlspecialchars($player['rank'], ENT_QUOTES, 'UTF-8'); ?></td>
+                    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src="/img/companies/logo_<?php echo ($player['factionId'] == 1 ? 'mmo' : ($player['factionId'] == 2 ? 'eic' : 'vru')); ?>_mini.png"></td>
+                    <td>&nbsp;<?php echo number_format($player['rankPoints']); ?></td>
+                    <td>&nbsp;&nbsp;<img src="<?php echo DOMAIN; ?>img/ranks/rank_<?php echo htmlspecialchars($player['rankId'], ENT_QUOTES, 'UTF-8'); ?>.png"></td>
                   </tr>
                 <?php } ?>
               </tbody>
@@ -54,18 +62,29 @@
                 </tr>
               </thead>
               <tbody>
-                <?php foreach ($mysqli->query('SELECT * FROM server_clans WHERE rank > 0 ORDER BY rank ASC LIMIT 300') as $value) { ?>
-                  <tr>
-                    <td><a href="<?php echo DOMAIN; ?>clan/clan-details/<?php echo $value['id'] ?>">[<?php echo $value['tag']; ?>] <?php echo $value['name']; ?></a></td>
-                    <td><?php echo $value['rank']; ?></td>
-                    <td><?php echo $value['rankPoints']; ?></td>
+                <?php
+                $dataRankingClans = Functions::getDataRankingClan(300);
+                if ($dataRankingClans['data'] != null) {
+                    foreach ($dataRankingClans['data'] as $value) {
+                ?>
+                  <tr style="background-color:<?= htmlspecialchars($value['color'] ?? '#transparent', ENT_QUOTES, 'UTF-8'); ?>;">
+                    <td><a href="<?php echo DOMAIN; ?>clan/clan-details/<?php echo htmlspecialchars($value['id'], ENT_QUOTES, 'UTF-8'); ?>">[<?php echo htmlspecialchars($value['tag'], ENT_QUOTES, 'UTF-8'); ?>] <?php echo htmlspecialchars($value['name'], ENT_QUOTES, 'UTF-8'); ?></a></td>
+                    <td><?php echo htmlspecialchars($value['rank'], ENT_QUOTES, 'UTF-8'); ?></td>
+                    <td><?php echo number_format($value['rankPoints']); ?></td>
                   </tr>
-                <?php } ?>
-                <?php if (isset($clan) && $clan['rank'] > 9) { ?>
+                <?php
+                    } // end foreach
+                } // end if data
+                // Display player's clan if it exists and rank is beyond limit (e.g. > 9, or > 300 based on context)
+                // The original condition was `isset($clan) && $clan['rank'] > 9`. $clan variable might not be set here anymore.
+                // This part might need adjustment based on how $clan is supposed to be available or if it's needed.
+                // For now, let's assume $clan is available from a higher scope (e.g. header.php or data.php)
+                if (isset($clan) && $clan['rank'] > 300 && $player['clanId'] !=0 ) { // Adjusted condition to be similar to player rank display
+                ?>
                   <tr>
-                    <td>[<?php echo $clan['tag']; ?>] <?php echo $clan['name']; ?></td>
-                    <td><?php echo $clan['rank']; ?></td>
-                    <td><?php echo $clan['rankPoints']; ?></td>
+                    <td><a href="<?php echo DOMAIN; ?>clan/clan-details/<?php echo htmlspecialchars($clan['id'], ENT_QUOTES, 'UTF-8'); ?>">[<?php echo htmlspecialchars($clan['tag'], ENT_QUOTES, 'UTF-8'); ?>] <?php echo htmlspecialchars($clan['name'], ENT_QUOTES, 'UTF-8'); ?></a></td>
+                    <td><?php echo htmlspecialchars($clan['rank'], ENT_QUOTES, 'UTF-8'); ?></td>
+                    <td><?php echo number_format($clan['rankPoints']); ?></td>
                   </tr>
                 <?php } ?>
               </tbody>

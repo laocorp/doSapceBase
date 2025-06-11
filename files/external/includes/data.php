@@ -12,14 +12,18 @@
 <div  id="panelPrecios">
 <div class="uridium" data-toggle="tooltip" data-placement="bottom" data-html="true" title="Event Coint" data-original-title="Event Coint">
 <b>E.C</b> <span id="event-coin" class="user-fraktal" class="button"><?php
-
-                        $search_event_coins = $mysqli->query("SELECT * FROM event_coins WHERE userId = " . $player['userId'] . ";");
-                        if (mysqli_num_rows($search_event_coins) > 0) {
-                          $current_coins = $search_event_coins->fetch_assoc();
-                          echo number_format($current_coins['coins'], 0, ',', '.');
-                        } else {
-                          echo "0";
+                        $event_coins_display = "0";
+                        if (isset($player['userId'])) {
+                            $stmt_event_coins = $mysqli->prepare("SELECT coins FROM event_coins WHERE userId = ?");
+                            $stmt_event_coins->bind_param("i", $player['userId']);
+                            $stmt_event_coins->execute();
+                            $event_coins_result = $stmt_event_coins->get_result();
+                            if ($current_coins_data = $event_coins_result->fetch_assoc()) {
+                                $event_coins_display = number_format($current_coins_data['coins'], 0, ',', '.');
+                            }
+                            $stmt_event_coins->close();
                         }
+                        echo $event_coins_display;
                         ?></span>
 						
 </div></div>

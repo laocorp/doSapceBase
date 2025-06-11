@@ -19,28 +19,37 @@ Loading
 In this area you can choose a title to put it on the server.
 <div id="form" style="padding-top: 25px;">
 <?php
-  $sQ = $mysqli->query("SELECT titles FROM player_titles WHERE userID = '".$player['userId']."'");
-  if ($sQ->num_rows > 0){
-      $data = $sQ->fetch_assoc();
-      $dataJson = json_decode($data['titles'], true);
-      if (count($dataJson) > 0){
-        ?>
-        <select id="title" class="white-text" style="border:1px solid gray; min-width:50%; background:rgba(30,30,30,0.6); height:30px;">
-            <?php
-            foreach ($dataJson as $dj){
-                ?>
-                <option value="<?= $dj; ?>" <?= (isset($player['title']) && $player['title'] == $dj) ? "selected" : ""; ?>><?= $dj; ?></option>
-                <?php
-            }
+  $titles_available = false;
+  if (isset($player['userId'])) {
+    $stmt_titles = $mysqli->prepare("SELECT titles FROM player_titles WHERE userID = ?");
+    $stmt_titles->bind_param("i", $player['userId']);
+    $stmt_titles->execute();
+    $titles_result = $stmt_titles->get_result();
+    if ($titles_data = $titles_result->fetch_assoc()) {
+        $dataJson = json_decode($titles_data['titles'], true);
+        if (is_array($dataJson) && count($dataJson) > 0){
+            $titles_available = true;
             ?>
+            <select id="title" class="white-text" style="border:1px solid gray; min-width:50%; background:rgba(30,30,30,0.6); height:30px;">
+                <?php
+                foreach ($dataJson as $dj){
+                    $selected_attr = (isset($player['title']) && $player['title'] == $dj) ? "selected" : "";
+                    ?>
+                    <option value="<?= htmlspecialchars($dj, ENT_QUOTES, 'UTF-8'); ?>" <?= $selected_attr ?>><?= htmlspecialchars($dj, ENT_QUOTES, 'UTF-8'); ?></option>
+                    <?php
+                }
+                ?>
+            </select>
             <input type="submit" onClick="saveTitle();" value="Save title" style="border:1px solid gray; background:rgba(30,30,30,0.6); height:30px;">
-        </select>
-        <?php
-      } else {
-        ?>
-            <div style="border: 1px dashed red; padding:10px; width:70%; margin:auto;">You no have custom titles.</div>
-        <?php
-      }
+            <?php
+        }
+    }
+    $stmt_titles->close();
+  }
+  if (!$titles_available) {
+    ?>
+        <div style="border: 1px dashed red; padding:10px; width:70%; margin:auto;">You no have custom titles or could not fetch them.</div>
+    <?php
   }
 ?>
 </div>

@@ -2,7 +2,13 @@
 <?php
 $clans_per_page = 10;
 $page_n = isset($page[2]) && preg_match('/^[1-9][0-9]*$/', $page[2]) && $page[2] >= 1 ? intval($page[2] - 1) : 0;
-$clans = $mysqli->query('SELECT * FROM server_clans')->fetch_all(MYSQLI_ASSOC);
+
+$stmt_all_clans = $mysqli->prepare('SELECT * FROM server_clans');
+$stmt_all_clans->execute();
+$result_all_clans = $stmt_all_clans->get_result();
+$clans = $result_all_clans->fetch_all(MYSQLI_ASSOC);
+$stmt_all_clans->close();
+
 $number_of_pages = intval(count($clans) / $clans_per_page) + 1;
 
 if ($page_n + 1 > $number_of_pages) {
@@ -23,12 +29,12 @@ if ($page_n + 1 > $number_of_pages) {
 <b>Your Open Clan applications:</b><br><br>
 <div style="height:360px; overflow:auto;" id="applicationsSend">
 <?php
-$query_applications = Functions::getClanApplications();
-if (isset($query_applications->num_rows) && $query_applications->num_rows > 0){
-  while($data_applications = $query_applications->fetch_assoc()){
+$query_applications_data = Functions::getClanApplications(); // Assumes this returns an array or false
+if ($query_applications_data && count($query_applications_data) > 0){
+  foreach($query_applications_data as $data_applications){ // Iterate as array if it's already fetched
 ?>
-<div id="application_<?= $data_applications['appId']; ?>">
-- <b>[<?= $data_applications['tag']; ?>]</b> <?= $data_applications['name']; ?>.<a onclick="cancelApplication(<?= $data_applications['appId']; ?>);" style="float:right; margin-right:5px; cursor:pointer;">Cancel</a>
+<div id="application_<?= htmlspecialchars($data_applications['appId'], ENT_QUOTES, 'UTF-8'); ?>">
+- <b>[<?= htmlspecialchars($data_applications['tag'], ENT_QUOTES, 'UTF-8'); ?>]</b> <?= htmlspecialchars($data_applications['name'], ENT_QUOTES, 'UTF-8'); ?>.<a onclick="cancelApplication(<?= (int)$data_applications['appId']; ?>);" style="float:right; margin-right:5px; cursor:pointer;">Cancel</a>
 </div>
 <div style="border:1px solid red; border-radius:5px; padding:5px; text-align:center; display:none;" id="noApp">No result found.</div>
 <?php } } else { ?>
@@ -36,7 +42,7 @@ if (isset($query_applications->num_rows) && $query_applications->num_rows > 0){
 <?php } ?>
 </div>
 </div>
-<title><?= SERVERNAME; ?> - List</title>
+<title><?= htmlspecialchars(SERVERNAME, ENT_QUOTES, 'UTF-8'); ?> - List</title>
 
 <div id="infos" style="display: none;">
 <div id="infos-loader">
@@ -90,37 +96,48 @@ if (isset($query_applications->num_rows) && $query_applications->num_rows > 0){
 
 <?php
 $num = 0;
+$stmt_member_count = $mysqli->prepare('SELECT COUNT(userId) as member_count FROM player_accounts WHERE clanId = ?');
+
 foreach (array_slice($clans, ($page_n * $clans_per_page), $clans_per_page) as $value) {
 	$num++;
+    $clan_id_loop = $value['id'];
+    $stmt_member_count->bind_param("i", $clan_id_loop);
+    $stmt_member_count->execute();
+    $result_member_count = $stmt_member_count->get_result();
+    $member_count_data = $result_member_count->fetch_assoc();
+    $member_count = $member_count_data['member_count'] ?? 0;
+    // $result_member_count->close(); // Not needed for get_result()
 ?>
 
 <div style="background:rgba(60,60,60,0.4); padding-left:10px; padding-right:10px;">
-<span style="width:30px; display:inline-block;"><?= $num; ?></span>
-<span style="width:80px; display:inline-block;">[<?php echo $value['tag']; ?>]</span>
-<span style="width:320px; display:inline-block;"> <?php echo $value['name']; ?></span>
+<span style="width:30px; display:inline-block;"><?= htmlspecialchars($num, ENT_QUOTES, 'UTF-8'); ?></span>
+<span style="width:80px; display:inline-block;">[<?php echo htmlspecialchars($value['tag'], ENT_QUOTES, 'UTF-8'); ?>]</span>
+<span style="width:320px; display:inline-block;"> <?php echo htmlspecialchars($value['name'], ENT_QUOTES, 'UTF-8'); ?></span>
 <span style="width:100px; display:inline-block; text-align:center;"><img src="/img/companies/logo_<?php echo ($value['factionId'] == 1 ? 'mmo' : ($value['factionId'] == 2 ? 'eic' : 'vru')); ?>_mini.png"></span>
-<span style="width:100px; display:inline-block; text-align:center;"><?php echo count($mysqli->query('SELECT userId FROM player_accounts WHERE clanId = '.$value['id'].'')->fetch_all(MYSQLI_ASSOC)); ?></span>
-<span style="float:right; margin-right:40px; cursor:pointer;"><a onclick="viewModal(<?php echo $value['id']?>); return;">View</a></span>
+<span style="width:100px; display:inline-block; text-align:center;"><?php echo htmlspecialchars($member_count, ENT_QUOTES, 'UTF-8'); ?></span>
+<span style="float:right; margin-right:40px; cursor:pointer;"><a onclick="viewModal(<?php echo (int)$value['id']?>); return;">View</a></span>
 </div>
-<?php } ?>
+<?php }
+if (isset($stmt_member_count)) { $stmt_member_count->close(); }
+?>
 <center>
     <?php if (($page_n + 1) !== 1) { ?>
       <?php if ($number_of_pages > 5 && ($page_n + 1) > 3) { ?>
-      <a href="<?php echo DOMAIN; ?>clan/join/1">1</a>
+      <a href="<?php echo htmlspecialchars(DOMAIN, ENT_QUOTES, 'UTF-8'); ?>clan/join/1">1</a>
       <?php } ?>
 
-    <a href="<?php echo DOMAIN; ?>clan/join/<?php echo ($page_n === 0 ? 1 : $page_n); ?>">
+    <a href="<?php echo htmlspecialchars(DOMAIN, ENT_QUOTES, 'UTF-8'); ?>clan/join/<?php echo htmlspecialchars(($page_n === 0 ? 1 : $page_n), ENT_QUOTES, 'UTF-8'); ?>">
     <?php } ?>
 
     <?php for ($i = ($number_of_pages > 5 && ($page_n !== 0 && $page_n !== 1) ? ($page_n - 1) : 1); $i <= ($number_of_pages > 5 ? ($page_n + ($page_n === 0 ? 5 : ($page_n === 1 ? 4 : ($page_n + 1 === $number_of_pages ? 1 : ($page_n + 1 === $number_of_pages - 1 ? 1 : 3))))) : $number_of_pages); $i++) { ?>
-    <a href="<?php echo DOMAIN; ?>clan/join/<?php echo $i; ?>"><?php echo $i; ?></a>
+    <a href="<?php echo htmlspecialchars(DOMAIN, ENT_QUOTES, 'UTF-8'); ?>clan/join/<?php echo htmlspecialchars($i, ENT_QUOTES, 'UTF-8'); ?>"><?php echo htmlspecialchars($i, ENT_QUOTES, 'UTF-8'); ?></a>
     <?php } ?>
 
     <?php if (($page_n + 1) !== $number_of_pages) { ?>
   
 
       <?php if ($number_of_pages > 5) { ?>
-       <a href="<?php echo DOMAIN; ?>clan/join/<?php echo $number_of_pages; ?>"><?php echo $number_of_pages; ?></a>
+       <a href="<?php echo htmlspecialchars(DOMAIN, ENT_QUOTES, 'UTF-8'); ?>clan/join/<?php echo htmlspecialchars($number_of_pages, ENT_QUOTES, 'UTF-8'); ?>"><?php echo htmlspecialchars($number_of_pages, ENT_QUOTES, 'UTF-8'); ?></a>
       <?php } ?>
     <?php } ?>
 	</center>

@@ -10,12 +10,23 @@
 		elseif (empty($_POST['bugMsg'])){
 			$msg = "Enter all the required data message";
 		} else 	{		
-		$bugTitle = $mysqli->real_escape_string($_POST['bugTitle']);
-		$bugMsg = $mysqli->real_escape_string($_POST['bugMsg']);
+		// $bugTitle and $bugMsg will be used in prepared statement, no manual escape here.
+		$bugTitle = $_POST['bugTitle'];
+		$bugMsg = $_POST['bugMsg'];
+		$userId = (int)$player['userId']; // Assuming $player is from session or trusted source
 		
-		
-		$mysqli->query("insert  into bugreport(`title`,`message`,`usersid`,`fecha`) values ('$bugTitle','$bugMsg','$player[userId]','$hoy');");
-		$msg = "Has been sent successfully";
+		$stmt = $mysqli->prepare("INSERT INTO bugreport(title, message, usersid, fecha) VALUES (?, ?, ?, ?)");
+		if ($stmt) {
+			$stmt->bind_param("ssis", $bugTitle, $bugMsg, $userId, $hoy);
+			if ($stmt->execute()) {
+				$msg = "Has been sent successfully";
+			} else {
+				$msg = "Error sending report: " . $stmt->error;
+			}
+			$stmt->close();
+		} else {
+			$msg = "Error preparing statement: " . $mysqli->error;
+		}
 		}
         }
         
@@ -62,9 +73,9 @@ Descripe the Bug as mutch as you can! You only get Reward if we could fix it wit
 <button type="submit" class="btn btn-lg btn-success">Send</button>
 </div>
 </form><?php
-if (isset($msg) and !empty($msg)){
+if (isset($msg) && !empty($msg)){ // Use && for clarity
 ?>
-<center><div style="border:1px solid red; padding:10px;"><?= $msg; ?></div></center>
+<center><div style="border:1px solid red; padding:10px;"><?= htmlspecialchars($msg, ENT_QUOTES, 'UTF-8'); ?></div></center>
 <?php
 }
 ?>

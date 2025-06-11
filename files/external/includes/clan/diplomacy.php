@@ -1,7 +1,11 @@
 <?php
-$openApplications = $mysqli->query('SELECT * FROM server_clan_diplomacy_applications WHERE senderClanId = '.$player['clanId'].'')->fetch_all(MYSQLI_ASSOC);
+$stmt_open_apps = $mysqli->prepare('SELECT * FROM server_clan_diplomacy_applications WHERE senderClanId = ?');
+$stmt_open_apps->bind_param("i", $player['clanId']);
+$stmt_open_apps->execute();
+$result_open_apps = $stmt_open_apps->get_result();
+$openApplications = $result_open_apps->fetch_all(MYSQLI_ASSOC);
+$stmt_open_apps->close();
 ?>
-
 
 <link rel="stylesheet" href="/public/css/menber.css" />
 
@@ -68,50 +72,86 @@ $openApplications = $mysqli->query('SELECT * FROM server_clan_diplomacy_applicat
 <span style="display:inline-block; text-align:center; width:120px; float:right; padding-right:20px;">Action</span>
 </div>
 <div id="clan-diplomacy" style="position:relative; height:240px; overflow:auto;" class="ps-container">
-      <?php foreach ($mysqli->query('SELECT * FROM server_clan_diplomacy WHERE toClanId = '.$player['clanId'].' OR senderClanId = '.$player['clanId'].'')->fetch_all(MYSQLI_ASSOC) as $value) {
+      <?php
+      $stmt_diplomacy = $mysqli->prepare('SELECT * FROM server_clan_diplomacy WHERE toClanId = ? OR senderClanId = ?');
+      $stmt_diplomacy->bind_param("ii", $player['clanId'], $player['clanId']);
+      $stmt_diplomacy->execute();
+      $result_diplomacy = $stmt_diplomacy->get_result();
+      $existing_diplomacies = $result_diplomacy->fetch_all(MYSQLI_ASSOC);
+      $stmt_diplomacy->close();
+
+      $stmt_clan_name = $mysqli->prepare('SELECT name FROM server_clans WHERE id = ?');
+
+      foreach ($existing_diplomacies as $value) {
         $clanId = ($player['clanId'] == $value['senderClanId'] ? $value['toClanId'] : $value['senderClanId'] );
-        $clanName = $mysqli->query('SELECT name FROM server_clans WHERE id = '.$clanId.'')->fetch_assoc()['name'];
+
+        $clanName = "Unknown";
+        $stmt_clan_name->bind_param("i", $clanId);
+        $stmt_clan_name->execute();
+        $result_clan_name = $stmt_clan_name->get_result();
+        if($row_clan_name = $result_clan_name->fetch_assoc()){
+            $clanName = $row_clan_name['name'];
+        }
+        // $result_clan_name->close(); // Not needed for get_result
       ?>
 <div style="width:748px; background:rgba(20,20,20,0.3);">
-<span style="display:inline-block; padding-left:20px; width:240px;"> <?php echo $clanName; ?></span>
+<span style="display:inline-block; padding-left:20px; width:240px;"> <?php echo htmlspecialchars($clanName, ENT_QUOTES, 'UTF-8'); ?></span>
 <span style="display:inline-block; text-align:center; width:100px;"><?php echo ($value['diplomacyType'] == 1 ? 'Alliance' : ($value['diplomacyType'] == 2 ? 'NAP' : 'War')); ?></span>
-<span style="display:inline-block; text-align:center; width:200px;"><?php echo date('d.m.Y', strtotime($value['date'])); ?></span>
+<span style="display:inline-block; text-align:center; width:200px;"><?php echo htmlspecialchars(date('d.m.Y', strtotime($value['date'])), ENT_QUOTES, 'UTF-8'); ?></span>
 <span style="display:inline-block; text-align:center; width:120px; float:right; padding-right:20px;">
   
   <?php if ($value['diplomacyType'] == 3) { ?>
-    <a onclick="$('#clan-diplomacy-abort').css('display', 'block');  $('.clanId').val(<?php echo $clanId; ?>); $('.tyPe').val(4);" style="cursor:pointer;"><b>Abort War</b></a>
+    <a onclick="$('#clan-diplomacy-abort').css('display', 'block');  $('.clanId').val(<?php echo (int)$clanId; ?>); $('.tyPe').val(4);" style="cursor:pointer;"><b>Abort War</b></a>
 	<?php } else if ($value['diplomacyType'] == 1) { ?>
-		<!--<a data-diplomacy-id="<?php echo $value['id']; ?>" class="cancel-request" style="cursor:pointer;"><b>CANCEL</b></a>-->
-    <a onclick="$('#clan-diplomacy-abort').css('display', 'block');  $('.clanId').val(<?php echo $clanId; ?>); $('.tyPe').val(5);" style="cursor:pointer;"><b>Cancel Alliance</b></a>
+		<!--<a data-diplomacy-id="<?php echo (int)$value['id']; ?>" class="cancel-request" style="cursor:pointer;"><b>CANCEL</b></a>-->
+    <a onclick="$('#clan-diplomacy-abort').css('display', 'block');  $('.clanId').val(<?php echo (int)$clanId; ?>); $('.tyPe').val(5);" style="cursor:pointer;"><b>Cancel Alliance</b></a>
 	<?php } else if ($value['diplomacyType'] == 2) { ?>
-    <a onclick="$('#clan-diplomacy-abort').css('display', 'block');  $('.clanId').val(<?php echo $clanId; ?>); $('.tyPe').val(6);" style="cursor:pointer;"><b>Cancel NAP</b></a>
+    <a onclick="$('#clan-diplomacy-abort').css('display', 'block');  $('.clanId').val(<?php echo (int)$clanId; ?>); $('.tyPe').val(6);" style="cursor:pointer;"><b>Cancel NAP</b></a>
 	<?php } ?>
 
 </span>
 </div>
 
- <?php } ?>
+ <?php } $stmt_clan_name->close(); ?>
 </div>
 <div style="background:rgba(100,100,100,0.5); width:748px; padding-left:20px;  height:30px; line-height:30px;">Requests</div>
 <div id="clan-diplomacy-requests" style="position:relative; height:170px; overflow:auto;" class="ps-container" data-ps-id="655958ba-dd14-7d8f-218b-7068e5515094">
-  <?php foreach ($mysqli->query('SELECT * FROM server_clan_diplomacy_applications WHERE toClanId = '.$player['clanId'].'')->fetch_all(MYSQLI_ASSOC) as $value) {
-          $requestClanName = $mysqli->query('SELECT name FROM server_clans WHERE id = '.$value['senderClanId'].'')->fetch_assoc()['name'];
-          $diplomacyType = ($value['diplomacyType'] == 1 ? 'Alliance' : ($value['diplomacyType'] == 2 ? 'NAP' : ($value['diplomacyType'] == 3 ? 'War' : ($value['diplomacyType'] == 4 ? 'End War' : ($value['diplomacyType'] == 5 ? 'End Alliance' : ($value['diplomacyType'] == 6 ? 'End NAP' : ''))))));
-        ?>
+  <?php
+  $stmt_apps = $mysqli->prepare('SELECT * FROM server_clan_diplomacy_applications WHERE toClanId = ?');
+  $stmt_apps->bind_param("i", $player['clanId']);
+  $stmt_apps->execute();
+  $result_apps = $stmt_apps->get_result();
+  $incoming_applications = $result_apps->fetch_all(MYSQLI_ASSOC);
+  $stmt_apps->close();
+
+  $stmt_req_clan_name = $mysqli->prepare('SELECT name FROM server_clans WHERE id = ?');
+
+  foreach ($incoming_applications as $value) {
+      $requestClanName = "Unknown";
+      $stmt_req_clan_name->bind_param("i", $value['senderClanId']);
+      $stmt_req_clan_name->execute();
+      $result_req_clan_name = $stmt_req_clan_name->get_result();
+      if($row_req_clan_name = $result_req_clan_name->fetch_assoc()){
+          $requestClanName = $row_req_clan_name['name'];
+      }
+      // $result_req_clan_name->close(); // Not needed for get_result
+
+      $diplomacyType = ($value['diplomacyType'] == 1 ? 'Alliance' : ($value['diplomacyType'] == 2 ? 'NAP' : ($value['diplomacyType'] == 3 ? 'War' : ($value['diplomacyType'] == 4 ? 'End War' : ($value['diplomacyType'] == 5 ? 'End Alliance' : ($value['diplomacyType'] == 6 ? 'End NAP' : ''))))));
+    ?>
 <div style="width:748px; background:rgba(20,20,20,0.3); padding: 10px; border-bottom:1px solid white;">
-<span style="display:inline-block; padding-left:20px; width:240px;"><?php echo $requestClanName; ?></span>
-<span style="display:inline-block; text-align:center; width:100px;"><?php echo $diplomacyType; ?></span>
-<span style="display:inline-block; text-align:center; width:200px;"><?php echo date('d.m.Y', strtotime($value['date'])); ?></span>
+<span style="display:inline-block; padding-left:20px; width:240px;"><?php echo htmlspecialchars($requestClanName, ENT_QUOTES, 'UTF-8'); ?></span>
+<span style="display:inline-block; text-align:center; width:100px;"><?php echo htmlspecialchars($diplomacyType, ENT_QUOTES, 'UTF-8'); ?></span>
+<span style="display:inline-block; text-align:center; width:200px;"><?php echo htmlspecialchars(date('d.m.Y', strtotime($value['date'])), ENT_QUOTES, 'UTF-8'); ?></span>
 <span style="display:inline-block; text-align:center; float:right; padding-right:20px;">
-<a onclick="accept_request_diplomacy(<?php echo $value['id']; ?>);" style="cursor:pointer;"><b>ACCEPT</b></a> / <a onclick="denied_request_diplomacy(<?php echo $value['id']; ?>);" style="cursor:pointer;"><b>DENIED</b></a>
+<a onclick="accept_request_diplomacy(<?php echo (int)$value['id']; ?>);" style="cursor:pointer;"><b>ACCEPT</b></a> / <a onclick="denied_request_diplomacy(<?php echo (int)$value['id']; ?>);" style="cursor:pointer;"><b>DENIED</b></a>
 </span>
 <?php if (!empty($value['message'])){ ?>
 <div style="text-align:center; padding-top: 10px; padding-bottom:10px;"><span style="font-weight:bold;">Message:</span></div>
-<div style="padding-top:5px; border: 1px solid white; border-radius: 15px; padding:5px; width:98% !important;"><?= $value['message']; ?></div>
+<div style="padding-top:5px; border: 1px solid white; border-radius: 15px; padding:5px; width:98% !important;"><?= htmlspecialchars($value['message'], ENT_QUOTES, 'UTF-8'); ?></div>
 <?php } ?>
 </div>
 
-<?php } ?>
+<?php } $stmt_req_clan_name->close(); ?>
 
 </div>
 <div style="width:748px; padding-top:10px; border-top:1px solid lightgray; position:absolute; text-align:center;">
@@ -121,12 +161,12 @@ $openApplications = $mysqli->query('SELECT * FROM server_clan_diplomacy_applicat
       <b>Clan:</b>
       <select name="clanId" style="color:black; width:250px; max-width:250px; font-size:12px;">
       <?php
-        $dataClans = Functions::getAllClans();
-        if ($dataClans->num_rows > 0){
-          while($dc = $dataClans->fetch_assoc()){
+        $dataClans = Functions::getAllClans(); // Assuming this function is safe or handled
+        if ($dataClans){ // Functions::getAllClans() now returns array or false
+          foreach($dataClans as $dc){ // Iterate as array
             if ($dc['leaderId'] != $player['userId']){
       ?>
-      <option value="<?= $dc['id']; ?>">[<?= $dc['tag']; ?>] <?= $dc['name']; ?></option>
+      <option value="<?= htmlspecialchars($dc['id'], ENT_QUOTES, 'UTF-8'); ?>">[<?= htmlspecialchars($dc['tag'], ENT_QUOTES, 'UTF-8'); ?>] <?= htmlspecialchars($dc['name'], ENT_QUOTES, 'UTF-8'); ?></option>
       <?php } } } ?>
       </select>
       <select name="diplomacyType" style="color:black; width:90px; font-size:12px;">
