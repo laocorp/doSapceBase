@@ -128,16 +128,38 @@
 <div style="display:inline-block;">
 <div style="width:620px; padding-left:30px; padding-top:20px;">
 <div style="width:570px; background:rgba(20,20,20,0.3);">
-<b style="width:100px; display:inline-block;">Clan:</b> <b>[<?php echo $clan['tag']; ?>]</b> <?php echo $clan['name']; ?>  <?php if ($clan['leaderId'] == $player['userId']) { ?><i style="cursor:pointer;" onclick="viewModalinfoedit(); return;" class="fa fa-cog"></i><?php } ?><br> 
+<b style="width:100px; display:inline-block;">Clan:</b> <b>[<?php echo htmlspecialchars($clan['tag']); ?>]</b> <?php echo htmlspecialchars($clan['name']); ?>  <?php if ($clan['leaderId'] == $player['userId']) { ?><i style="cursor:pointer;" onclick="viewModalinfoedit(); return;" class="fa fa-cog"></i><?php } ?><br>
 </div>
 <div style="width:570px; background:rgba(30,30,30,0.6);">
-<b style="width:100px; display:inline-block;">Leader:</b> <?php echo $mysqli->query('SELECT pilotName FROM player_accounts where userId = '.$clan['leaderId'].'')->fetch_assoc()['pilotName']; ?><br>
+<b style="width:100px; display:inline-block;">Leader:</b> <?php
+                    $leaderNameInfo = "N/A";
+                    $stmt_leader_info = $mysqli->prepare('SELECT pilotName FROM player_accounts WHERE userId = ?');
+                    $stmt_leader_info->bind_param("i", $clan['leaderId']);
+                    $stmt_leader_info->execute();
+                    $leader_result_info = $stmt_leader_info->get_result();
+                    if ($leader_data_info = $leader_result_info->fetch_assoc()) {
+                      $leaderNameInfo = $leader_data_info['pilotName'];
+                    }
+                    $stmt_leader_info->close();
+                    echo htmlspecialchars($leaderNameInfo);
+                  ?><br>
 </div>
 <div style="width:570px; background:rgba(20,20,20,0.3);">
 <b style="width:100px; display:inline-block;">Position:</b> 0<br>
 </div>
 <div style="width:570px; background:rgba(30,30,30,0.6);">
-<b style="width:100px; display:inline-block;">Members:</b> <?php echo count($mysqli->query('SELECT userId FROM player_accounts WHERE clanId = '.$clan['id'].'')->fetch_all(MYSQLI_ASSOC)); ?><br>
+<b style="width:100px; display:inline-block;">Members:</b> <?php
+                    $memberCountInfo = 0;
+                    $stmt_members_info = $mysqli->prepare('SELECT COUNT(userId) as member_count FROM player_accounts WHERE clanId = ?');
+                    $stmt_members_info->bind_param("i", $clan['id']);
+                    $stmt_members_info->execute();
+                    $member_result_info = $stmt_members_info->get_result();
+                    if ($member_data_info = $member_result_info->fetch_assoc()) {
+                      $memberCountInfo = $member_data_info['member_count'];
+                    }
+                    $stmt_members_info->close();
+                    echo $memberCountInfo;
+                  ?><br>
 </div>
 <div style="width:570px; background:rgba(20,20,20,0.3);">
 <b style="width:100px; display:inline-block;">Created:</b> <?php echo date('Y.m.d h:i:s', strtotime($clan['date'])); ?><br>
@@ -154,7 +176,7 @@
 <img src="/public/img/clan/<?php echo $clan['profile']; ?>" style="vertical-align:top; margin-top:20px; border:1px solid gray;width: 120px;height: 120px;">
 <div style="display:inline-block; padding-left:30px; margin-top:15px;">
 <b style="width:100px; display:inline-block;">Description:</b><br>
-<div style="width:697px; padding-left:10px; padding-top:5px; border:1px solid gray; padding-right:10px; height:70px;word-wrap: break-word; OVERFLOW: AUTO; background:rgba(30,30,30,0.6);"><?php echo $clan['description']; ?></div>
+<div style="width:697px; padding-left:10px; padding-top:5px; border:1px solid gray; padding-right:10px; height:70px;word-wrap: break-word; OVERFLOW: AUTO; background:rgba(30,30,30,0.6);"><?php echo htmlspecialchars($clan['description']); ?></div>
 </div>
 <div style="padding-left:20px; margin-top:25px; font-size:20px; width:748px; background:rgba(100,100,100,0.5);">
 News 
@@ -164,9 +186,15 @@ News
 </div>
 <div id="clan-news" style="max-height:279px; max-width:748px; word-wrap:break-word; padding-right:20px; padding-top:1px; position:relative; overflow-x: hidden;" class="ps-container scrollable-content">
 <?php 
-$query = $mysqli->query("SELECT * FROM newsclantablelog JOIN player_accounts on newsclantablelog.leaderId = player_accounts.userId WHERE newsclantablelog.clanId = '".$clan['id']."' ORDER by id DESC");
+$stmt_clan_news = $mysqli->prepare("SELECT ncl.*, pa.pilotName
+                                    FROM newsclantablelog ncl
+                                    JOIN player_accounts pa on ncl.leaderId = pa.userId
+                                    WHERE ncl.clanId = ? ORDER by ncl.id DESC");
+$stmt_clan_news->bind_param("i", $clan['id']);
+$stmt_clan_news->execute();
+$clan_news_result = $stmt_clan_news->get_result();
 
-while($row = $query->fetch_assoc())
+while($row = $clan_news_result->fetch_assoc())
 {
 	if ($row['type'] == 'new'){
     //$color = "yellow";
@@ -186,16 +214,17 @@ while($row = $query->fetch_assoc())
 	}
 	?>
 	<div style="border-bottom: 1px solid #222; width:748px; height:30px; line-height:30px; background:<?= $color; ?>;">
-		<span style="display:inline-block; padding-left:20px; width:165px;"><b><?= $row['date']; ?></b>:</span>
-		<span style="display:inline-block; text-align:left; width:550px;"><b><?= ($row['type'] == 'systembank') ? 'System' : $row['pilotName']; ?><?= ($row['type'] == 'new') ? ' Posted: ' : ''; ?></b> <?= $row['texto']; ?></span>
+		<span style="display:inline-block; padding-left:20px; width:165px;"><b><?= htmlspecialchars($row['date']) ?></b>:</span>
+		<span style="display:inline-block; text-align:left; width:550px;"><b><?= htmlspecialchars(($row['type'] == 'systembank') ? 'System' : $row['pilotName']) ?><?= ($row['type'] == 'new') ? ' Posted: ' : ''; ?></b> <?= htmlspecialchars($row['texto']) ?></span>
 	</div>
 	<?php
 }
+$stmt_clan_news->close();
 ?>
 
 <div style="border-bottom: 1px solid #222; width:748px; height:30px; line-height:30px; background:rgba(140,0,120,0.2);">
-<span style="display:inline-block; padding-left:20px; width:165px;"><b><?php echo date('Y.m.d h:i:s', strtotime($clan['date'])); ?></b></span>
-<span style="display:inline-block; text-align:left; width:550px;"><b><?php echo $mysqli->query('SELECT pilotName FROM player_accounts where userId = '.$clan['leaderId'].'')->fetch_assoc()['pilotName']; ?></b> Created <b><?php echo $clan['name']; ?></b>!</span>
+<span style="display:inline-block; padding-left:20px; width:165px;"><b><?php echo htmlspecialchars(date('Y.m.d h:i:s', strtotime($clan['date']))); ?></b></span>
+<span style="display:inline-block; text-align:left; width:550px;"><b><?php echo htmlspecialchars($leaderNameInfo); // Re-use fetched leader name ?></b> Created <b><?php echo htmlspecialchars($clan['name']); ?></b>!</span>
 </div>
 
 

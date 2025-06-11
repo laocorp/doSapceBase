@@ -35,18 +35,24 @@ Loading
 </tr>
 </thead>
 <?php
-$QLog = $mysqli->query("SELECT voucher, item, amount, date FROM voucher_log WHERE userId = '".$player['userId']."' ORDER by date DESC");
+$stmt = $mysqli->prepare("SELECT voucher, item, amount, date FROM voucher_log WHERE userId = ? ORDER by date DESC");
+$userId = $player['userId']; // Assuming $player is already defined and contains userId
+$stmt->bind_param("i", $userId);
+$stmt->execute();
+$QLog = $stmt->get_result();
+
 if ($QLog->num_rows > 0){
     while($row = $QLog->fetch_assoc()){
         ?>
         <tbody>
-        <th><?= $row['voucher']; ?></th>
-        <th><?= $row['item']; ?></th>
-        <th><?= $row['amount']; ?></th>
-        <th><?= date("d-m-Y h:i:s", $row['date']); ?></th>
+        <th><?= htmlspecialchars($row['voucher'], ENT_QUOTES, 'UTF-8'); ?></th>
+        <th><?= htmlspecialchars($row['item'], ENT_QUOTES, 'UTF-8'); ?></th>
+        <th><?= htmlspecialchars($row['amount'], ENT_QUOTES, 'UTF-8'); ?></th>
+        <th><?= htmlspecialchars(date("d-m-Y h:i:s", $row['date']), ENT_QUOTES, 'UTF-8'); ?></th>
         </tbody>
         <?php
     }
+    $stmt->close();
 } else { ?>
 <tbody>
 

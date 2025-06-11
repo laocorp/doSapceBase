@@ -25,7 +25,22 @@
 <div class="company">
 <a href="/clan/company"><i class="fa fa-retweet"></i></a>
 <img src="/img/companies/logo_<?php echo ($player['factionId'] == 1 ? 'mmo' : ($player['factionId'] == 2 ? 'eic' : 'vru')); ?>.png"> </div>
-<label for="clan">Clan:</label> <?php echo ($player['clanId'] == 0 ? 'Free Agent' : $mysqli->query('SELECT name FROM server_clans WHERE id = ' . $player['clanId'] . '')->fetch_assoc()['name']); ?><br />
+<label for="clan">Clan:</label> <?php
+              if ($player['clanId'] == 0) {
+                echo 'Free Agent';
+              } else {
+                $clanName = "Error fetching clan name"; // Default
+                $stmt_clan_name_home = $mysqli->prepare('SELECT name FROM server_clans WHERE id = ?');
+                $stmt_clan_name_home->bind_param("i", $player['clanId']);
+                $stmt_clan_name_home->execute();
+                $clan_name_result_home = $stmt_clan_name_home->get_result();
+                if ($clan_data_home = $clan_name_result_home->fetch_assoc()) {
+                  $clanName = $clan_data_home['name'];
+                }
+                $stmt_clan_name_home->close();
+                echo htmlspecialchars($clanName);
+              }
+            ?><br />
 <label for="map">Level:</label> <?= ($player['level'] ? "<font color='#cbcbcb'>".$player['level']."</font>" : ""); ?><br/>
 <label for="map">ID:</label> <?php echo $player['userId']; ?><br />
 <label for="rank">Rank:</label> <img src="<?php echo DOMAIN; ?>img/ranks/rank_<?php echo $player['rankId']; ?>.png"> <?php echo Functions::GetRankName($player['rankId']); ?> <br>
@@ -402,18 +417,20 @@ foreach ($dataRankingPvp['data'] as $data){
     </script>
     <div name="be-pagination" class="news-base-pagination">
 	<?php 
-	$notice = 0;
-	$query = $mysqli->query("SELECT * FROM server_news ORDER by id DESC");
-	if ($query->num_rows > 0){
-		while($data = $query->fetch_assoc()){
-			$notice++;
+	$notice_count_for_pagination = 0;
+	$stmt_news_pagination = $mysqli->prepare("SELECT id FROM server_news ORDER by id DESC"); // Only need ID for counting
+	$stmt_news_pagination->execute();
+	$news_pagination_result = $stmt_news_pagination->get_result();
+	if ($news_pagination_result->num_rows > 0){
+		while($data_pagination = $news_pagination_result->fetch_assoc()){
+			$notice_count_for_pagination++;
 	?>
-		<script>beTotal = <?= $notice; ?>;</script>
-		<a class="news-base-pagination-dot" href="javascript:beSwitchTo(<?= $notice; ?>);startDelayedTimer();">
-			<span style="<?php if ($notice != 1){ ?>display: none;<?php }?>" class="news-base-pagination-inner-dot" id="be_pag_dot_<?= $notice; ?>"></span>
+		<script>beTotal = <?= $notice_count_for_pagination; ?>;</script>
+		<a class="news-base-pagination-dot" href="javascript:beSwitchTo(<?= $notice_count_for_pagination; ?>);startDelayedTimer();">
+			<span style="<?php if ($notice_count_for_pagination != 1){ ?>display: none;<?php }?>" class="news-base-pagination-inner-dot" id="be_pag_dot_<?= $notice_count_for_pagination; ?>"></span>
 		</a>
 		
-	<?php } } ?>
+	<?php } } $stmt_news_pagination->close(); ?>
     </div>
     
     <div class="news-button news-button-left" onclick="startDelayedTimer();bePrev()"></div>
@@ -421,22 +438,24 @@ foreach ($dataRankingPvp['data'] as $data){
     <div class="news-base-container">  
 	
 		<?php 
-		$notice = 0;
-		$query = $mysqli->query("SELECT * FROM server_news ORDER by id DESC");
-		if ($query->num_rows > 0){
-			while($data = $query->fetch_assoc()){
-				$notice++;
+		$notice_content_index = 0;
+		$stmt_news_content = $mysqli->prepare("SELECT image, urlNotice, nameButton, title, news FROM server_news ORDER by id DESC");
+		$stmt_news_content->execute();
+		$news_content_result = $stmt_news_content->get_result();
+		if ($news_content_result->num_rows > 0){
+			while($data_content = $news_content_result->fetch_assoc()){
+				$notice_content_index++;
 		?>
-			<div id="be_news_<?= $notice; ?>" onclick="startDelayedTimer()" class="news-base-layout news-controll-base <?php if ($notice != 1){ ?>news-controll-hide<?php }?>" style="">
+			<div id="be_news_<?= $notice_content_index; ?>" onclick="startDelayedTimer()" class="news-base-layout news-controll-base <?php if ($notice_content_index != 1){ ?>news-controll-hide<?php }?>" style="">
 			
-			<div id="apoc_refresh_feb2021" class="breaking-news-layer" style="background-image: url(<?= $data['image']; ?>);width:303px;height:381px;position: relative;background-repeat: no-repeat;background-color: transparent">
-			<?php if (!empty($data['urlNotice'])) { ?><div onclick="<?= $data['urlNotice']; ?>" class="be-position-center be-style-defaultButton"><?php if (!empty($data['nameButton'])) { echo $data['nameButton']; } ?></div><?php } ?><div class="be-position-half_headline be-style-bold_full_content"><?= $data['title']; ?></div><div class="be-position-half_maintext_with_headline be-style-default"><?= $data['news']; ?></div>
+			<div id="apoc_refresh_feb2021" class="breaking-news-layer" style="background-image: url(<?= htmlspecialchars($data_content['image']) ?>);width:303px;height:381px;position: relative;background-repeat: no-repeat;background-color: transparent">
+			<?php if (!empty($data_content['urlNotice'])) { ?><div onclick="<?= htmlspecialchars($data_content['urlNotice']) ?>" class="be-position-center be-style-defaultButton"><?php if (!empty($data_content['nameButton'])) { echo htmlspecialchars($data_content['nameButton']); } ?></div><?php } ?><div class="be-position-half_headline be-style-bold_full_content"><?= htmlspecialchars($data_content['title']) ?></div><div class="be-position-half_maintext_with_headline be-style-default"><?= nl2br(htmlspecialchars($data_content['news'])) ?></div>
 					
 			</div>
 		
 			</div>
 			
-		<?php } } ?></center>
+		<?php } } $stmt_news_content->close(); ?></center>
         
 		
 

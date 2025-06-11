@@ -38,7 +38,7 @@ Loading
 	<strong style="color:yellow;"> Pack Initiate  </strong>
 	<em> ( 40 Prometheus, 40 Bo3 shield and 20 G3n speed) + Premium + Special Title Bronze (Veteran SpaceHunter)</em></td>    
 	<td><strong style="color:green;"> 15.00€ </strong></td>  
-    <td><a href="/paypal.php?p=1&i=<?= $player['userId']; ?>" target="_blank"><img src="https://i.imgur.com/wvBPBtC.png"></a></td>
+    <td><a href="/paypal.php?p=1&i=<?= htmlspecialchars($player['userId'], ENT_QUOTES, 'UTF-8'); ?>" target="_blank"><img src="https://i.imgur.com/wvBPBtC.png"></a></td>
 </tr>
 <br><br>
 <tr>    
@@ -48,7 +48,7 @@ Loading
 	<strong style="color:gold;"> Pack Initiate Pro  </strong>
 	<em> ( 40 Prometheus lvl 16, 40 Bo3 lvl 16 shield and 20 G3n speed) + Premium + Special Title Silver (Professional Hunter)</em></td>    
 	<td><strong style="color:green;"> 25.00€ </strong></td>    
-	<td><a href="/paypal.php?p=2&i=<?= $player['userId']; ?>" target="_blank"><img src="https://i.imgur.com/wvBPBtC.png"></a></td>
+	<td><a href="/paypal.php?p=2&i=<?= htmlspecialchars($player['userId'], ENT_QUOTES, 'UTF-8'); ?>" target="_blank"><img src="https://i.imgur.com/wvBPBtC.png"></a></td>
 </tr>
 <br><br>
 <tr>    
@@ -58,7 +58,7 @@ Loading
 	<strong style="color:orange;"> Pack Farmers </strong> 
 	<em>(Design: Sentinel-Neikos</em> + <em>Cyborg-Inferno</em> + <em>Goliath-Razer) + Premium </td>    
 	<td><strong style="color:green;"> 22.00€ </strong></td>    
-	<td><a href="/paypal.php?p=3&i=<?= $player['userId']; ?>" target="_blank"><img src="https://i.imgur.com/wvBPBtC.png"></a></td>
+	<td><a href="/paypal.php?p=3&i=<?= htmlspecialchars($player['userId'], ENT_QUOTES, 'UTF-8'); ?>" target="_blank"><img src="https://i.imgur.com/wvBPBtC.png"></a></td>
 </tr>
 <br><br>
 <tr>    
@@ -67,7 +67,7 @@ Loading
 	<strong style="color:gold;"> Pack Union Season </strong>
 	<em> (Cyborg-Smite (20%HP,20%SHD,20%DMG,30%HON,30%EXP)</em> + <em>title: "Star Killer" (Blue)" </em>+ <em>50.000.000 U. + 1000 E.C.) + Premium + Double Booster (BO1+BO2 HP SHD DMG) 1month. </em></td>    
 	<td><strong style="color:green;"> 28.00€ </strong></td>    
-	<td><a href="/paypal.php?p=4&i=<?= $player['userId']; ?>" target="_blank"><img src="https://i.imgur.com/wvBPBtC.png"></a></td>
+	<td><a href="/paypal.php?p=4&i=<?= htmlspecialchars($player['userId'], ENT_QUOTES, 'UTF-8'); ?>" target="_blank"><img src="https://i.imgur.com/wvBPBtC.png"></a></td>
 </tr>
 
 </div>
@@ -83,25 +83,25 @@ Loading
 <tr>    
 	<td><img src="/do_img/global/items/uridium.png" width="25px"> 10.000.000 Uridium + Premium</td>    
 	<td><strong style="color:green;"> 7.00€ </strong></td>    
-	<td><a href="/paypal.php?p=5&i=<?= $player['userId']; ?>" target="_blank"><img src="https://i.imgur.com/wvBPBtC.png"></a></td>
+	<td><a href="/paypal.php?p=5&i=<?= htmlspecialchars($player['userId'], ENT_QUOTES, 'UTF-8'); ?>" target="_blank"><img src="https://i.imgur.com/wvBPBtC.png"></a></td>
 </tr>
 <br><br>
 <tr>    
 	<td><img src="/do_img/global/items/uridium.png" width="25px"> 30.000.000 Uridium + Premium</td>    
 	<td><strong style="color:green;"> 15.00€ </strong></td>    
-	<td><a href="/paypal.php?p=6&i=<?= $player['userId']; ?>" target="_blank"><img src="https://i.imgur.com/wvBPBtC.png"></a></td>
+	<td><a href="/paypal.php?p=6&i=<?= htmlspecialchars($player['userId'], ENT_QUOTES, 'UTF-8'); ?>" target="_blank"><img src="https://i.imgur.com/wvBPBtC.png"></a></td>
 </tr>
 <br><br>
 <tr>    
 	<td><img src="/do_img/global/items/uridium.png" width="25px"> 70.000.000 Uridium + Premium</td>    
 	<td><strong style="color:green;"> 25.00€ </strong></td>    
-	<td><a href="/paypal.php?p=7&i=<?= $player['userId']; ?>" target="_blank"><img src="https://i.imgur.com/wvBPBtC.png"></a></td>
+	<td><a href="/paypal.php?p=7&i=<?= htmlspecialchars($player['userId'], ENT_QUOTES, 'UTF-8'); ?>" target="_blank"><img src="https://i.imgur.com/wvBPBtC.png"></a></td>
 </tr>
 <br><br>
 <tr>    
 <td><img src="/do_img/global/items/uridium.png" width="25px"> 200.000.000 Uridium + Premium</td>    
 <td><strong style="color:green;"> 40.00€ </strong></td>    
-<td><a href="/paypal.php?p=8&i=<?= $player['userId']; ?>" target="_blank"><img src="https://i.imgur.com/wvBPBtC.png"></a></td>
+<td><a href="/paypal.php?p=8&i=<?= htmlspecialchars($player['userId'], ENT_QUOTES, 'UTF-8'); ?>" target="_blank"><img src="https://i.imgur.com/wvBPBtC.png"></a></td>
 </tr>
 
 </div>
@@ -116,25 +116,25 @@ Loading
 <tr>    
 <td><img src="/do_img/global/items/eventcoins.png" width="25px">  1000 EventCoins + Premium </td>    
 <td><strong style="color:green;"> 7.00€ </strong></td>    
-<td><a href="/paypal.php?p=9&i=<?= $player['userId']; ?>" target="_blank"><img src="https://i.imgur.com/wvBPBtC.png"></a></td>
+<td><a href="/paypal.php?p=9&i=<?= htmlspecialchars($player['userId'], ENT_QUOTES, 'UTF-8'); ?>" target="_blank"><img src="https://i.imgur.com/wvBPBtC.png"></a></td>
 </tr> 
 <br><br>
 <tr>    
 <td><img src="/do_img/global/items/eventcoins.png" width="25px"> 2000 EventCoins + Premium </td>
 <td><strong style="color:green;">10.00€ </strong></td>    
-<td><a href="/paypal.php?p=10&i=<?= $player['userId']; ?>" target="_blank"><img src="https://i.imgur.com/wvBPBtC.png"></a></td>
+<td><a href="/paypal.php?p=10&i=<?= htmlspecialchars($player['userId'], ENT_QUOTES, 'UTF-8'); ?>" target="_blank"><img src="https://i.imgur.com/wvBPBtC.png"></a></td>
 </tr>
 <br><br>
 <tr>    
 <td><img src="/do_img/global/items/eventcoins.png" width="25px"> 5000 EventCoins + Premium </td>    
 <td><strong style="color:green;">20.00€ </strong></td>    
-<td><a href="/paypal.php?p=11&i=<?= $player['userId']; ?>" target="_blank"><img src="https://i.imgur.com/wvBPBtC.png"></a></td>
+<td><a href="/paypal.php?p=11&i=<?= htmlspecialchars($player['userId'], ENT_QUOTES, 'UTF-8'); ?>" target="_blank"><img src="https://i.imgur.com/wvBPBtC.png"></a></td>
 </tr>
 <br><br>
 <tr>    
 <td><img src="/do_img/global/items/eventcoins.png" width="25px"> 15000 EventCoins + Premium </td>    
 <td><strong style="color:green;">35.00€ </strong></td>    
-<td><a href="/paypal.php?p=12&i=<?= $player['userId']; ?>" target="_blank"><img src="https://i.imgur.com/wvBPBtC.png"></a></td>
+<td><a href="/paypal.php?p=12&i=<?= htmlspecialchars($player['userId'], ENT_QUOTES, 'UTF-8'); ?>" target="_blank"><img src="https://i.imgur.com/wvBPBtC.png"></a></td>
 </tr>
 
 </div>
@@ -149,79 +149,79 @@ Loading
 <tr>    
 	<td><img src="/do_img/global/items/ship/solace/design/solace-asimov_100x100.png" width="25px"><strong style="color:green;"> Solace-Asimov </strong> <em>(10% shield + 15% hp + 5% honor)  + Premium  </em>	</td>    
 	<td><strong style="color:green;">9.00€ </strong></td>    
-	<td><a href="/paypal.php?p=13&i=<?= $player['userId']; ?>" target="_blank"><img src="https://i.imgur.com/wvBPBtC.png"></a></td>
+	<td><a href="/paypal.php?p=13&i=<?= htmlspecialchars($player['userId'], ENT_QUOTES, 'UTF-8'); ?>" target="_blank"><img src="https://i.imgur.com/wvBPBtC.png"></a></td>
 </tr> 
 <br><br>
 <tr>    
 	<td><img src="/do_img/global/items/ship/sentinel/design/sentinel-neikos_100x100.png" width="25px"> <strong style="color:green;"> Sentinel-Neikos </strong> <em>(15% Shield + 15% EXP) + Premium  </em>	</td>
 	<td><strong style="color:green;">9.00€ </strong></td>    
-	<td><a href="/paypal.php?p=14&i=<?= $player['userId']; ?>" target="_blank"><img src="https://i.imgur.com/wvBPBtC.png"></a></td>  
+	<td><a href="/paypal.php?p=14&i=<?= htmlspecialchars($player['userId'], ENT_QUOTES, 'UTF-8'); ?>" target="_blank"><img src="https://i.imgur.com/wvBPBtC.png"></a></td>
 </tr> 
 <br> <br>
 <tr>    
 	<td><img src="/do_img/global/items/ship/cyborg/design/cyborg-tyrannos_100x100.png" width="25px"> <strong style="color:green;"> Cyborg-Tyrannos </strong>  <em>(10% damage + 10% shield) + Premium </em></td>    
 	<td><strong style="color:green;">9.00€ </strong></td>    
-	<td><a href="/paypal.php?p=15&i=<?= $player['userId']; ?>" target="_blank"><img src="https://i.imgur.com/wvBPBtC.png"></a></td>
+	<td><a href="/paypal.php?p=15&i=<?= htmlspecialchars($player['userId'], ENT_QUOTES, 'UTF-8'); ?>" target="_blank"><img src="https://i.imgur.com/wvBPBtC.png"></a></td>
 </tr> 
 <br><br>   
 <tr>    
 	<td><img src="/do_img/global/items/ship/cyborg/design/cyborg-inferno_100x100.png" width="25px"> <strong style="color:orange;"> Cyborg-Inferno </strong> <em>(10% damage + 10% shield) + Premium </em></td>    
 	<td><strong style="color:green;">10.00€ </strong></td>    
-	<td><a href="/paypal.php?p=16&i=<?= $player['userId']; ?>" target="_blank"><img src="https://i.imgur.com/wvBPBtC.png"></a></td> 
+	<td><a href="/paypal.php?p=16&i=<?= htmlspecialchars($player['userId'], ENT_QUOTES, 'UTF-8'); ?>" target="_blank"><img src="https://i.imgur.com/wvBPBtC.png"></a></td>
 </tr> 
 <br> <br>  
 <tr>    
 	<td><img src="/do_img/global/items/ship/g-champion/design/g-champion-tyrannos_100x100.png" width="25px"> <strong style="color:gold;"> Champion-Tyrannos </strong> <em>(15% damage + 25% honor) + Premium </em></td>    
 	<td><strong style="color:green;">15.00€ </strong></td>    
-	<td><a href="/paypal.php?p=17&i=<?= $player['userId']; ?>" target="_blank"><img src="https://i.imgur.com/wvBPBtC.png"></a></td> 
+	<td><a href="/paypal.php?p=17&i=<?= htmlspecialchars($player['userId'], ENT_QUOTES, 'UTF-8'); ?>" target="_blank"><img src="https://i.imgur.com/wvBPBtC.png"></a></td>
 </tr> 
 <br>  <br> 
 <tr>    
 	<td><img src="/do_img/global/items/razer_100x100.png" width="25px"> <strong style="color:gold;"> Goliath-Razer </strong> <em>(15% damage + 15% shield + 20% hp + 20% honor) + Premium </em></td>    
 	<td><strong style="color:green;">15.00€ </strong></td>    
-	<td><a href="/paypal.php?p=18&i=<?= $player['userId']; ?>" target="_blank"><img src="https://i.imgur.com/wvBPBtC.png"></a></td> 
+	<td><a href="/paypal.php?p=18&i=<?= htmlspecialchars($player['userId'], ENT_QUOTES, 'UTF-8'); ?>" target="_blank"><img src="https://i.imgur.com/wvBPBtC.png"></a></td>
 </tr> 
 <br><br> 
 <tr>    
 	<td><img src="/do_img/global/items/ship/retiarus/design/retiarus-arios_top.png" width="25px"> <strong style="color:red;"> Retiarus-Arios </strong>  <em>(20% damage + 20% shield + 20% honor + 25% EXP) + Premium </em></td>
 	<td><strong style="color:green;">20.00€ </strong></td>
-	<td><a href="/paypal.php?p=19&i=<?= $player['userId']; ?>" target="_blank"><img src="https://i.imgur.com/wvBPBtC.png"></a></td> 
+	<td><a href="/paypal.php?p=19&i=<?= htmlspecialchars($player['userId'], ENT_QUOTES, 'UTF-8'); ?>" target="_blank"><img src="https://i.imgur.com/wvBPBtC.png"></a></td>
 </tr> 
 <br><br> 
 <tr>    
 	<td><img src="/do_img/global/items/ship/goliath/design/bastion_top.png" width="25px"> <strong style="color:gren;"> Bastion-Premium </strong> <em>(20% damage + 20% shield + 20% honor + 20% EXP + 20% HP) + Premium </em></td>    
 	<td><strong style="color:green;">20.00€ </strong></td>    
-	<td><a href="/paypal.php?p=20&i=<?= $player['userId']; ?>" target="_blank"><img src="https://i.imgur.com/wvBPBtC.png"></a></td>
+	<td><a href="/paypal.php?p=20&i=<?= htmlspecialchars($player['userId'], ENT_QUOTES, 'UTF-8'); ?>" target="_blank"><img src="https://i.imgur.com/wvBPBtC.png"></a></td>
 </tr> 
 <br> <br>
 <tr>    
 	<td><img src="/do_img/global/items/ship/goliath/design/enforcer_top.png" width="25px"> <strong style="color:green;"> Enforcer-Premium </strong> <em>(20% damage + 20% shield + 20% honor + 20% EXP + 20% HP) + Premium </em></td>
 	<td><strong style="color:green;">20.00€ </strong></td>    
-	<td><a href="/paypal.php?p=21&i=<?= $player['userId']; ?>" target="_blank"><img src="https://i.imgur.com/wvBPBtC.png"></a></td>
+	<td><a href="/paypal.php?p=21&i=<?= htmlspecialchars($player['userId'], ENT_QUOTES, 'UTF-8'); ?>" target="_blank"><img src="https://i.imgur.com/wvBPBtC.png"></a></td>
 </tr>
 <br>  <br>
 <tr>    
 	<td><img src="/do_img/global/items/ship/cyborg/design/cyborg-argon_top.png" width="25px"> <strong style="color:red;"> Cyborg-Argon </strong> <em>(20% damage + 20% shield + 20% honor + 20% EXP + 20% HP) + Premium </em></td>    
 	<td><strong style="color:green;">20.00€ </strong></td>    
-	<td><a href="/paypal.php?p=22&i=<?= $player['userId']; ?>" target="_blank"><img src="https://i.imgur.com/wvBPBtC.png"></a></td>
+	<td><a href="/paypal.php?p=22&i=<?= htmlspecialchars($player['userId'], ENT_QUOTES, 'UTF-8'); ?>" target="_blank"><img src="https://i.imgur.com/wvBPBtC.png"></a></td>
 </tr>
 <br><br>
 <tr>    
 	<td><img src="/do_img/global/items/ship/solace/design/solace-contagion_top.png" width="25px"> <strong style="color:gold;"> Solace-Contagion </strong> <em>(15% damage + 15% shield + 10% HP + 25% honor + 25% EXP) + Premium </em></td>    
 	<td><strong style="color:green;">15.00€ </strong></td>    
-	<td><a href="/paypal.php?p=23&i=<?= $player['userId']; ?>" target="_blank"><img src="https://i.imgur.com/wvBPBtC.png"></a></td> 
+	<td><a href="/paypal.php?p=23&i=<?= htmlspecialchars($player['userId'], ENT_QUOTES, 'UTF-8'); ?>" target="_blank"><img src="https://i.imgur.com/wvBPBtC.png"></a></td>
 </tr>
 <br><br>
 <tr>    
 	<td><img src="/do_img/global/items/ship/cyborg/design/cyborg-smite_top.png" width="25px"> <strong style="color:gold;"> Cyborg-Smite </strong> <em>(20% damage + 20% shield + 20% HP + 30% honor + 30% EXP) + Premium </em></td>    
 	<td><strong style="color:green;">20.00€ </strong></td>    
-	<td><a href="/paypal.php?p=24&i=<?= $player['userId']; ?>" target="_blank"><img src="https://i.imgur.com/wvBPBtC.png"></a></td> 
+	<td><a href="/paypal.php?p=24&i=<?= htmlspecialchars($player['userId'], ENT_QUOTES, 'UTF-8'); ?>" target="_blank"><img src="https://i.imgur.com/wvBPBtC.png"></a></td>
 </tr>
 <br><br>
 <tr>    
 <td><img src="/do_img/global/items/ship/goliath/design/orion_top.png" width="25px"> <strong style="color:gold;"> Goliath-Orion </strong> <em>(25% damage + 25% shield + 25% HP + 30% honor ) + Premium </em></td>    
 <td><strong style="color:green;">20.00€ </strong></td>    
-<td><a href="/paypal.php?p=25&i=<?= $player['userId']; ?>" target="_blank"><img src="https://i.imgur.com/wvBPBtC.png"></a></td>  
+<td><a href="/paypal.php?p=25&i=<?= htmlspecialchars($player['userId'], ENT_QUOTES, 'UTF-8'); ?>" target="_blank"><img src="https://i.imgur.com/wvBPBtC.png"></a></td>
 </tr>
 
 
@@ -239,7 +239,7 @@ Loading
 	<img src="/img/donate/booster_shd-b02_100x100.png" width="25px">
 	<strong style="color:orange;"> Pack Booster PVP </strong><em>(Double Booster BO1 + BO2: DMG=30% + HP=30% + SHD=30% 30 Days</em>) </em></td>    
 	<td><strong style="color:green;"> 10.00€ </strong></td>    
-	<td><a href="/paypal.php?p=26&i=<?= $player['userId']; ?>" target="_blank"><img src="https://i.imgur.com/wvBPBtC.png"></a></td>  
+	<td><a href="/paypal.php?p=26&i=<?= htmlspecialchars($player['userId'], ENT_QUOTES, 'UTF-8'); ?>" target="_blank"><img src="https://i.imgur.com/wvBPBtC.png"></a></td>
 </tr>
 <br><br>
 <tr>    
@@ -251,7 +251,7 @@ Loading
 	<img src="/img/donate/booster_xp-b02_100x100.png" width="25px">
 	<strong style="color:orange;"> Pack Booster PVE </strong><em>(Double Booster BO1 + BO2 + 50%Booster: EXP=80% + HON=80% 30 Days</em>) </em></td>    
 	<td><strong style="color:green;"> 12.00€ </strong></td>    
-	<td><a href="/paypal.php?p=27&i=<?= $player['userId']; ?>" target="_blank"><img src="https://i.imgur.com/wvBPBtC.png"></a></td>  
+	<td><a href="/paypal.php?p=27&i=<?= htmlspecialchars($player['userId'], ENT_QUOTES, 'UTF-8'); ?>" target="_blank"><img src="https://i.imgur.com/wvBPBtC.png"></a></td>
 </tr>
 <br><br>
 <tr>    
@@ -271,7 +271,7 @@ Loading
 	<img src="/img/donate/booster_rep-b02_100x100.png" width="25px"> 
 	<br> <strong style="color:orange;"> Pack Booster Professional </strong><em>(All booster for 30 days DMG=30% SHD=30% HP=30% REP=15% EXP=80% HON=80%</em>) + Premium + Special title blue (General Of Orbit) </em></td>    
 	<td><strong style="color:green;"> 20.00€ </strong></td>    
-	<td><a href="/paypal.php?p=28&i=<?= $player['userId']; ?>" target="_blank"><img src="https://i.imgur.com/wvBPBtC.png"></a></td>  
+	<td><a href="/paypal.php?p=28&i=<?= htmlspecialchars($player['userId'], ENT_QUOTES, 'UTF-8'); ?>" target="_blank"><img src="https://i.imgur.com/wvBPBtC.png"></a></td>
 </tr>
  </div>
  </div>

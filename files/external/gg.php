@@ -10,295 +10,95 @@
 
 
 <?php
-// Gate: Alpha | ID: 1;
-$alphaQ = $mysqli->query("SELECT * FROM player_galaxygates WHERE userId = '".$player['userId']."' AND gateId = '1'");
-$alphaIQ = $mysqli->query("SELECT * FROM info_galaxygates WHERE gateId = '1'");
+$userId = $player['userId'];
 
+// Helper function to get gate data
+function getGateProgress($mysqli, $userId, $gateId, $maxParts) {
+    $gateTP = 0;
+    $requireGateParts = 0;
+    $gateUnlocked = false;
 
-$alphaTP = 0;
-$requireAlphaParts = 0;
+    $stmtPlayerGate = $mysqli->prepare("SELECT parts FROM player_galaxygates WHERE userId = ? AND gateId = ?");
+    $stmtPlayerGate->bind_param("ii", $userId, $gateId);
+    $stmtPlayerGate->execute();
+    $resultPlayerGate = $stmtPlayerGate->get_result();
 
-if ($alphaQ->num_rows > 0){
-    $fetchAlphaQ = $alphaQ->fetch_assoc();
-    $dataParts = json_decode($fetchAlphaQ['parts']);
-
-    foreach ($dataParts as $part){
-        $alphaTP += $part;
+    if ($resultPlayerGate->num_rows > 0) {
+        $fetchGateQ = $resultPlayerGate->fetch_assoc();
+        $dataParts = json_decode($fetchGateQ['parts']);
+        if (is_array($dataParts)) {
+            foreach ($dataParts as $part) {
+                $gateTP += (int)$part;
+            }
+        }
+        if ($gateTP >= $maxParts) {
+            $gateTP = $maxParts;
+            $gateUnlocked = true;
+        }
     }
+    $stmtPlayerGate->close();
 
-    if ($alphaTP >= 34){
-        $alphaTP = 34;
-        $alphaUnlocked = true;
+    $stmtInfoGate = $mysqli->prepare("SELECT parts FROM info_galaxygates WHERE gateId = ?");
+    $stmtInfoGate->bind_param("i", $gateId);
+    $stmtInfoGate->execute();
+    $resultInfoGate = $stmtInfoGate->get_result();
+
+    if ($resultInfoGate->num_rows > 0) {
+        $fetchInfoGate = $resultInfoGate->fetch_assoc();
+        $requireGateParts = (int)$fetchInfoGate['parts'];
     }
+    $stmtInfoGate->close();
 
+    return ["parts" => $gateTP . "/" . $requireGateParts, "unlocked" => $gateUnlocked];
 }
 
-if ($alphaIQ->num_rows > 0){
-    $fetchAlphaIQ = $alphaIQ->fetch_assoc();
+$alphaData = getGateProgress($mysqli, $userId, 1, 34);
+$alphaParts = $alphaData['parts'];
+$alphaUnlocked = $alphaData['unlocked'];
 
-    $requireAlphaParts = $fetchAlphaIQ['parts'];
-}
-//
+$betaData = getGateProgress($mysqli, $userId, 2, 48);
+$betaParts = $betaData['parts'];
+$betaUnlocked = $betaData['unlocked'];
 
-$alphaParts = $alphaTP."/".$requireAlphaParts;
+$gammaData = getGateProgress($mysqli, $userId, 3, 82);
+$gammaParts = $gammaData['parts'];
+$gammaUnlocked = $gammaData['unlocked'];
 
-// Gate: Beta | ID: 2;
-$betaQ = $mysqli->query("SELECT * FROM player_galaxygates WHERE userId = '".$player['userId']."' AND gateId = '2'");
-$betaIQ = $mysqli->query("SELECT * FROM info_galaxygates WHERE gateId = '2'");
+$deltaData = getGateProgress($mysqli, $userId, 4, 128);
+$deltaParts = $deltaData['parts'];
+$deltaUnlocked = $deltaData['unlocked'];
 
-$betaTP = 0;
-$requireBetaParts = 0;
+$epsilonData = getGateProgress($mysqli, $userId, 5, 99);
+$epsilonParts = $epsilonData['parts'];
+$epsilonUnlocked = $epsilonData['unlocked'];
 
-if ($betaQ->num_rows > 0){
-    $fetchBetaQ = $betaQ->fetch_assoc();
-    $dataParts = json_decode($fetchBetaQ['parts']);
+$lambdaData = getGateProgress($mysqli, $userId, 8, 45);
+$lambdaParts = $lambdaData['parts'];
+$lambdaUnlocked = $lambdaData['unlocked'];
 
-    foreach ($dataParts as $part){
-        $betaTP += $part;
-    }
+$kappaData = getGateProgress($mysqli, $userId, 7, 120);
+$kappaParts = $kappaData['parts'];
+$kappaUnlocked = $kappaData['unlocked'];
 
-    if ($betaTP >= 48){
-        $betaTP = 48;
-        $betaUnlocked = true;
-    }
+$hadesData = getGateProgress($mysqli, $userId, 10, 45);
+$hadesParts = $hadesData['parts'];
+$hadesUnlocked = $hadesData['unlocked'];
 
-}
+$kronosData = getGateProgress($mysqli, $userId, 9, 120);
+$kronosParts = $kronosData['parts'];
+$kronosUnlocked = $kronosData['unlocked'];
 
-if ($betaIQ->num_rows > 0){
-    $fetchBetaIQ = $betaIQ->fetch_assoc();
-
-    $requireBetaParts = $fetchBetaIQ['parts'];
-}
-//
-
-$betaParts = $betaTP."/".$requireBetaParts;
-
-// Gate: Ganna | ID: 3;
-$gammaQ = $mysqli->query("SELECT * FROM player_galaxygates WHERE userId = '".$player['userId']."' AND gateId = '3'");
-$gammaIQ = $mysqli->query("SELECT * FROM info_galaxygates WHERE gateId = '3'");
-
-$gammaTP = 0;
-$requireGammaParts = 0;
-
-if ($gammaQ->num_rows > 0){
-    $fetchGammaQ = $gammaQ->fetch_assoc();
-    $dataParts = json_decode($fetchGammaQ['parts']);
-
-    foreach ($dataParts as $part){
-        $gammaTP += $part;
-    }
-
-    if ($gammaTP >= 82){
-        $gammaTP = 82;
-        $gammaUnlocked = true;
-    }
-
-}
-
-if ($gammaIQ->num_rows > 0){
-    $fetchGammaIQ = $gammaIQ->fetch_assoc();
-
-    $requireGammaParts = $fetchGammaIQ['parts'];
-}
-//
-
-$gammaParts = $gammaTP."/".$requireGammaParts;
-
-// Gate: Delta | ID: 4;
-$deltaQ = $mysqli->query("SELECT * FROM player_galaxygates WHERE userId = '".$player['userId']."' AND gateId = '4'");
-$deltaIQ = $mysqli->query("SELECT * FROM info_galaxygates WHERE gateId = '4'");
-
-$deltaTP = 0;
-$requiredeltaParts = 0;
-
-if ($deltaQ->num_rows > 0){
-    $fetchdeltaQ = $deltaQ->fetch_assoc();
-    $dataParts = json_decode($fetchdeltaQ['parts']);
-
-    foreach ($dataParts as $part){
-        $deltaTP += $part;
-    }
-
-    if ($deltaTP >= 128){
-        $deltaTP = 128;
-        $deltaUnlocked = true;
-    }
-
-}
-
-if ($deltaIQ->num_rows > 0){
-    $fetchdeltaIQ = $deltaIQ->fetch_assoc();
-
-    $requiredeltaParts = $fetchdeltaIQ['parts'];
-}
-//
-
-$deltaParts = $deltaTP."/".$requiredeltaParts;
-
-// Gate: Epsilon | ID: 5;
-$epsilonQ = $mysqli->query("SELECT * FROM player_galaxygates WHERE userId = '".$player['userId']."' AND gateId = '5'");
-$epsilonIQ = $mysqli->query("SELECT * FROM info_galaxygates WHERE gateId = '5'");
-
-$epsilonTP = 0;
-$requireepsilonParts = 0;
-
-if ($epsilonQ->num_rows > 0){
-    $fetchepsilonQ = $epsilonQ->fetch_assoc();
-    $dataParts = json_decode($fetchepsilonQ['parts']);
-
-    foreach ($dataParts as $part){
-        $epsilonTP += $part;
-    }
-
-    if ($epsilonTP >= 99){
-        $epsilonTP = 99;
-        $epsilonUnlocked = true;
-    }
-
-}
-
-if ($epsilonIQ->num_rows > 0){
-    $fetchepsilonIQ = $epsilonIQ->fetch_assoc();
-
-    $requireepsilonParts = $fetchepsilonIQ['parts'];
-}
-//
-
-$epsilonParts = $epsilonTP."/".$requireepsilonParts;
-
-// Gate: Lambda | ID: 8;
-$lambdaQ = $mysqli->query("SELECT * FROM player_galaxygates WHERE userId = '".$player['userId']."' AND gateId = '8'");
-$lambdaIQ = $mysqli->query("SELECT * FROM info_galaxygates WHERE gateId = '8'");
-
-$lambdaTP = 0;
-$requirelambdaParts = 0;
-
-if ($lambdaQ->num_rows > 0){
-    $fetchlambdaQ = $lambdaQ->fetch_assoc();
-    $dataParts = json_decode($fetchlambdaQ['parts']);
-
-    foreach ($dataParts as $part){
-        $lambdaTP += $part;
-    }
-
-    if ($lambdaTP >= 45){
-        $lambdaTP = 45;
-        $lambdaUnlocked = true;
-    }
-
-}
-
-if ($lambdaIQ->num_rows > 0){
-    $fetchlambdaIQ = $lambdaIQ->fetch_assoc();
-
-    $requirelambdaParts = $fetchlambdaIQ['parts'];
-}
-//
-
-$lambdaParts = $lambdaTP."/".$requirelambdaParts;
-// Gate: Kappa | ID: 7;
-$kappaQ = $mysqli->query("SELECT * FROM player_galaxygates WHERE userId = '".$player['userId']."' AND gateId = '7'");
-$kappaIQ = $mysqli->query("SELECT * FROM info_galaxygates WHERE gateId = '7'");
-
-$kappaTP = 0;
-$requirekappaParts = 0;
-
-if ($kappaQ->num_rows > 0){
-    $fetchkappaQ = $kappaQ->fetch_assoc();
-    $dataParts = json_decode($fetchkappaQ['parts']);
-
-    foreach ($dataParts as $part){
-        $kappaTP += $part;
-    }
-
-    if ($kappaTP >= 120){
-        $kappaTP = 120;
-        $kappaUnlocked = true;
-    }
-
-}
-
-if ($kappaIQ->num_rows > 0){
-    $fetchkappaIQ = $kappaIQ->fetch_assoc();
-
-    $requirekappaParts = $fetchkappaIQ['parts'];
-}
-//
-
-$kappaParts = $kappaTP."/".$requirekappaParts;
-
-// Gate: Hades | ID: 10;
-$hadesQ = $mysqli->query("SELECT * FROM player_galaxygates WHERE userId = '".$player['userId']."' AND gateId = '10'");
-$hadesIQ = $mysqli->query("SELECT * FROM info_galaxygates WHERE gateId = '10'");
-
-$hadesTP = 0;
-$requirehadesParts = 0;
-
-if ($hadesQ->num_rows > 0){
-    $fetchhadesQ = $hadesQ->fetch_assoc();
-    $dataParts = json_decode($fetchhadesQ['parts']);
-
-    foreach ($dataParts as $part){
-        $hadesTP += $part;
-    }
-
-    if ($hadesTP >= 45){
-        $hadesTP = 45;
-        $hadesUnlocked = true;
-    }
-
-}
-
-if ($hadesIQ->num_rows > 0){
-    $fetchhadesIQ = $hadesIQ->fetch_assoc();
-
-    $requirehadesParts = $fetchhadesIQ['parts'];
-}
-//
-
-$hadesParts = $hadesTP."/".$requirehadesParts;
-
-// Gate: Kronos | ID: 9;
-$kronosQ = $mysqli->query("SELECT * FROM player_galaxygates WHERE userId = '".$player['userId']."' AND gateId = '9'");
-$kronosIQ = $mysqli->query("SELECT * FROM info_galaxygates WHERE gateId = '9'");
-
-$kronosTP = 0;
-$requirekronosParts = 0;
-
-if ($kronosQ->num_rows > 0){
-    $fetchkronosQ = $kronosQ->fetch_assoc();
-    $dataParts = json_decode($fetchkronosQ['parts']);
-
-    foreach ($dataParts as $part){
-        $kronosTP += $part;
-    }
-
-    if ($kronosTP >= 120){
-        $kronosTP = 120;
-        $kronosUnlocked = true;
-    }
-
-}
-
-if ($kronosIQ->num_rows > 0){
-    $fetchkronosIQ = $kronosIQ->fetch_assoc();
-
-    $requirekronosParts = $fetchkronosIQ['parts'];
-}
-//
-
-$kronosParts = $kronosTP."/".$requirekronosParts;
 ?>
 
 <div style="float:left; width:150px; height:425px; border-right:1px solid #5cb85c; padding-top:10px; padding-left:5px; padding-right:10px;">
 <div style="text-align:center; padding-bottom:5px;"><b>AVAILABLE GATES</b></div>
-<div data-gate="gate-alpha" class="gg-gate-button alpha-button fg-<?= (isset($alphaUnlocked)) ? 'white' : 'red'; ?>" onclick="selectGate(this, 1);"><?= (isset($alphaUnlocked)) ? '<i class="fa fa-unlock"></i>' : '<i class="fa fa-lock"></i>'; ?> Alpha gate</div>
-<div data-gate="gate-beta" class="gg-gate-button beta-button fg-<?= (isset($betaUnlocked)) ? 'white' : 'red'; ?>" onclick="selectGate(this, 2);"><?= (isset($betaUnlocked)) ? '<i class="fa fa-unlock"></i>' : '<i class="fa fa-lock"></i>'; ?> Beta gate</div>
-<div data-gate="gate-gamma" class="gg-gate-button gamma-button fg-<?= (isset($gammaUnlocked)) ? 'white' : 'red'; ?>" onclick="selectGate(this, 3);"><?= (isset($gammaUnlocked)) ? '<i class="fa fa-unlock"></i>' : '<i class="fa fa-lock"></i>'; ?> Gamma gate</div>
-<div data-gate="gate-delta" class="gg-gate-button delta-button fg-<?= (isset($deltaUnlocked)) ? 'white' : 'red'; ?>" onclick="selectGate(this, 4);"><?= (isset($deltaUnlocked)) ? '<i class="fa fa-unlock"></i>' : '<i class="fa fa-lock"></i>'; ?> Delta gate</div>
-<div data-gate="gate-kappa" class="gg-gate-button kappa-button fg-<?= (isset($kappaUnlocked)) ? 'white' : 'red'; ?>" onclick="selectGate(this, 7);"><?= (isset($kappaUnlocked)) ? '<i class="fa fa-unlock"></i>' : '<i class="fa fa-lock"></i>'; ?> Kappa gate</div>
-<div data-gate="gate-kronos" class="gg-gate-button kronos-button fg-<?= (isset($kronosUnlocked)) ? 'white' : 'red'; ?>" onclick="selectGate(this, 9);"><?= (isset($kronosUnlocked)) ? '<i class="fa fa-unlock"></i>' : '<i class="fa fa-lock"></i>'; ?> Kronos gate</div>
-<div data-gate="gate-lambda" class="gg-gate-button lambda-button fg-<?= (isset($lambdaUnlocked)) ? 'white' : 'red'; ?>" onclick="selectGate(this, 8);"><?= (isset($lambdaUnlocked)) ? '<i class="fa fa-unlock"></i>' : '<i class="fa fa-lock"></i>'; ?> Lambda gate</div>
+<div data-gate="gate-alpha" class="gg-gate-button alpha-button fg-<?= ($alphaUnlocked) ? 'white' : 'red'; ?>" onclick="selectGate(this, 1);"><?= ($alphaUnlocked) ? '<i class="fa fa-unlock"></i>' : '<i class="fa fa-lock"></i>'; ?> Alpha gate</div>
+<div data-gate="gate-beta" class="gg-gate-button beta-button fg-<?= ($betaUnlocked) ? 'white' : 'red'; ?>" onclick="selectGate(this, 2);"><?= ($betaUnlocked) ? '<i class="fa fa-unlock"></i>' : '<i class="fa fa-lock"></i>'; ?> Beta gate</div>
+<div data-gate="gate-gamma" class="gg-gate-button gamma-button fg-<?= ($gammaUnlocked) ? 'white' : 'red'; ?>" onclick="selectGate(this, 3);"><?= ($gammaUnlocked) ? '<i class="fa fa-unlock"></i>' : '<i class="fa fa-lock"></i>'; ?> Gamma gate</div>
+<div data-gate="gate-delta" class="gg-gate-button delta-button fg-<?= ($deltaUnlocked) ? 'white' : 'red'; ?>" onclick="selectGate(this, 4);"><?= ($deltaUnlocked) ? '<i class="fa fa-unlock"></i>' : '<i class="fa fa-lock"></i>'; ?> Delta gate</div>
+<div data-gate="gate-kappa" class="gg-gate-button kappa-button fg-<?= ($kappaUnlocked) ? 'white' : 'red'; ?>" onclick="selectGate(this, 7);"><?= ($kappaUnlocked) ? '<i class="fa fa-unlock"></i>' : '<i class="fa fa-lock"></i>'; ?> Kappa gate</div>
+<div data-gate="gate-kronos" class="gg-gate-button kronos-button fg-<?= ($kronosUnlocked) ? 'white' : 'red'; ?>" onclick="selectGate(this, 9);"><?= ($kronosUnlocked) ? '<i class="fa fa-unlock"></i>' : '<i class="fa fa-lock"></i>'; ?> Kronos gate</div>
+<div data-gate="gate-lambda" class="gg-gate-button lambda-button fg-<?= ($lambdaUnlocked) ? 'white' : 'red'; ?>" onclick="selectGate(this, 8);"><?= ($lambdaUnlocked) ? '<i class="fa fa-unlock"></i>' : '<i class="fa fa-lock"></i>'; ?> Lambda gate</div>
 
 
 
@@ -308,49 +108,49 @@ $kronosParts = $kronosTP."/".$requirekronosParts;
 
 <div id="gate-alpha" class="contentC" style="width: 330px; height: 272px; margin-left: 8px; position: absolute; border: 3px solid gray; border-radius: 5px; display: none; background: url(&quot;../public/img/galaxyGates/alpha/bg.jpg&quot;) no-repeat; style="width: 100px; height: 100px;"">
     <div id="gate-alpha.img" style="width: 235px; height: 290px; margin-top: -12px; margin-left: 35px;">
-        <div style="bottom:0px; position:absolute; right:0px; font-size:20px; background:rgba(0,30,50,0.5); width:90px; text-align:center;" id="gate-alpha-parts"><?= $alphaParts; ?></div>
+        <div style="bottom:0px; position:absolute; right:0px; font-size:20px; background:rgba(0,30,50,0.5); width:90px; text-align:center;" id="gate-alpha-parts"><?= htmlspecialchars($alphaParts, ENT_QUOTES, 'UTF-8'); ?></div>
         <div style="display:none;bottom:0px; position:absolute; left:0px; font-size:20px; background:rgba(0,30,50,0.5); width:90px; text-align:center;" id="gate-alpha-lives">Life(s): -1/3</div>
     </div>
 </div>
 
 <div id="gate-beta" class="contentC" style="width: 330px; height: 272px; margin-left: 8px; position: absolute; border: 3px solid gray; border-radius: 5px; display: none; background: url(&quot;../public/img/galaxyGates/beta/bg.jpg&quot;) no-repeat; style="width: 100px; height: 100px;"">
     <div id="gate-beta-img" style="width: 235px; height: 290px; margin-top: -12px; margin-left: 35px;">
-        <div style="bottom:0px; position:absolute; right:0px; font-size:20px; background:rgba(0,30,50,0.5); width:90px; text-align:center;" id="gate-beta-parts"><?= $betaParts; ?></div>
+        <div style="bottom:0px; position:absolute; right:0px; font-size:20px; background:rgba(0,30,50,0.5); width:90px; text-align:center;" id="gate-beta-parts"><?= htmlspecialchars($betaParts, ENT_QUOTES, 'UTF-8'); ?></div>
         <div style="display:none;bottom:0px; position:absolute; left:0px; font-size:20px; background:rgba(0,30,50,0.5); width:90px; text-align:center;" id="gate-beta-lives">Life(s): -1/3</div>
     </div>
 </div>
 
 <div id="gate-gamma" class="contentC" style="width: 330px; height: 272px; margin-left: 8px; position: absolute; border: 3px solid gray; border-radius: 5px; display: none; background: url(&quot;../public/img/galaxyGates/gamma/bg.jpg&quot;) no-repeat; ">
     <div id="gate-gamma-img" style="width: 235px; height: 290px; margin-top: -12px; margin-left: 35px; ">
-        <div style="bottom:0px; position:absolute; right:0px; font-size:20px; background:rgba(0,30,50,0.5); width:90px; text-align:center;" id="gate-gamma-parts"><?= $gammaParts; ?></div>
+        <div style="bottom:0px; position:absolute; right:0px; font-size:20px; background:rgba(0,30,50,0.5); width:90px; text-align:center;" id="gate-gamma-parts"><?= htmlspecialchars($gammaParts, ENT_QUOTES, 'UTF-8'); ?></div>
         <div style="display:none;bottom:0px; position:absolute; left:0px; font-size:20px; background:rgba(0,30,50,0.5); width:90px; text-align:center;" id="gate-gamma-lives">Life(s): -1/3</div>
     </div>
 </div>
 
 <div id="gate-delta" class="contentC" style="width: 330px; height: 272px; margin-left: 8px; position: absolute; border: 3px solid gray; border-radius: 5px; display: none; background: url(&quot;../public/img/galaxyGates/delta/bg.jpg&quot;) no-repeat; ">
     <div id="gate-delta-img" style="width: 235px; height: 290px; margin-top: -12px; margin-left: 35px; ">
-        <div style="bottom:0px; position:absolute; right:0px; font-size:20px; background:rgba(0,30,50,0.5); width:90px; text-align:center;" id="gate-delta-parts"><?= $deltaParts; ?></div>
+        <div style="bottom:0px; position:absolute; right:0px; font-size:20px; background:rgba(0,30,50,0.5); width:90px; text-align:center;" id="gate-delta-parts"><?= htmlspecialchars($deltaParts, ENT_QUOTES, 'UTF-8'); ?></div>
         <div style="display:none;bottom:0px; position:absolute; left:0px; font-size:20px; background:rgba(0,30,50,0.5); width:90px; text-align:center;" id="gate-delta-lives">Life(s): -1/3</div>
     </div>
 </div>
 
 <div id="gate-kappa" class="contentC" style="width: 330px; height: 272px; margin-left: 8px; position: absolute; border: 3px solid gray; border-radius: 5px; display: none; background: url(&quot;../public/img/galaxyGates/kappa/bg.jpg&quot;) no-repeat; ">
     <div id="gate-kappa-img" style="width: 235px; height: 290px; margin-top: -12px; margin-left: 35px; ">
-        <div style="bottom:0px; position:absolute; right:0px; font-size:20px; background:rgba(0,30,50,0.5); width:90px; text-align:center;" id="gate-kappa-parts"><?= $kappaParts; ?></div>
+        <div style="bottom:0px; position:absolute; right:0px; font-size:20px; background:rgba(0,30,50,0.5); width:90px; text-align:center;" id="gate-kappa-parts"><?= htmlspecialchars($kappaParts, ENT_QUOTES, 'UTF-8'); ?></div>
         <div style="display:none;bottom:0px; position:absolute; left:0px; font-size:20px; background:rgba(0,30,50,0.5); width:90px; text-align:center;" id="gate-kappa-lives">Life(s): -1/3</div>
     </div>
 </div>
 
 <div id="gate-kronos" class="contentC" style="width: 330px; height: 272px; margin-left: 8px; position: absolute; border: 3px solid gray; border-radius: 5px; display: none; background: url(&quot;../public/img/galaxyGates/kronos/bg.jpg&quot;) no-repeat; ">
     <div id="gate-kronos-img" style="width: 235px; height: 290px; margin-top: -12px; margin-left: 35px; ">
-        <div style="bottom:0px; position:absolute; right:0px; font-size:20px; background:rgba(0,30,50,0.5); width:90px; text-align:center;" id="gate-kronos-parts"><?= $kronosParts; ?></div>
+        <div style="bottom:0px; position:absolute; right:0px; font-size:20px; background:rgba(0,30,50,0.5); width:90px; text-align:center;" id="gate-kronos-parts"><?= htmlspecialchars($kronosParts, ENT_QUOTES, 'UTF-8'); ?></div>
         <div style="display:none;bottom:0px; position:absolute; left:0px; font-size:20px; background:rgba(0,30,50,0.5); width:90px; text-align:center;" id="gate-kronos-lives">Life(s): -1/3</div>
     </div>
 </div>
 
 <div id="gate-lambda" class="contentC" style="width: 330px; height: 272px; margin-left: 8px; position: absolute; border: 3px solid gray; border-radius: 5px; display: none; background: url(&quot;../public/img/galaxyGates/lambda/bg.jpg&quot;) no-repeat; ">
     <div id="gate-lambda-img" style="width: 235px; height: 290px; margin-top: -12px; margin-left: 35px; ">
-        <div style="bottom:0px; position:absolute; right:0px; font-size:20px; background:rgba(0,30,50,0.5); width:90px; text-align:center;" id="gate-lambda-parts"><?= $lambdaParts; ?></div>
+        <div style="bottom:0px; position:absolute; right:0px; font-size:20px; background:rgba(0,30,50,0.5); width:90px; text-align:center;" id="gate-lambda-parts"><?= htmlspecialchars($lambdaParts, ENT_QUOTES, 'UTF-8'); ?></div>
         <div style="display:none;bottom:0px; position:absolute; left:0px; font-size:20px; background:rgba(0,30,50,0.5); width:90px; text-align:center;" id="gate-lambda-lives">Life(s): -1/3</div>
     </div>
 </div>
@@ -411,7 +211,11 @@ tr:nth-child(even) {
 
   <div id="scrollable-content">
     <?php
-    $dataLog = $mysqli->query("SELECT * FROM gg_log WHERE userId = '".$player['userId']."' ORDER by id DESC");
+    $stmt_log = $mysqli->prepare("SELECT log, date FROM gg_log WHERE userId = ? ORDER by id DESC");
+    $stmt_log->bind_param("i", $userId);
+    $stmt_log->execute();
+    $dataLog = $stmt_log->get_result();
+
     if ($dataLog->num_rows > 0){
         ?>
     <table id="tableGG">
@@ -426,8 +230,8 @@ tr:nth-child(even) {
             while($dataL = $dataLog->fetch_assoc()){
                 ?>
                     <tr>
-                        <td><?= $dataL['log'] ;?></td>
-                        <td><?= date("d-m-Y h:i:s", $dataL['date']); ?></td>
+                        <td><?= htmlspecialchars($dataL['log'], ENT_QUOTES, 'UTF-8') ;?></td>
+                        <td><?= htmlspecialchars(date("d-m-Y h:i:s", $dataL['date']), ENT_QUOTES, 'UTF-8'); ?></td>
                     </tr>
                 <?php
             }
@@ -449,7 +253,7 @@ tr:nth-child(even) {
         <div style="padding:15px;" id="no_results">
             <div style="border: 1px solid red; border-radius:5px; text-align:center;">No results found.</div></th>
         </div>
-        <?php } ?>
+        <?php } $stmt_log->close(); ?>
   </div>
 
 </div>

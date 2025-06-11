@@ -20,42 +20,30 @@
   </tr>
 
 <?php
-$numero = 0;
+$dataRankingExp = Functions::getDataRankingExperience(30); // Call the new refactored function
 
-foreach ($mysqli->query("SELECT pilotName, CAST(JSON_EXTRACT(data, '$.experience') AS UNSIGNED) as experience, userId, rankId, factionId, data FROM player_accounts WHERE CAST(JSON_EXTRACT(data, '$.experience') AS UNSIGNED) > 0 ORDER BY experience DESC LIMIT 30") as $value) { 
-
-$query2 = $mysqli->query("SELECT * FROM chat_permissions WHERE userId = $value[userId]");
-
-$seeRank = 1;
-
-if ($query2->num_rows > 0 AND $query2->fetch_array()['type'] == 1){
-    $seeRank = 0;
-}
-
-if ($seeRank){
-
-$numero++;
-if ($numero == 1){
-    $estilo = "#4f4731"; // Oro.
-}elseif ($numero == 2){
-    $estilo = "#595959"; // Plata.
-}elseif($numero == 3){
-     $estilo = "#594a3d"; //Bronce
-}elseif($numero%2==0){
-    $estilo = "#2d2d2d"; // Pares.
-}else{
-    $estilo = "#1d1d1d"; // Impares.
-}
+if ($dataRankingExp['data'] != null){
+  // The 'rank' key is already provided by getDataRankingExperience, which includes the $numero logic.
+  // The 'color' key is also provided for styling.
+  // 'rankPoints' in the returned array actually holds 'experience' for this specific function.
+  foreach ($dataRankingExp['data'] as $data){
 ?>
-  <tr>
-    <td><?php echo $numero; ?></td>
-    <td><?php echo $value['pilotName']; ?></td>
-    <td><img src="/img/companies/logo_<?php echo ($value['factionId'] == 1 ? 'mmo' : ($value['factionId'] == 2 ? 'eic' : 'vru')); ?>_mini.png"></td>
-    <td><img src="<?php echo DOMAIN; ?>img/ranks/rank_<?php echo $value['rankId']; ?>.png"></td>
-    <td><?php echo number_format($value['experience'], 0, ',', '.'); ?></td>
+  <tr style="background-color:<?= htmlspecialchars($data['color'], ENT_QUOTES, 'UTF-8'); ?>;">
+    <td><?php echo htmlspecialchars($data['rank'], ENT_QUOTES, 'UTF-8'); ?></td>
+    <td><?php echo htmlspecialchars($data['pilotName'], ENT_QUOTES, 'UTF-8'); ?></td>
+    <td><img src="/img/companies/logo_<?php echo ($data['factionId'] == 1 ? 'mmo' : ($data['factionId'] == 2 ? 'eic' : 'vru')); ?>_mini.png"></td>
+    <td><img src="<?php echo DOMAIN; ?>img/ranks/rank_<?php echo htmlspecialchars($data['rankId'], ENT_QUOTES, 'UTF-8'); ?>.png"></td>
+    <td><?php echo number_format($data['rankPoints'], 0, ',', '.'); // This is experience ?></td>
   </tr>
 
- <?php } } ?>
+ <?php
+  } // End foreach
+} else {
+?>
+  <tr><td colspan="5">No data available in experience ranking.</td></tr>
+<?php
+} // End if
+?>
 
 </table>
 
