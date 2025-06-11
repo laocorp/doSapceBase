@@ -50,7 +50,7 @@ class Functions
             $page[1] = 'informations';
           }
         } else if ($page[0] != 'maintenance') {
-          $page[0] = 'index3';
+          $page[0] = 'index';
         }
 
         $path = EXTERNALS . $page[0] . '.php';
