@@ -22,13 +22,6 @@
         } else {
             $toastMessage = 'Please enter both username and password.';
         }
-    }
-    // Placeholder for other handlers (registration, password reset) to be added later:
-    // else if (isset($_POST['password_confirm'])) { /* ... registration ... */ }
-    // else if (isset($_POST["resetsubmit"])) { /* ... password reset ... */ }
-    // else if (isset($_POST["resetsubmit1"])) { /* ... password reset ... */ }
-
-    // The generateRandomString function will be added here later if password recovery is integrated into this file.
     } else if (isset($_POST['registersubmit'])) { // Registration attempt
         // Ensure all required fields are present before calling Functions::Register
         if (isset($_POST['username'], $_POST['password'], $_POST['password_confirm'], $_POST['email'])) {
