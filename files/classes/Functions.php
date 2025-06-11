@@ -207,6 +207,7 @@ class Functions
 
           $mysqli->commit();
         } catch (Exception $e) {
+          error_log("Functions::Register Inner Exception: " . $e->getMessage());
           $json['message'] = 'An error login occurred. Please try again later.';
           $mysqli->rollback();
         }
@@ -220,6 +221,7 @@ class Functions
 
         return json_encode($json);
       } catch (Exception $e) {
+        error_log("Functions::Register Exception: " . $e->getMessage());
         $json['type'] = "resultAll";
         $json['message'] = 'An error occurred. Please try again later.';
         $mysqli->rollback();
