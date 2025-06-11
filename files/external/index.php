@@ -1,3 +1,65 @@
+<?php
+    // Assuming config.php (with DOMAIN, Functions class etc.) is loaded by the calling script (e.g., redirect.php)
+
+    $toastMessage = ''; // Initialize for potential messages
+    // Initialize other variables that might be used in the HTML if not set by POST handlers
+    $recover1Show = "none";
+    $mail = "";
+
+    if (isset($_POST['loginsubmit'])) {
+        if (isset($_POST['username']) && isset($_POST['password'])) {
+            $loginResultJson = Functions::Login($_POST['username'], $_POST['password']);
+            $loginResult = json_decode($loginResultJson, true);
+
+            if (isset($loginResult['status']) && $loginResult['status'] === true) {
+                // Successful login, redirect to home
+                header('Location: ' . DOMAIN . 'home');
+                exit;
+            } else {
+                // Use htmlspecialchars to prevent XSS from error messages if they can contain user input
+                $toastMessage = isset($loginResult['message']) ? htmlspecialchars($loginResult['message'], ENT_QUOTES, 'UTF-8') : 'Login failed. Please try again.';
+            }
+        } else {
+            $toastMessage = 'Please enter both username and password.';
+        }
+    }
+    // Placeholder for other handlers (registration, password reset) to be added later:
+    // else if (isset($_POST['password_confirm'])) { /* ... registration ... */ }
+    // else if (isset($_POST["resetsubmit"])) { /* ... password reset ... */ }
+    // else if (isset($_POST["resetsubmit1"])) { /* ... password reset ... */ }
+
+    // The generateRandomString function will be added here later if password recovery is integrated into this file.
+
+    // Placeholder for other handlers (registration, password reset) to be added later:
+    // else if (isset($_POST['password_confirm'])) { /* ... registration ... */ }
+    // else if (isset($_POST["resetsubmit"])) { /* ... password reset ... */ }
+    // else if (isset($_POST["resetsubmit1"])) { /* ... password reset ... */ }
+    } else if (isset($_POST['password_confirm']) && isset($_POST['username']) && isset($_POST['email']) && isset($_POST['password'])) { // Registration attempt
+        $username = $_POST['username'];
+        $password = $_POST['password'];
+        $password_confirm = $_POST['password_confirm'];
+        $email = $_POST['email'];
+        $terms = isset($_POST['terms']) ? $_POST['terms'] : ''; // Check if terms is set
+
+        // Call Functions::Register
+        $registrationResultJson = Functions::Register($username, $password, $password_confirm, $email, $terms);
+        $registrationResult = json_decode($registrationResultJson, true);
+
+        if (isset($registrationResult['status']) && $registrationResult['status'] === true) {
+            // Successful registration
+            if (isset($registrationResult['redirect']) && $registrationResult['redirect'] === true) {
+                header('Location: ' . DOMAIN . 'home');
+                exit;
+            } else {
+                $toastMessage = isset($registrationResult['message']) ? htmlspecialchars($registrationResult['message'], ENT_QUOTES, 'UTF-8') : 'Registration successful!';
+            }
+        } else {
+            // Failed registration
+            $toastMessage = isset($registrationResult['message']) ? htmlspecialchars($registrationResult['message'], ENT_QUOTES, 'UTF-8') : 'Registration failed. Please try again.';
+        }
+    }
+    // Password recovery handlers can be added here later if needed for this page.
+    ?>
 <html class="no-js" lang="en">
 <head>
 <title><?= SERVERNAME; ?>: The best blackkorbit server PVP/PVE</title>
@@ -12,7 +74,6 @@
 <link rel="stylesheet" href="/do_img/index/bootstrap-3.3.5.min2.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-<script src='https://www.google.com/recaptcha/api.js' async></script>
 <link href="/do_img/index/font-awesome.min.css" rel="stylesheet" type='text/css'>
 <link href='/do_img/index/Open.Sans.css' rel='stylesheet' type='text/css'>
 <link href='/do_img/index/animate.css' rel='stylesheet' type='text/css'>
@@ -39,7 +100,7 @@
 <form id="login" method="post">
 <input type="text" required name="username" placeholder="Username">
 <input type="password" required name="password" placeholder="Password">
-<button type="submit" class="login-button">LOGIN</button>
+<button type="submit" name="loginsubmit" class="login-button">LOGIN</button>
 </form>
 </div>
 <div class="links">
@@ -102,12 +163,13 @@ Introducing
                         <input type="password" name="password_confirm" id="r-password-confirm" placeholder="Password Confirm" class="validate" maxlength="45" required>
                         <br><span class="helper-text" data-error="Enter a valid password!">Confirm your password.</span>
                       </div><br>
-                      <div class="input-field col s12">
-                      <div class="g-recaptcha" data-sitekey="6LdTDnsiAAAAAEaMLYcov70JZ_-8aS3ZNsqFt0ZE"></div>
-                      </div>
                       
-                      <div style="text-align:left; width:300px; display:inline-block;"><b>The game is subject to the following:</b><br>
-                      <a href="/termsandrules.php" class="fg-blue">Terms</a> • </div>
+                      <div class="form-group">
+                        <label for="r-terms" style="display: inline;">
+                            <input name="terms" id="r-terms" value="1" type="checkbox" required style="width: auto; height: auto; margin-right: 5px;"> <!-- Basic styling for checkbox -->
+                            I have read and accept the <a href="/termsandrules.php" target="_blank">Terms and Conditions</a>.
+                        </label>
+                      </div>
                                            
                       <div class="input-field col s12">
                         <button class="mbutton button-white">REGISTER</button>
@@ -156,3 +218,8 @@ Introducing
 </center>
 <br>
 <?php require_once(INCLUDES . 'footer.php'); ?>
+<?php
+    if (!empty($toastMessage)) {
+        echo "<script>toast('" . addslashes($toastMessage) . "');</script>";
+    }
+    ?>

@@ -1,3 +1,135 @@
+<?php
+// Ensure config.php is loaded. Assuming it's loaded by a calling script (e.g., redirect.php -> Functions::LoadPage),
+// otherwise, a require_once for config.php would be needed here if index3.php is accessed directly.
+// For now, we assume constants like DOMAIN and classes like Functions are available.
+
+<?php
+// Ensure config.php is loaded. Assuming it's loaded by a calling script (e.g., redirect.php -> Functions::LoadPage),
+// otherwise, a require_once for config.php would be needed here if index3.php is accessed directly.
+// For now, we assume constants like DOMAIN and classes like Functions are available.
+
+$toastMessage = ''; // Initialize toast message variable
+$recover1Show = "none"; // Initialize for password recovery form
+$mail = ""; // Initialize for password recovery form
+
+if (isset($_POST['loginsubmit'])) {
+    if (isset($_POST['username']) && isset($_POST['password'])) {
+        $loginResultJson = Functions::Login($_POST['username'], $_POST['password']);
+        $loginResult = json_decode($loginResultJson, true);
+
+        if (isset($loginResult['status']) && $loginResult['status'] === true) {
+            // Successful login, redirect to home
+            header('Location: ' . DOMAIN . 'home'); // DOMAIN should be defined by config.php
+            exit;
+        } else {
+            $toastMessage = isset($loginResult['message']) ? $loginResult['message'] : 'Login failed. Please try again.';
+        }
+    } else {
+        $toastMessage = 'Please enter both username and password.';
+    }
+} else if (isset($_POST['password_confirm']) && isset($_POST['username']) && isset($_POST['email']) && isset($_POST['password'])) { // Registration attempt
+    $username = $_POST['username'];
+    $password = $_POST['password'];
+    $password_confirm = $_POST['password_confirm'];
+    $email = $_POST['email'];
+    $terms = isset($_POST['terms']) ? $_POST['terms'] : ''; // Check if terms is set
+
+    // Call Functions::Register
+    $registrationResultJson = Functions::Register($username, $password, $password_confirm, $email, $terms);
+    $registrationResult = json_decode($registrationResultJson, true);
+
+    if (isset($registrationResult['status']) && $registrationResult['status'] === true) {
+        // Successful registration
+        if (isset($registrationResult['redirect']) && $registrationResult['redirect'] === true) {
+            header('Location: ' . DOMAIN . 'home'); // Or another appropriate page
+            exit;
+        } else {
+            $toastMessage = isset($registrationResult['message']) ? $registrationResult['message'] : 'Registration successful!';
+        }
+    } else {
+        // Failed registration
+        $toastMessage = isset($registrationResult['message']) ? $registrationResult['message'] : 'Registration failed. Please try again.';
+        // Consider using $registrationResult['type'] to provide more specific feedback if needed in the future.
+    }
+} else if (isset($_POST["resetsubmit"])) {
+    if (empty($_POST['resetmail'])) {
+        $toastMessage = 'Please enter your email or username for password recovery.';
+    } else {
+        $mail = $mysqli->real_escape_string($_POST["resetmail"]);
+        $query = $mysqli->query("SELECT userId, username, securityQuestions, email FROM player_accounts WHERE email = '".$mail."' OR username = '".$mail."'");
+        $num = $query->num_rows;
+
+        if($num > 0) {
+            $key = generateRandomString(50); // Ensure generateRandomString is defined
+            $userId = $query->fetch_assoc();
+            if($userId["securityQuestions"] != null) {
+                $recover1Show = "block";
+            } else {
+                $mysqli->query("UPDATE player_accounts SET pwResetKey = '".$key."' WHERE userId = ".$userId["userId"]);
+                SMTP::SendMail($userId["email"], $userId["username"], 'E-mail verification password reset', '<p>Hello ' . $userId["username"] . ', <br><br>click this link to reset the password of your account: <a href="' . DOMAIN . 'api/resetpw/' . $userId["userId"] . '/' . $key . '">Reset</a><br><br>You are receiving this because you registered to the ' . SERVER_NAME . '.<br>If that was not your request, then you can ignore this email.<br>This is an automated message, please do not reply directly to this email.<br><br>Best regards, <br><br><img style="width: 300px;" src="https://api.ipfsbrowser.com/ipfs/get.php?hash=QmXd1qdgFfEUfgLJSK6RttE8SrnpNQheLPVSuVJHinYgxx"/></p>');
+                $toastMessage = 'You have received an mail with further instructions.';
+            }
+        } else {
+            $toastMessage = 'Email or username not found.';
+        }
+    }
+} else if (isset($_POST["resetsubmit1"])) {
+    if (empty($_POST['resetmail']) || empty($_POST['sqa1']) || empty($_POST['sqa2']) || empty($_POST['sqa3'])) {
+        $toastMessage = 'Please fill all security question fields.';
+    } else {
+        $mail = $mysqli->real_escape_string($_POST["resetmail"]);
+        $securityQuestion1 = $mysqli->real_escape_string($_POST["securityQuestion1"]);
+        $securityQuestion2 = $mysqli->real_escape_string($_POST["securityQuestion2"]);
+        $securityQuestion3 = $mysqli->real_escape_string($_POST["securityQuestion3"]);
+        $sqa1 = $mysqli->real_escape_string($_POST["sqa1"]);
+        $sqa2 = $mysqli->real_escape_string($_POST["sqa2"]);
+        $sqa3 = $mysqli->real_escape_string($_POST["sqa3"]);
+
+        $query = $mysqli->query("SELECT userId, username, securityQuestions FROM player_accounts WHERE email = '".$mail."' OR username = '".$mail."'");
+        $fetch = $query->fetch_assoc();
+        $loadSecurityQuestions = json_decode($fetch["securityQuestions"]);
+
+        $valid = true;
+        if(!password_verify($sqa1, $loadSecurityQuestions->sq1->answer)) $valid = false;
+        if(!password_verify($sqa2, $loadSecurityQuestions->sq2->answer)) $valid = false;
+        if(!password_verify($sqa3, $loadSecurityQuestions->sq3->answer)) $valid = false;
+        if($securityQuestion1 != $loadSecurityQuestions->sq1->id) $valid = false;
+        if($securityQuestion2 != $loadSecurityQuestions->sq2->id) $valid = false;
+        if($securityQuestion3 != $loadSecurityQuestions->sq3->id) $valid = false;
+
+        $query = $mysqli->query("SELECT userId, username, securityQuestions, email FROM player_accounts WHERE email = '".$mail."' OR username = '".$mail."'");
+        $num = $query->num_rows;
+
+        if($num > 0 && $valid) {
+            $key = generateRandomString(50); // Ensure generateRandomString is defined
+            $userId = $query->fetch_assoc();
+            $mysqli->query("UPDATE player_accounts SET pwResetKey = '".$key."' WHERE userId = ".$userId["userId"]);
+
+            echo "<meta http-equiv='refresh' content='0; URL=". DOMAIN . "api/resetpw/" . $userId["userId"] . "/" . $key . "'>";
+            exit;
+        } else {
+            $toastMessage = 'Security question answers are not correct.';
+        }
+    }
+}
+
+// The generateRandomString function needs to be defined before it's called by password recovery logic.
+// It was previously in the middle of the HTML. Moving it here or ensuring it's available globally.
+// For now, assuming it's defined elsewhere or will be moved.
+// Re-adding it here for self-containment if it was removed from its original spot.
+if (!function_exists('generateRandomString')) {
+    function generateRandomString($length = 10) {
+        $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+        $charactersLength = strlen($characters);
+        $randomString = '';
+        for ($i = 0; $i < $length; $i++) {
+            $randomString .= $characters[rand(0, $charactersLength - 1)];
+        }
+        return $randomString;
+    }
+}
+
+?>
 <!DOCTYPE html><!---- <script src="/js/snowstorm.js"></script><script>snowStorm.snowColor = '#99ccff';snowStorm.flakesMaxActive = 96;snowStorm.useTwinkleEffect = true;</script> --->
 <html lang="es-ES" xml:lang="es-ES">
     <head itemscope itemtype="http://schema.org/WebSite">
@@ -58,7 +190,6 @@
         <link rel="stylesheet" type="text/css" href="./css/index3/index.css">
         <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
         <script type="text/javascript" src="/js/login.js"></script>
-        <script type="text/javascript" src="https://www.google.com/recaptcha/api.js"></script>
         <script> window.$ = window.jQuery = $ || jQuery || jquery || $_jq; </script>
                 
         <link rel="stylesheet" href="./css/index3/foot.css">
@@ -102,78 +233,6 @@ function toast(message){
   }
 </script>
 
-<?php
-
-function generateRandomString($length = 10) {
-    $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
-    $charactersLength = strlen($characters);
-    $randomString = '';
-    for ($i = 0; $i < $length; $i++) {
-        $randomString .= $characters[rand(0, $charactersLength - 1)];
-    }
-    return $randomString;
-}
-
-$recover1Show = "none";
-$mail = "";
-
-if(isset($_POST["resetsubmit"])) {
-	$mail = $mysqli->real_escape_string($_POST["resetmail"]);
-	if($mail != "") {
-		$query = $mysqli->query("SELECT userId, username, securityQuestions, email FROM player_accounts WHERE email = '".$mail."' OR username = '".$mail."'");
-		$num = $query->num_rows;
-		
-		if($num > 0) {
-			$key = generateRandomString(50);
-			$userId = $query->fetch_assoc();
-			if($userId["securityQuestions"] != null) {
-				$recover1Show = "block";
-			} else {
-				$mysqli->query("UPDATE player_accounts SET pwResetKey = '".$key."' WHERE userId = ".$userId["userId"]);
-				SMTP::SendMail($userId["email"], $userId["username"], 'E-mail verification password reset', '<p>Hello ' . $userId["username"] . ', <br><br>click this link to reset the password of your account: <a href="' . DOMAIN . 'api/resetpw/' . $userId["userId"] . '/' . $key . '">Reset</a><br><br>You are receiving this because you registered to the ' . SERVER_NAME . '.<br>If that was not your request, then you can ignore this email.<br>This is an automated message, please do not reply directly to this email.<br><br>Best regards, <br><br><img style="width: 300px;" src="https://api.ipfsbrowser.com/ipfs/get.php?hash=QmXd1qdgFfEUfgLJSK6RttE8SrnpNQheLPVSuVJHinYgxx"/></p>');
-				
-				echo "<script>toast('You have received an mail with further instructions.');</script>";
-			}
-		}
-	}
-} else if(isset($_POST["resetsubmit1"])) {
-	$mail = $mysqli->real_escape_string($_POST["resetmail"]);
-	$securityQuestion1 = $mysqli->real_escape_string($_POST["securityQuestion1"]);
-	$securityQuestion2 = $mysqli->real_escape_string($_POST["securityQuestion2"]);
-	$securityQuestion3 = $mysqli->real_escape_string($_POST["securityQuestion3"]);
-	$sqa1 = $mysqli->real_escape_string($_POST["sqa1"]);
-	$sqa2 = $mysqli->real_escape_string($_POST["sqa2"]);
-	$sqa3 = $mysqli->real_escape_string($_POST["sqa3"]);
-	
-	if($mail != "" && $sqa1 != "" && $sqa2 != "" && $sqa3 != "") {
-		$query = $mysqli->query("SELECT userId, username, securityQuestions FROM player_accounts WHERE email = '".$mail."' OR username = '".$mail."'");
-		$fetch = $query->fetch_assoc();
-		$loadSecurityQuestions = json_decode($fetch["securityQuestions"]);
-		
-		$valid = true;
-		if(!password_verify($sqa1, $loadSecurityQuestions->sq1->answer)) $valid = false;
-		if(!password_verify($sqa2, $loadSecurityQuestions->sq2->answer)) $valid = false;
-		if(!password_verify($sqa3, $loadSecurityQuestions->sq3->answer)) $valid = false;
-		if($securityQuestion1 != $loadSecurityQuestions->sq1->id) $valid = false;
-		if($securityQuestion2 != $loadSecurityQuestions->sq2->id) $valid = false;
-		if($securityQuestion3 != $loadSecurityQuestions->sq3->id) $valid = false;
-		
-		$query = $mysqli->query("SELECT userId, username, securityQuestions, email FROM player_accounts WHERE email = '".$mail."' OR username = '".$mail."'");
-		$num = $query->num_rows;
-		
-		if($num > 0 && $valid) {
-			$key = generateRandomString(50);
-			$userId = $query->fetch_assoc();
-			$mysqli->query("UPDATE player_accounts SET pwResetKey = '".$key."' WHERE userId = ".$userId["userId"]);
-			
-			echo "<meta http-equiv='refresh' content='0; URL=". DOMAIN . "api/resetpw/" . $userId["userId"] . "/" . $key . "'>";
-		} else {
-			echo "<script>toast('Security question answers are not correct.');</script>";
-		}
-	}
-}
-?>
-
 <div id="reg" data-analyticscategory="registration">
     <div id="logo">
     </div>
@@ -196,7 +255,6 @@ if(isset($_POST["resetsubmit"])) {
                     <label for="bgc_signup_form_email">Email</label>
                     <input maxlength="260" name="email" id="r-email" type="email"></div>
 
-                <div id="gccc"><div class="g-recaptcha" style="padding-bottom: 15px;" data-sitekey="6LdTDnsiAAAAAEaMLYcov70JZ_-8aS3ZNsqFt0ZE"></div></div>
                 
             </fieldset>
 
@@ -441,6 +499,10 @@ Server status: <b><?= $statusServer; ?></b>
 </div>
 
 <?php require_once(INCLUDES . 'footer.php'); ?>
-
+<?php
+if (!empty($toastMessage)) {
+    echo "<script>toast('" . addslashes($toastMessage) . "');</script>";
+}
+?>
 </body>
 </html>
