@@ -23,6 +23,8 @@
             $toastMessage = 'Please enter both username and password.';
         }
     } else if (isset($_POST['registersubmit'])) { // Registration attempt
+        error_log("REGISTRATION HANDLER ENTERED. POST DATA: " . print_r($_POST, true)); // DEBUG LINE 1
+
         // Ensure all required fields are present before calling Functions::Register
         if (isset($_POST['username'], $_POST['password'], $_POST['password_confirm'], $_POST['email'])) {
             $username = $_POST['username'];
@@ -31,21 +33,30 @@
             $email = $_POST['email'];
             $terms = isset($_POST['terms']) ? $_POST['terms'] : '';
 
+            error_log("CALLING Functions::Register. Data: username='{$username}', email='{$email}', terms='{$terms}'"); // DEBUG LINE 2
+
             $registrationResultJson = Functions::Register($username, $password, $password_confirm, $email, $terms);
+
+            error_log("Functions::Register RESPONSE: " . $registrationResultJson); // DEBUG LINE 3
+
             $registrationResult = json_decode($registrationResultJson, true);
 
             if (isset($registrationResult['status']) && $registrationResult['status'] === true) {
                 if (isset($registrationResult['redirect']) && $registrationResult['redirect'] === true) {
+                    error_log("Registration successful, redirecting to home."); // DEBUG LINE 4
                     header('Location: ' . DOMAIN . 'home');
                     exit;
                 } else {
                     $toastMessage = isset($registrationResult['message']) ? htmlspecialchars($registrationResult['message'], ENT_QUOTES, 'UTF-8') : 'Registration successful!';
+                    error_log("Registration successful, no redirect. Toast: " . $toastMessage); // DEBUG LINE 5
                 }
             } else {
                 $toastMessage = isset($registrationResult['message']) ? htmlspecialchars($registrationResult['message'], ENT_QUOTES, 'UTF-8') : 'Registration failed. Please try again.';
+                error_log("Registration failed. Toast: " . $toastMessage . " Raw Response: " . $registrationResultJson); // DEBUG LINE 6
             }
         } else {
             $toastMessage = 'Please fill all required registration fields.';
+            error_log("Registration attempt failed: Not all required fields were present in POST."); // DEBUG LINE 7
         }
     }
     // Future placeholder for password recovery handlers if they are added to this file:
