@@ -29,36 +29,35 @@
     // else if (isset($_POST["resetsubmit1"])) { /* ... password reset ... */ }
 
     // The generateRandomString function will be added here later if password recovery is integrated into this file.
+    } else if (isset($_POST['registersubmit'])) { // Registration attempt
+        // Ensure all required fields are present before calling Functions::Register
+        if (isset($_POST['username'], $_POST['password'], $_POST['password_confirm'], $_POST['email'])) {
+            $username = $_POST['username'];
+            $password = $_POST['password'];
+            $password_confirm = $_POST['password_confirm'];
+            $email = $_POST['email'];
+            $terms = isset($_POST['terms']) ? $_POST['terms'] : '';
 
-    // Placeholder for other handlers (registration, password reset) to be added later:
-    // else if (isset($_POST['password_confirm'])) { /* ... registration ... */ }
-    // else if (isset($_POST["resetsubmit"])) { /* ... password reset ... */ }
-    // else if (isset($_POST["resetsubmit1"])) { /* ... password reset ... */ }
-    } else if (isset($_POST['password_confirm']) && isset($_POST['username']) && isset($_POST['email']) && isset($_POST['password'])) { // Registration attempt
-        $username = $_POST['username'];
-        $password = $_POST['password'];
-        $password_confirm = $_POST['password_confirm'];
-        $email = $_POST['email'];
-        $terms = isset($_POST['terms']) ? $_POST['terms'] : ''; // Check if terms is set
+            $registrationResultJson = Functions::Register($username, $password, $password_confirm, $email, $terms);
+            $registrationResult = json_decode($registrationResultJson, true);
 
-        // Call Functions::Register
-        $registrationResultJson = Functions::Register($username, $password, $password_confirm, $email, $terms);
-        $registrationResult = json_decode($registrationResultJson, true);
-
-        if (isset($registrationResult['status']) && $registrationResult['status'] === true) {
-            // Successful registration
-            if (isset($registrationResult['redirect']) && $registrationResult['redirect'] === true) {
-                header('Location: ' . DOMAIN . 'home');
-                exit;
+            if (isset($registrationResult['status']) && $registrationResult['status'] === true) {
+                if (isset($registrationResult['redirect']) && $registrationResult['redirect'] === true) {
+                    header('Location: ' . DOMAIN . 'home');
+                    exit;
+                } else {
+                    $toastMessage = isset($registrationResult['message']) ? htmlspecialchars($registrationResult['message'], ENT_QUOTES, 'UTF-8') : 'Registration successful!';
+                }
             } else {
-                $toastMessage = isset($registrationResult['message']) ? htmlspecialchars($registrationResult['message'], ENT_QUOTES, 'UTF-8') : 'Registration successful!';
+                $toastMessage = isset($registrationResult['message']) ? htmlspecialchars($registrationResult['message'], ENT_QUOTES, 'UTF-8') : 'Registration failed. Please try again.';
             }
         } else {
-            // Failed registration
-            $toastMessage = isset($registrationResult['message']) ? htmlspecialchars($registrationResult['message'], ENT_QUOTES, 'UTF-8') : 'Registration failed. Please try again.';
+            $toastMessage = 'Please fill all required registration fields.';
         }
     }
-    // Password recovery handlers can be added here later if needed for this page.
+    // Future placeholder for password recovery handlers if they are added to this file:
+    // else if (isset($_POST["resetsubmit"])) { /* ... */ }
+    // else if (isset($_POST["resetsubmit1"])) { /* ... */ }
     ?>
 <html class="no-js" lang="en">
 <head>
@@ -172,7 +171,7 @@ Introducing
                       </div>
                                            
                       <div class="input-field col s12">
-                        <button class="mbutton button-white">REGISTER</button>
+                        <button type="submit" name="registersubmit" class="mbutton button-white">REGISTER</button>
                       </div>
                     </div>
                   </div>
