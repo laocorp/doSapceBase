@@ -1,6 +1,39 @@
 <?php
 class Functions
 {
+  const UPGRADE_WAIT_TIME = '5 minutes';
+
+  private static $upgradeableItemConfig = [
+    "LF-1" => ['field' => 'lf1lvl', 'maxLevel' => 16, 'type' => 'equipment'],
+    "LF-2" => ['field' => 'lf2lvl', 'maxLevel' => 16, 'type' => 'equipment'],
+    "LF-3" => ['field' => 'lf3lvl', 'maxLevel' => 16, 'type' => 'equipment'],
+    "LF-4" => ['field' => 'lf4lvl', 'maxLevel' => 16, 'type' => 'equipment'],
+    "Prometeus" => ['field' => 'lf5lvl', 'maxLevel' => 16, 'type' => 'equipment'], // LF-5 in some comments, Prometeus in data
+    "SG3N-B01" => ['field' => 'B01lvl', 'maxLevel' => 16, 'type' => 'equipment'],
+    "SG3N-B02" => ['field' => 'B02lvl', 'maxLevel' => 16, 'type' => 'equipment'],
+    "SG3N-B03" => ['field' => 'B03lvl', 'maxLevel' => 16, 'type' => 'equipment'],
+    "SG3N-A01" => ['field' => 'A01lvl', 'maxLevel' => 16, 'type' => 'equipment'],
+    "SG3N-A02" => ['field' => 'A02lvl', 'maxLevel' => 16, 'type' => 'equipment'],
+    "SG3N-A03" => ['field' => 'A03lvl', 'maxLevel' => 16, 'type' => 'equipment'],
+    "LF-3-Neutron" => ['field' => 'lf3nlvl', 'maxLevel' => 16, 'type' => 'equipment'],
+    "LF-4-MD" => ['field' => 'lf4mdlvl', 'maxLevel' => 16, 'type' => 'equipment'],
+    "LF-4-PD" => ['field' => 'lf4pdlvl', 'maxLevel' => 16, 'type' => 'equipment'],
+    "LF-4-HP" => ['field' => 'lf4hplvl', 'maxLevel' => 16, 'type' => 'equipment'],
+    "LF-4-SP" => ['field' => 'lf4splvl', 'maxLevel' => 16, 'type' => 'equipment'],
+    "Unstable LF-4" => ['field' => 'lf4unstablelvl', 'maxLevel' => 16, 'type' => 'equipment'],
+    "MP-1" => ['field' => 'mp1lvl', 'maxLevel' => 16, 'type' => 'equipment'],
+    "Drone Level" => ['field' => 'droneExp', 'maxLevel' => 6, 'type' => 'drone_exp'], // Special type for drone experience
+  ];
+
+  private static $droneLevelExperienceMap = [
+      1 => 0,
+      2 => 500,
+      3 => 1000,
+      4 => 1500,
+      5 => 2000,
+      6 => 2500
+  ];
+
   public static function ObStart()
   {
     function minify_everything($buffer)
@@ -23,7 +56,8 @@ class Functions
 		$killedNpc = json_decode($player['killedNpc']);
 		$Npckill = json_decode($player['Npckill']);
       if ($player['clanId'] > 0) {
-        $clan = $mysqli->query('SELECT * FROM server_clans WHERE id = ' . $player['clanId'] . '')->fetch_assoc();
+        // Assuming all these fields might be used on a clan page loaded via LoadPage
+        $clan = $mysqli->query('SELECT id, name, tag, description, factionId, recruiting, leaderId, join_dates, date, rank, rankPoints, profile FROM server_clans WHERE id = ' . $player['clanId'] . '')->fetch_assoc();
       }
     }
 
@@ -154,7 +188,7 @@ class Functions
 
     if ($mysqli->query('SELECT userId FROM player_accounts WHERE username = "' . $username . '"')->num_rows <= 0) {
 
-      if ($mysqli->query('SELECT * FROM player_accounts WHERE email = "' . $email . '"')->num_rows > 0) {
+      if ($mysqli->query('SELECT userId FROM player_accounts WHERE email = "' . $email . '"')->num_rows > 0) {
         $json['type'] = "email";
         $json['message'] = "This email is already taken.";
 
@@ -162,7 +196,7 @@ class Functions
       }
 
       $ip = Functions::GetIP();
-      $sessionId = Functions::GetUniqueSessionId();
+      $sessionId = Functions::GetUniqueSessionId(); // This is actually for the session, not email verification
       $pilotName = $username;
 
       if ($mysqli->query('SELECT userId FROM player_accounts WHERE pilotName = "' . $pilotName . '"')->num_rows >= 1) {
@@ -182,9 +216,11 @@ class Functions
           'registerDate' => date('d.m.Y H:i:s')
         ];
 
+        $emailVerificationToken = Functions::GenerateRandom(32);
+
         $verification = [
-          'verified' => true,
-          'hash' => $sessionId
+          'verified' => false,
+          'hash' => $emailVerificationToken
         ];
 
         $mysqli->query("INSERT INTO player_accounts (sessionId, username, pilotName, email, password, info, verification, shipId) VALUES ('" . $sessionId . "', '" . $username . "', '" . $pilotName . "', '" . $email . "',  '" . password_hash($password, PASSWORD_DEFAULT) . "', '" . json_encode($info) . "', '" . json_encode($verification) . "', '1')");
@@ -207,6 +243,7 @@ class Functions
 
           $mysqli->commit();
         } catch (Exception $e) {
+          error_log('Exception in ' . __METHOD__ . ' on line ' . __LINE__ . ': ' . $e->getMessage() . "\nStack trace: " . $e->getTraceAsString());
           $json['message'] = 'An error login occurred. Please try again later.';
           $mysqli->rollback();
         }
@@ -220,6 +257,7 @@ class Functions
 
         return json_encode($json);
       } catch (Exception $e) {
+        error_log('Exception in ' . __METHOD__ . ' on line ' . __LINE__ . ': ' . $e->getMessage() . "\nStack trace: " . $e->getTraceAsString());
         $json['type'] = "resultAll";
         $json['message'] = 'An error occurred. Please try again later.';
         $mysqli->rollback();
@@ -299,7 +337,7 @@ class Functions
         'lives' => 0
       ];
 
-      $checkGate = $mysqli->query("SELECT * FROM player_galaxygates WHERE gateId = '$gateId' AND userId = '$id'");
+      $checkGate = $mysqli->query("SELECT lives FROM player_galaxygates WHERE gateId = '$gateId' AND userId = '$id'");
 
       if ($checkGate->num_rows > 0){
         $infoP = $checkGate->fetch_assoc();
@@ -324,7 +362,8 @@ class Functions
         'lives' => 0
       ];
 
-      $checkGate = $mysqli->query("SELECT * FROM player_galaxygates WHERE gateId = '$gateId' AND userId = '$id'");
+      // lives is used later, parts is decoded and used. Other fields like prepared, wave are not directly used in this function after fetch.
+      $checkGate = $mysqli->query("SELECT lives, parts, prepared, wave FROM player_galaxygates WHERE gateId = '$gateId' AND userId = '$id'");
 
       $galaxyParts = self::getInfoGate($gateId);
 
@@ -544,12 +583,13 @@ class Functions
       }
 
       $id = $mysqli->real_escape_string(Functions::s($_SESSION['account']['id']));
-      $fetch = $mysqli->query('SELECT data FROM player_accounts WHERE userId = ' . $id . '')->fetch_assoc();
+      $fetch = $mysqli->query('SELECT data FROM player_accounts WHERE userId = ' . $id . '')->fetch_assoc(); // Already specific
       $data = json_decode($fetch['data'], true);
 
       $json['uridium'] = number_format($data['uridium'], 0, ',', '.');
 
-      $checkIfExistsParts = $mysqli->query("SELECT * FROM player_galaxygates WHERE userId = '$id' AND gateId = '$gateId'");
+      // Needs 'parts' for json_decode, 'lives' for direct use. prepared, wave are not directly used.
+      $checkIfExistsParts = $mysqli->query("SELECT parts, lives FROM player_galaxygates WHERE userId = '$id' AND gateId = '$gateId'");
 
       if ($checkIfExistsParts->num_rows > 0){
         $infoQData = $checkIfExistsParts->fetch_assoc();
@@ -702,19 +742,19 @@ class Functions
         'event_coins' => ""
       ];
 
-      $checkVouch = $mysqli->query("SELECT * FROM vouchers WHERE voucher = '".$voucherId."'");
+      $checkVouch = $mysqli->query("SELECT voucher, only_one_user, uses, design, uridium, credits, event_coins FROM vouchers WHERE voucher = '".$voucherId."'");
 
       if ($checkVouch->num_rows > 0){
         $dataV = $checkVouch->fetch_assoc();
 
         $id = $mysqli->real_escape_string(Functions::s($_SESSION['account']['id']));
-        $fetch = $mysqli->query('SELECT data FROM player_accounts WHERE userId = ' . $id . '')->fetch_assoc();
+        $fetch = $mysqli->query('SELECT data FROM player_accounts WHERE userId = ' . $id . '')->fetch_assoc(); // Already specific
         $data = json_decode($fetch['data'], true);
         
         // Check voucher data.
 
         if ($dataV['only_one_user']){
-          $checkIfUsed = $mysqli->query("SELECT * FROM vouchers_uses WHERE voucherId = '$voucherId' AND userId = '$id'");
+          $checkIfUsed = $mysqli->query("SELECT userId FROM vouchers_uses WHERE voucherId = '".$dataV['voucher']."' AND userId = '$id'"); // voucherId from $dataV
 
           if ($checkIfUsed->num_rows > 0){
             $json['message'] = "You already used the voucher ".$voucherId;
@@ -868,7 +908,7 @@ class Functions
             return json_encode($json);
           }
 
-          $sessionId = Functions::GenerateRandom(32);
+          $sessionId = Functions::GetUniqueSessionId();
 
           $_SESSION['account']['id'] = $fetch['userId'];
           $_SESSION['account']['session'] = $sessionId;
@@ -883,6 +923,7 @@ class Functions
 
             $mysqli->commit();
           } catch (Exception $e) {
+            error_log('Exception in ' . __METHOD__ . ' on line ' . __LINE__ . ': ' . $e->getMessage() . "\nStack trace: " . $e->getTraceAsString());
             $json['message'] = 'An error occurred. Please try again later.';
             $mysqli->rollback();
           }
@@ -1066,7 +1107,7 @@ class Functions
 
     $clans = [];
 
-    foreach ($mysqli->query('SELECT * FROM server_clans WHERE id != ' . $player['clanId'] . ' AND (tag like "%' . $keywords . '%" OR name like "%' . $keywords . '%")')->fetch_all(MYSQLI_ASSOC) as $key => $value) {
+    foreach ($mysqli->query('SELECT id, tag, name FROM server_clans WHERE id != ' . $player['clanId'] . ' AND (tag like "%' . $keywords . '%" OR name like "%' . $keywords . '%")')->fetch_all(MYSQLI_ASSOC) as $key => $value) {
       $clans[$key]['id'] = $value['id'];
       $clans[$key]['tag'] = $value['tag'];
       $clans[$key]['name'] = $value['name'];
@@ -1082,7 +1123,7 @@ class Functions
     $player = Functions::GetPlayer();
     $clanId = $mysqli->real_escape_string($clanId);
     $diplomacyType = $mysqli->real_escape_string($diplomacyType);
-    $clan = $mysqli->query('SELECT * FROM server_clans WHERE id = ' . $player['clanId'] . '')->fetch_assoc();
+    $clan = $mysqli->query('SELECT id, leaderId, name FROM server_clans WHERE id = ' . $player['clanId'] . '')->fetch_assoc();
 
     $json = [
       'message' => '',
@@ -1092,7 +1133,7 @@ class Functions
     if ($clanId != 0) {
       if ($clan != NULL) {
         if ($clan['leaderId'] == $player['userId']) {
-          $toClan = $mysqli->query('SELECT * FROM server_clans WHERE id = "' . $clanId . '"')->fetch_assoc();
+          $toClan = $mysqli->query('SELECT id, name FROM server_clans WHERE id = "' . $clanId . '"')->fetch_assoc();
 
           if ($toClan != NULL && $clan['id'] != $toClan['id'] && in_array($diplomacyType, [1, 2, 3, 4, 5, 6])) {
             $mysqli->begin_transaction();
@@ -1190,7 +1231,7 @@ class Functions
       'message' => ''
     ];
 
-    $clan = $mysqli->query('SELECT * FROM server_clans WHERE id = "' . $clanId . '"')->fetch_assoc();
+    $clan = $mysqli->query('SELECT id, recruiting, tag, name FROM server_clans WHERE id = "' . $clanId . '"')->fetch_assoc();
 
     if ($clan != NULL & $clan['recruiting'] && $mysqli->query('SELECT id FROM server_clan_applications WHERE clanId = ' . $clanId . ' AND userId = ' . $player['userId'] . '')->num_rows <= 0 && $player['clanId'] == 0) {
       
@@ -1336,7 +1377,7 @@ class Functions
     $mysqli = Database::GetInstance();
 
     $player = Functions::GetPlayer();
-    $clan = $mysqli->query('SELECT * FROM server_clans WHERE id = ' . $player['clanId'] . '')->fetch_assoc();
+    $clan = $mysqli->query('SELECT id, leaderId, join_dates FROM server_clans WHERE id = ' . $player['clanId'] . '')->fetch_assoc();
 
     $json = [
       'status' => false,
@@ -1398,8 +1439,8 @@ class Functions
 
     $player = Functions::GetPlayer();
     $userId = $mysqli->real_escape_string($userId);
-    $clan = $mysqli->query('SELECT * FROM server_clans WHERE id = ' . $player['clanId'] . '')->fetch_assoc();
-    $user = $mysqli->query('SELECT * FROM player_accounts WHERE userId = "' . $userId . '" AND clanId = "' . $clan['id'] . '"')->fetch_assoc();
+    $clan = $mysqli->query('SELECT id, leaderId, join_dates FROM server_clans WHERE id = ' . $player['clanId'] . '')->fetch_assoc();
+    $user = $mysqli->query('SELECT userId, clanId FROM player_accounts WHERE userId = "' . $userId . '" AND clanId = "' . $clan['id'] . '"')->fetch_assoc();
 
     if ($userId == $player['userId']){
       $json['message'] = "Error to delete a member.";
@@ -1446,8 +1487,12 @@ class Functions
 
     $player = Functions::GetPlayer();
     $userId = $mysqli->real_escape_string($userId);
-    $user = $mysqli->query('SELECT * FROM player_accounts WHERE userId = "' . $userId . '"')->fetch_assoc();
-    $clan = $mysqli->query('SELECT * FROM server_clans WHERE id = ' . $player['clanId'] . '')->fetch_assoc();
+    // For $user: userId, pilotName, data (for experience), rankId, factionId, clanId
+    $user = $mysqli->query('SELECT userId, pilotName, data, rankId, factionId, clanId FROM player_accounts WHERE userId = "' . $userId . '"')->fetch_assoc();
+    // For $clan: id, leaderId, join_dates
+    $clan = $mysqli->query('SELECT id, leaderId, join_dates FROM server_clans WHERE id = ' . $player['clanId'] . '')->fetch_assoc();
+    $user = $mysqli->query('SELECT userId, pilotName FROM player_accounts WHERE userId = "' . $userId . '"')->fetch_assoc(); // Needs pilotName
+    $clan = $mysqli->query('SELECT id, leaderId FROM server_clans WHERE id = ' . $player['clanId'] . '')->fetch_assoc();
 
     $json = [
       'status' => false,
@@ -1542,7 +1587,7 @@ class Functions
     $mysqli = Database::GetInstance();
 
     $player = Functions::GetPlayer();
-    $clan = $mysqli->query('SELECT * FROM server_clans WHERE id = ' . $player['clanId'] . '')->fetch_assoc();
+    $clan = $mysqli->query('SELECT id, leaderId FROM server_clans WHERE id = ' . $player['clanId'] . '')->fetch_assoc();
     $requestId = $mysqli->real_escape_string($requestId);
 
     $json = [
@@ -1589,7 +1634,7 @@ class Functions
     $mysqli = Database::GetInstance();
 
     $player = Functions::GetPlayer();
-    $clan = $mysqli->query('SELECT * FROM server_clans WHERE id = ' . $player['clanId'] . '')->fetch_assoc();
+    $clan = $mysqli->query('SELECT id, leaderId FROM server_clans WHERE id = ' . $player['clanId'] . '')->fetch_assoc();
     $requestId = $mysqli->real_escape_string($requestId);
 
     $json = [
@@ -1639,7 +1684,7 @@ class Functions
     $mysqli = Database::GetInstance();
 
     $player = Functions::GetPlayer();
-    $clan = $mysqli->query('SELECT * FROM server_clans WHERE id = ' . $player['clanId'] . '')->fetch_assoc();
+    $clan = $mysqli->query('SELECT id, leaderId FROM server_clans WHERE id = ' . $player['clanId'] . '')->fetch_assoc();
     $requestId = $mysqli->real_escape_string($requestId);
 
     $json = [
@@ -1649,7 +1694,7 @@ class Functions
 
     if ($clan != NULL) {
       if ($clan['leaderId'] == $player['userId']) {
-        $statement = $mysqli->query('SELECT * FROM server_clan_diplomacy_applications WHERE toClanId = ' . $player['clanId'] . ' AND id = "' . $requestId . '"');
+        $statement = $mysqli->query('SELECT id, senderClanId, toClanId, diplomacyType FROM server_clan_diplomacy_applications WHERE toClanId = ' . $player['clanId'] . ' AND id = "' . $requestId . '"');
         $fetch = $statement->fetch_assoc();
 
         if ($statement->num_rows >= 1) {
@@ -2399,7 +2444,7 @@ public static function getAmmoId($key) {
     $mysqli = Database::GetInstance();
 
     $player = Functions::GetPlayer();
-    $clan = $mysqli->query('SELECT * FROM server_clans WHERE id = ' . $player['clanId'] . '')->fetch_assoc();
+    $clan = $mysqli->query('SELECT id, leaderId FROM server_clans WHERE id = ' . $player['clanId'] . '')->fetch_assoc();
     $diplomacyId = $mysqli->real_escape_string($diplomacyId);
 
     $json = [
@@ -2409,7 +2454,7 @@ public static function getAmmoId($key) {
 
     if ($clan != NULL) {
       if ($clan['leaderId'] == $player['userId']) {
-        $statement = $mysqli->query('SELECT * FROM server_clan_diplomacy WHERE id = "' . $diplomacyId . '"');
+        $statement = $mysqli->query('SELECT senderClanId, toClanId, diplomacyType FROM server_clan_diplomacy WHERE id = "' . $diplomacyId . '"');
         $fetch = $statement->fetch_assoc();
 
         if ($statement->num_rows >= 1 && $fetch['diplomacyType'] != 3) {
@@ -2480,6 +2525,7 @@ public static function getAmmoId($key) {
 
             $mysqli->commit();
           } catch (Exception $e) {
+            error_log('Exception in ' . __METHOD__ . ' on line ' . __LINE__ . ': ' . $e->getMessage() . "\nStack trace: " . $e->getTraceAsString());
             $message = 'An error occurred. Please try again later.';
             $mysqli->rollback();
           }
@@ -2532,8 +2578,14 @@ public static function getAmmoId($key) {
 
     if ($mysqli->query('SELECT userId FROM player_accounts WHERE userId = "' . $userId . '"')->num_rows >= 1) {
       if ($mysqli->query('SELECT userId FROM player_accounts WHERE pwResetKey = "' . $hash . '"')->num_rows >= 1) {
-		  $mysqli->query('UPDATE player_accounts SET password = "'.password_hash($password, PASSWORD_DEFAULT).'", pwResetKey = NULL WHERE userId = "'.$userId.'"');
-		  $message = 'Password changed successfully. Redirect in 5 seconds...<meta http-equiv="refresh" content="5; URL=http://127.0.0.1/">';
+        try {
+          $mysqli->query('UPDATE player_accounts SET password = "'.password_hash($password, PASSWORD_DEFAULT).'", pwResetKey = NULL WHERE userId = "'.$userId.'"');
+          $message = 'Password changed successfully. Redirect in 5 seconds...<meta http-equiv="refresh" content="5; URL=http://127.0.0.1/">';
+        } catch (Exception $e) {
+          error_log('Exception in ' . __METHOD__ . ' on line ' . __LINE__ . ': ' . $e->getMessage() . "\nStack trace: " . $e->getTraceAsString());
+          $message = 'An error occurred while resetting the password. Please try again later.';
+          // $mysqli->rollback(); // Only if this function started a transaction
+        }
 		} else {
 		  $message = 'Key not found.';
 		}
@@ -2570,11 +2622,22 @@ public static function getAmmoId($key) {
 			]
 		];
 		
-		if($mysqli->query("UPDATE player_accounts SET securityQuestions = '".json_encode($json["securityQuestions"])."' WHERE userId = ".$player["userId"])) {
-			$json["message"] = "Information is saved successfully.";
-		} else {
-			$json["message"] = "An error occured while saving the security questions. Please try again later.";
-		}
+    try {
+      if($mysqli->query("UPDATE player_accounts SET securityQuestions = '".json_encode($json["securityQuestions"])."' WHERE userId = ".$player["userId"])) {
+        $json["message"] = "Information is saved successfully.";
+      } else {
+        // This case might indicate a non-exception SQL error, e.g., query executed but returned false.
+        // For actual exceptions during query execution (like connection lost), the catch block would trigger.
+        $json["message"] = "An error occured while saving the security questions. Please try again later.";
+        if ($mysqli->error) {
+            error_log('MySQL error in ' . __METHOD__ . ' on line ' . __LINE__ . ': ' . $mysqli->error);
+        }
+      }
+    } catch (Exception $e) {
+        error_log('Exception in ' . __METHOD__ . ' on line ' . __LINE__ . ': ' . $e->getMessage() . "\nStack trace: " . $e->getTraceAsString());
+        $json["message"] = "An unexpected error occured while saving the security questions. Please try again later.";
+        // if ($mysqli->in_transaction) { $mysqli->rollback(); } // Only if this function started a transaction
+    }
 	} else {
 		$json["message"] = "Please fill out every answer.";
 	}
@@ -2610,843 +2673,486 @@ public static function getAmmoId($key) {
     return json_encode($json);
   }
 
+  // Helper function to buy ammunition
+  private static function _buyAmmo(&$player, &$data, &$shop, $amount, &$json, $mysqli, $typeMunnition) {
+    // $amount here is the $original_amount passed from Buy
+    if(Socket::Get('IsOnline', array('UserId' => $player['userId'], 'Return' => false))) {
+        Socket::Send('AddAmmo', ['UserId' => $player['userId'], 'itemId' => $shop['ammoId'], 'amount' => $amount]);
+      } else {
+        $player_ammo = json_decode($mysqli->query("SELECT ammo FROM player_accounts WHERE userId=".$player['userId'])->fetch_assoc()["ammo"]);
+        if (empty($player_ammo->{$typeMunnition[$shop['ammoId']]})){
+          $player_ammo->{$typeMunnition[$shop['ammoId']]} = $amount;
+        } else {
+          $player_ammo->{$typeMunnition[$shop['ammoId']]} += $amount;
+        }
+        $mysqli->query("UPDATE player_accounts SET ammo = '".json_encode($player_ammo)."' WHERE userId = ".$player["userId"]);
+      }
+    return true;
+  }
+
+  // Helper function to buy ships
+  private static function _buyShip(&$player, &$data, &$items, &$shop, &$json, $mysqli) {
+    if (!in_array($shop['shipId'], $items->ships)) {
+      array_push($items->ships, (int)$shop['shipId']);
+      return true;
+    } else {
+      $json['message'] = 'You already have an ' . $shop['name'] . '.';
+      return false;
+    }
+  }
+
+  // Helper function to buy P.E.T. related items (P.E.T. itself, fuel, designs, modules)
+  private static function _buyPetRelated(&$player, &$data, &$items, &$shop, &$json, $mysqli, $verificaconectado) {
+    if (!empty($shop['petName'])) { // Buying P.E.T. itself
+      if ($verificaconectado) {
+        $json['message'] = "You have disconnect from the server to buy ".$shop['petName'];
+        return false;
+      }
+      if (!$items->{$shop['petName']}) {
+        $items->{$shop['petName']} = true;
+        return true;
+      } else {
+        $json['message'] = 'You already have an '.$shop['name'];
+        return false;
+      }
+    } else if (!empty($shop['petDesign'])) { // Buying P.E.T. Design
+        if (isset($player['petSavedDesigns'])){
+            $arraySavedPets = json_decode($player['petSavedDesigns']);
+        } else {
+            $arraySavedPets = [];
+        }
+
+        if (in_array($shop['petDesign'], $arraySavedPets) || $player['petDesign'] == $shop['petDesign']){
+            $json['message'] = "You already buyed this pet.";
+            return false;
+        }
+
+        if (!in_array($player['petDesign'], $arraySavedPets)){
+            array_push($arraySavedPets, $player['petDesign']);
+        }
+
+        $mysqli->query("UPDATE player_accounts SET petSavedDesigns = '".json_encode($arraySavedPets)."' WHERE userId = ".$player['userId']);
+        $mysqli->query("UPDATE player_accounts SET petDesign = '".$shop['petDesign']."' WHERE userId = ".$player['userId']);
+
+        if (Socket::Get('IsOnline', ['UserId' => $player['userId'], 'Return' => false])) {
+            Socket::Send('updatePet', ['UserId' => $player['userId'], 'PetName' => $player['petName'], 'PetDesignn' => (isset($shop['petDesign'])) ? $shop['petDesign'] : 22]);
+        }
+        return true;
+    } else if (!empty($shop['petFuel'])) { // Buying P.E.T. Fuel
+        $current_items = json_decode($mysqli->query("SELECT items FROM player_equipment WHERE userId=".$player['userId'])->fetch_assoc()["items"]); // Re-fetch to ensure latest data
+        $fuel_to_add = $shop['petFuel']; // Amount is per single item defined in shop, not the total $amount parameter.
+
+        if ($verificaconectado) {
+            $current_fuel = Socket::Get('getPetFuel', ['UserId' => $player['userId'], 'Return' => 0]);
+            if (empty($current_fuel) && !is_numeric($current_fuel)){ // Assuming 0 is a valid return
+                 $current_fuel = 0; // Treat null/empty as 0 if API implies that
+            }
+            if (($current_fuel + $fuel_to_add) > 50000){
+                $json['message'] = "The pet only allows 50,000 liters of fuel.";
+                return false;
+            }
+            // Socket will handle adding fuel
+        } else {
+            if (!isset($current_items->fuel)) $current_items->fuel = 0;
+
+            if (($current_items->fuel + $fuel_to_add) > 50000){
+                $json['message'] = "The pet only allows 50,000 liters of fuel.";
+                return false;
+            }
+            $current_items->fuel += $fuel_to_add;
+        }
+
+        // Update items JSON in the database
+        $mysqli->query("UPDATE player_equipment SET items = '".json_encode($current_items)."' WHERE userId = ".$player["userId"]);
+
+        if ($verificaconectado) {
+            Socket::Send('updatePetFuel', ['UserId' => $player['userId'], 'Amount' => $fuel_to_add]);
+        }
+        return true;
+    } else if (!empty($shop['petModule'])) { // Buying P.E.T. Module
+        $current_items = json_decode($mysqli->query("SELECT items FROM player_equipment WHERE userId=".$player['userId'])->fetch_assoc()["items"]); // Re-fetch
+        $module_name = $shop['petModule'];
+
+        if (!empty($current_items->$module_name) && $current_items->$module_name == true){
+            $json['message'] = "You already have ".$shop['name'];
+            return false;
+        }
+        $current_items->$module_name = true;
+        $mysqli->query("UPDATE player_equipment SET items = '".json_encode($current_items)."' WHERE userId = ".$player["userId"]);
+        if ($verificaconectado) {
+            Socket::Send('setPetModule', ['UserId' => $player['userId'], 'TypeModule' => $shop['petModule']]);
+        }
+        return true;
+    }
+    return false; // Should not reach here if shop item is valid PET item
+  }
+
+  // Helper function to buy boosters
+  private static function _buyBooster(&$player, &$data, &$boosters, &$shop, &$json, $mysqli, $verificaconectado) {
+      $booster_id_key = str_replace("-", "", $shop['boosterId']);
+      $canPutBooster = true;
+
+      if (empty($boosters->{$booster_id_key})) {
+          if($verificaconectado) {
+            Socket::Send('SendBoosters', ['UserId' => $player['userId'], 'typeBooster' => $shop['boosterType'], 'hoursBooster' => $shop['boosterDuration']]);
+          }
+          $bb_item = array('Type' => $shop['boosterType'], 'Seconds' => $shop['boosterDuration']);
+          $boosters->{$booster_id_key} = [$bb_item]; // Initialize as an array
+          return true;
+      } else {
+          foreach ($boosters->{$booster_id_key} as $bb){
+              if ($bb->Type == $shop['boosterType']){
+                  $canPutBooster = false;
+                  break;
+              }
+          }
+          if ($canPutBooster){
+              if($verificaconectado) {
+                Socket::Send('SendBoosters', ['UserId' => $player['userId'], 'typeBooster' => $shop['boosterType'], 'hoursBooster' => $shop['boosterDuration']]);
+              }
+              array_push($boosters->{$booster_id_key}, array('Type' => $shop['boosterType'], 'Seconds' => $shop['boosterDuration']));
+              return true;
+          } else {
+              $json['message'] = 'You already have an ' . $shop['name'] . '.';
+              return false;
+          }
+      }
+  }
+
+  // Helper function to buy ship designs
+  private static function _buyShipDesign(&$player, &$data, &$shop, &$json, $mysqli) {
+    $design_name = $shop['design_name'];
+    $search_design = $mysqli->query("SELECT * FROM player_designs WHERE name='$design_name' AND userId = " . $player['userId'] . ";");
+    $info_design = $mysqli->query("SELECT * FROM server_ships WHERE lootID = '$design_name'");
+
+    if ($search_design->num_rows > 0) {
+      $json['message'] = 'You already have an ' . $shop['name'] . '.';
+      return false;
+    } else {
+      if ($info_design->num_rows > 0){
+        $baseShipId = $info_design->fetch_assoc()['baseShipId'];
+        if ($baseShipId > 0){
+          $mysqli->query("INSERT INTO player_designs (name, baseShipId, userId) VALUES ('$design_name', '$baseShipId', " . $player['userId'] . ")");
+          return true;
+        }
+      }
+    }
+    return false; // Should not reach if design is valid
+  }
+
+  // Helper function to buy general equipment (lasers, generators, skilltree, drone formations)
+  private static function _buyGeneralEquipment(&$player, &$data, &$items, &$shop, $amount, &$json, $mysqli) {
+      if (!empty($shop['laserName'])) { // Lasers, Generators, Iris
+        $lasersSaved = json_decode($mysqli->query("SELECT items FROM player_equipment WHERE userId=".$player['userId'])->fetch_assoc()["items"]);
+        $config1 = json_decode($mysqli->query('SELECT config1_drones FROM player_equipment WHERE userId = ' . $player['userId'] . '')->fetch_assoc()['config1_drones']);
+        $config2 = json_decode($mysqli->query('SELECT config2_drones FROM player_equipment WHERE userId = ' . $player['userId'] . '')->fetch_assoc()['config2_drones']);
+        $max = null; $name = null;
+
+        // Simplified max/name logic - assumes this mapping is correct and complete as per original
+        $itemLimits = [
+            'lf1Count' => ['max' => 40, 'name' => "lasers"], 'lf2Count' => ['max' => 40, 'name' => "lasers"],
+            'lf3Count' => ['max' => 40, 'name' => "lasers"], 'lf4Count' => ['max' => 40, 'name' => "lasers"],
+            'lf5Count' => ['max' => 40, 'name' => "lasers"], 'bo3Count' => ['max' => 40, 'name' => "generators"],
+            'bo2Count' => ['max' => 40, 'name' => "generators"], 'B01Count' => ['max' => 40, 'name' => "generators"],
+            'A03Count' => ['max' => 40, 'name' => "generators"], 'A02Count' => ['max' => 40, 'name' => "generators"],
+            'A01Count' => ['max' => 40, 'name' => "generators"], 'g3nCount' => ['max' => 40, 'name' => "generators"],
+            'g3n6900Count' => ['max' => 40, 'name' => "generators"], 'g3n3310Count' => ['max' => 40, 'name' => "generators"],
+            'g3n3210Count' => ['max' => 40, 'name' => "generators"], 'g3n2010Count' => ['max' => 40, 'name' => "generators"],
+            'g3n1010Count' => ['max' => 40, 'name' => "generators"], 'lf3nCount' => ['max' => 40, 'name' => "lasers"],
+            'lf4mdCount' => ['max' => 40, 'name' => "lasers"], 'lf4pdCount' => ['max' => 40, 'name' => "lasers"],
+            'lf4hpCount' => ['max' => 40, 'name' => "lasers"], 'lf4spCount' => ['max' => 40, 'name' => "lasers"],
+            'lf4unstableCount' => ['max' => 40, 'name' => "lasers"], 'mp1Count' => ['max' => 40, 'name' => "lasers"],
+            'iriscount' => ['max' => 8, 'name' => "drones"]
+        ];
+
+        if (!isset($itemLimits[$shop['laserName']])) return false; // Unknown item
+        $max = $itemLimits[$shop['laserName']]['max'];
+        $name = $itemLimits[$shop['laserName']]['name'];
+
+        if ($shop['laserName'] == 'iriscount' && $items->iriscount <= 7) {
+            $config1conf = array('items' => [], 'designs' => []);
+            $config2conf = array('items' => [], 'designs' => []);
+            array_push($config1, $config1conf);
+            array_push($config2, $config2conf);
+            $mysqli->query("UPDATE player_equipment SET config1_drones = '" . json_encode($config1) . "', config2_drones = '" . json_encode($config2) . "' WHERE userId = " . $player['userId'] . "");
+        }
+
+        $current_count = isset($lasersSaved->{$shop['laserName']}) ? $lasersSaved->{$shop['laserName']} : 0;
+        if (($current_count + $amount) > $max) {
+            $json['message'] = "Max ".$max." ".$name." for type";
+            return false;
+        }
+        $items->{$shop['laserName']} = $current_count + $amount;
+        return true;
+
+      } else if (!empty($shop['skillTree'])) { // Logdisks
+          $items->skillTree->{$shop['skillTree']} += $amount;
+          return true;
+      } else if (!empty($shop['FormationName'])){ // Drone Formations
+          $formations = json_decode($mysqli->query("SELECT formationsSaved FROM player_equipment WHERE userId=".$player['userId'])->fetch_assoc()["formationsSaved"]);
+          $formation_key = $shop['FormationName'];
+          if (!empty($formations->$formation_key) && $formations->$formation_key == $formation_key){
+              $json['message'] = "You already have ".$shop['name'];
+              return false;
+          }
+          $formations->$formation_key = $formation_key;
+          $mysqli->query("UPDATE player_equipment SET formationsSaved = '".json_encode($formations)."' WHERE userId = ".$player["userId"]);
+          if (Socket::Get('IsOnline', ['UserId' => $player['userId'], 'Return' => false])) {
+              Socket::Send('buyFormation', ['UserId' => $player['userId'], 'Formation' => $shop['FormationName']]);
+          }
+          return true;
+      }
+      return false;
+  }
+
+  // Helper function to buy Drones (Apis/Zeus parts, Havoc/Hercules designs)
+  private static function _buyDrone(&$player, &$data, &$items, &$shop, $amount, &$json, $mysqli) {
+    if (strpos($shop['droneName'], "Count")) { // Havoc, Hercules (assuming these are stored with "Count" suffix in shop['droneName'])
+        $items->{$shop['droneName']} += $amount; // $amount is 1 for these if not stackable
+        return true;
+    } else { // Apis, Zeus parts
+        if (!$items->{$shop['droneName']}) { // Check if player already has the full drone
+            $dronePartsKey = "drone".ucfirst($shop['droneName'])."Parts";
+            if (empty($items->{$dronePartsKey})){
+                $items->{$dronePartsKey} = $amount;
+            } else {
+                $items->{$dronePartsKey} += $amount;
+            }
+            return true;
+        } else {
+            $json['message'] = 'You already have an ' . $shop['name'] . ' Drone.';
+            return false;
+        }
+    }
+  }
+
+  // Helper function to buy keys
+  private static function _buyKey(&$player, &$data, &$shop, $amount, &$json, $mysqli, $verificaconectado) {
+    if (!empty($shop['typeKey'])){ // Old key system?
+        if($verificaconectado) {
+          $json['message'] = "Disconnect from game to buy keys.";
+          return false;
+        }
+        $mysqli->query("UPDATE player_accounts SET bootyKeys = bootyKeys+$amount WHERE userId = ".$player['userId']);
+        return true;
+    } else if (!empty($shop['nameBootyKey'])){ // New key system
+        $bootyKeys = json_decode($mysqli->query("SELECT bootyKeys FROM player_accounts WHERE userId=".$player['userId'])->fetch_assoc()["bootyKeys"]);
+        $key_name = $shop['nameBootyKey'];
+        if (!isset($bootyKeys->$key_name)) $bootyKeys->$key_name = 0;
+        $bootyKeys->$key_name += $amount;
+        $mysqli->query("UPDATE player_accounts SET bootyKeys = '".json_encode($bootyKeys)."' WHERE userId = ".$player["userId"]);
+        if ($verificaconectado) {
+            Socket::Send('buyKey', ['UserId' => $player['userId'], 'Key' => $shop['nameBootyKey'], 'Amount' => $amount]);
+        }
+        return true;
+    }
+    return false;
+  }
+
+  // Helper function to buy CBS modules
+  private static function _buyCbsModule(&$player, &$data, &$module, &$shop, &$json, $mysqli, $verificaconectado) {
+    $module_item = array('Id' => $shop['moduleId'], 'Type' => $shop['moduleType'], 'InUse' => false);
+    if ($verificaconectado){
+        $json['message'] = "Disconnect from game to buy.";
+        return false;
+    }
+    // Original code had `if (!in_array($module, $module))` which is a bug. It should be `!in_array($module_item, $module)`
+    // However, this simple in_array check might not be enough if modules are unique by Id or Type only.
+    // Assuming modules are unique by the combination of Id and Type as represented by $module_item.
+    $found = false;
+    if (is_array($module)) { // Ensure $module is an array
+        foreach($module as $m) {
+            if ($m->Id == $shop['moduleId'] && $m->Type == $shop['moduleType']) {
+                $found = true;
+                break;
+            }
+        }
+    } else { // If $module is not an array (e.g. null or not initialized properly), initialize it
+        $module = [];
+    }
+
+    if (!$found) {
+        array_push($module, $module_item);
+        return true;
+    } else {
+        $json['message'] = "You already have this module."; // Or similar message
+        return false;
+    }
+  }
+
   public static function Buy($itemId, $amount) {
-
     $mysqli = Database::GetInstance();
-
     $player = Functions::GetPlayer();
     $itemId = $mysqli->real_escape_string($itemId);
     $amount = $mysqli->real_escape_string($amount);
     $shop = json_decode(self::infoshop($itemId), true);
 
-    $json = [
-      'status' => false,
-      'message' => ''
-    ];
+    $json = ['status' => false, 'message' => ''];
 
     $typeMunnition = [
-      'ammunition_laser_mcb-50' => 'mcb50',
-      'ammunition_specialammo_emp-01' => 'emp',
-      'ammunition_mine_smb-01' => 'smb',
-      'ammunition_specialammo_r-ic3' => 'ice',
-      'ammunition_specialammo_wiz-x' => 'wiz',
-      'ammunition_specialammo_dcr-250' => 'dcr',
-      'ammunition_specialammo_pld-8' => 'pld',
-      'ammunition_rocket_plt-3030' => 'plt3030',
-	  'ammunition_rocket_plt-2021' => 'plt21',
-	  'ammunition_rocket_plt-2026' => 'plt26',
-	  'ammunition_rocket_r-310' => 'r310',
-      'ammunition_laser_rsb-75' => 'rsb',
-      'ammunition_laser_sab-50' => 'sab',
-      'equipment_extra_cpu_ish-01' => 'ish',
-      'equipment_extra_cpu_cl04k-xl' => 'cloacks',
-      'ammunition_laser_ucb-100' => 'ucb',
-      'ammunition_laser_mcb-25' => 'mcb25',
-      'ammunition_laser_lcb-10' => 'lcb10',
-	  "ammunition_laser_job-100" => 'job100',
-	  "ammunition_laser_pib-100" => 'pib100',
-	  "ammunition_laser_rb-214" => 'rb214',
-	  'ammunition_laser_cbo-100' => 'cbo100',
-	  'ammunition_laser_xcb-25' => 'xcb25',
-	  'ammunition_laser_xcb-50' => 'xcb50',
-	  'ammunition_laser_lxcb-75' => 'lxcb75',
-	  'ammunition_rocketlauncher_eco-10' => 'eco10',
-	  'ammunition_rocketlauncher_ubr-100' => 'ubr100',
-	  'ammunition_rocketlauncher_sar-02' => 'sar02',
-	  'ammunition_rocketlauncher_sar-01' => 'sar01',
-	  'ammunition_rocketlauncher_hstrm-01' => 'hstrm01',
-	  'ammunition_mine_slm-01' => 'slm',
-	  'ammunition_mine_sabm-01' => 'sabm',
-	  'ammunition_mine_empm-01' => 'empm',
-	  'ammunition_mine_ddm-01' => 'ddm',
-	  'ammunition_mine_acm-01' => 'acm',
-	  'ammunition_mine_im-01' => 'im01',
-	  'ammunition_firework_fwx-l' => 'fwxl'
+      'ammunition_laser_mcb-50' => 'mcb50', 'ammunition_specialammo_emp-01' => 'emp',
+      'ammunition_mine_smb-01' => 'smb', 'ammunition_specialammo_r-ic3' => 'ice',
+      'ammunition_specialammo_wiz-x' => 'wiz', 'ammunition_specialammo_dcr-250' => 'dcr',
+      'ammunition_specialammo_pld-8' => 'pld', 'ammunition_rocket_plt-3030' => 'plt3030',
+      'ammunition_rocket_plt-2021' => 'plt21', 'ammunition_rocket_plt-2026' => 'plt26',
+      'ammunition_rocket_r-310' => 'r310', 'ammunition_laser_rsb-75' => 'rsb',
+      'ammunition_laser_sab-50' => 'sab', 'equipment_extra_cpu_ish-01' => 'ish',
+      'equipment_extra_cpu_cl04k-xl' => 'cloacks', 'ammunition_laser_ucb-100' => 'ucb',
+      'ammunition_laser_mcb-25' => 'mcb25', 'ammunition_laser_lcb-10' => 'lcb10',
+      "ammunition_laser_job-100" => 'job100', "ammunition_laser_pib-100" => 'pib100',
+      "ammunition_laser_rb-214" => 'rb214', 'ammunition_laser_cbo-100' => 'cbo100',
+      'ammunition_laser_xcb-25' => 'xcb25', 'ammunition_laser_xcb-50' => 'xcb50',
+      'ammunition_laser_lxcb-75' => 'lxcb75', 'ammunition_rocketlauncher_eco-10' => 'eco10',
+      'ammunition_rocketlauncher_ubr-100' => 'ubr100', 'ammunition_rocketlauncher_sar-02' => 'sar02',
+      'ammunition_rocketlauncher_sar-01' => 'sar01', 'ammunition_rocketlauncher_hstrm-01' => 'hstrm01',
+      'ammunition_mine_slm-01' => 'slm', 'ammunition_mine_sabm-01' => 'sabm',
+      'ammunition_mine_empm-01' => 'empm', 'ammunition_mine_ddm-01' => 'ddm',
+      'ammunition_mine_acm-01' => 'acm', 'ammunition_mine_im-01' => 'im01',
+      'ammunition_firework_fwx-l' => 'fwxl'
     ];
 
     if (isset($shop) && $shop['active']) {
-
       $items = json_decode($mysqli->query('SELECT items FROM player_equipment WHERE userId = ' . $player['userId'] . '')->fetch_assoc()['items']);
-	    $module = json_decode($mysqli->query('SELECT modules FROM player_equipment WHERE userId = ' . $player['userId'] . '')->fetch_assoc()['modules']);
-	    $boosters = json_decode($mysqli->query('SELECT boosters FROM player_equipment WHERE userId = ' . $player['userId'] . '')->fetch_assoc()['boosters']);
-	    $verificaconectado = Socket::Get('IsOnline', array('UserId' => $player['userId'], 'Return' => false));
+      $module = json_decode($mysqli->query('SELECT modules FROM player_equipment WHERE userId = ' . $player['userId'] . '')->fetch_assoc()['modules']);
+      $boosters = json_decode($mysqli->query('SELECT boosters FROM player_equipment WHERE userId = ' . $player['userId'] . '')->fetch_assoc()['boosters']);
+      $verificaconectado = Socket::Get('IsOnline', array('UserId' => $player['userId'], 'Return' => false));
       $data = json_decode($player['data']);
 
       $price = $shop['price'];
+      $original_amount = $amount; // Keep original amount for some logic that uses it directly
 
-      if ($shop['amount'] && $amount <= 0) {
-        $amount = 1;
-      }
+      if ($shop['amount'] && $amount <= 0) $amount = 1; // Default to 1 if stackable but no amount given
+      if ($shop['amount'] && $amount >= 1) $price *= $amount; // Calculate total price for stackable items
 
-      if ($shop['amount'] && $amount >= 1) {
-        $price *= $amount;
-      }
-	  
-      if ($player['premium'] == 1) {
-        $price = $price = $price / 100 * 60;
-      }
+      if ($player['premium'] == 1) $price = $price * 0.4; // Apply premium discount (original was /100*60, which is 60% of price, so 40% discount)
+
+      $status = false; // Overall status of the purchase operation
 
       if ($shop['priceType'] == 'uridium' || $shop['priceType'] == 'credits'){
-
         if (($shop['priceType'] == 'uridium' ? $data->uridium : $data->credits) >= $price) {
-
           $data->{($shop['priceType'] == 'uridium' ? 'uridium' : 'credits')} -= $price;
-          $status = false;
 
-          if (!empty($shop['droneName'])) {
-
-            if (strpos($shop['droneName'], "Count")) {
-              $items->{$shop['droneName']} += $amount;
-              $status = true;
-            } else {
-              if (!$items->{$shop['droneName']}) {
-                //$items->{$shop['droneName']} = true;
-                $droneName = "drone".ucfirst($shop['droneName'])."Parts";
-                if (empty($items->{$droneName})){
-                  $items->{$droneName} = $amount;
-                } else {
-                  $items->{$droneName} += $amount;
-                }
-                $status = true;
-              } else {
-                $json['message'] = 'You already have an ' . $shop['name'] . ' Drone.';
-              }
-            }
-
-          } else if (!empty($shop['laserName'])) {
-
-            $lasersSaved = json_decode($mysqli->query("SELECT items FROM player_equipment WHERE userId=".$player['userId'])->fetch_assoc()["items"]);
-		    $config1 = json_decode($mysqli->query('SELECT config1_drones FROM player_equipment WHERE userId = ' . $player['userId'] . '')->fetch_assoc()['config1_drones']);
-	        $config2 = json_decode($mysqli->query('SELECT config2_drones FROM player_equipment WHERE userId = ' . $player['userId'] . '')->fetch_assoc()['config2_drones']);
-
-            $max = null;
-            $name = null;
-
-            if ($shop['laserName'] == 'lf1Count'){
-              $max = 40;
-              $name = "lasers";			
-            } 
-			if ($shop['laserName'] == 'lf2Count'){
-              $max = 40;
-              $name = "lasers";
-            }            
-			if ($shop['laserName'] == 'lf3Count'){
-              $max = 40;
-              $name = "lasers";
-            }
-            if ($shop['laserName'] == 'lf4Count'){
-              $max = 40;
-              $name = "lasers";
-            }
-            if ($shop['laserName'] == 'lf5Count'){
-              $max = 40;
-              $name = "lasers";
-            }
-            if ($shop['laserName'] == 'bo3Count'){
-              $max = 40;
-              $name = "generators";
-            }
-			if ($shop['laserName'] == 'bo2Count'){
-              $max = 40;
-              $name = "generators";
-            }
-			if ($shop['laserName'] == 'B01Count'){
-              $max = 40;
-              $name = "generators";
-            }
-			if ($shop['laserName'] == 'A03Count'){
-              $max = 40;
-              $name = "generators";
-            }
-			if ($shop['laserName'] == 'A02Count'){
-              $max = 40;
-              $name = "generators";
-            }
-			if ($shop['laserName'] == 'A01Count'){
-              $max = 40;
-              $name = "generators";
-            }
-			if ($shop['laserName'] == 'A01Count'){
-              $max = 40;
-              $name = "generators";
-            }
-			if ($shop['laserName'] == 'g3nCount'){
-              $max = 40;
-              $name = "generators";
-            }
-			if ($shop['laserName'] == 'g3n6900Count'){
-              $max = 40;
-              $name = "generators";
-            }
-			if ($shop['laserName'] == 'g3n3310Count'){
-              $max = 40;
-              $name = "generators";
-            }
-			if ($shop['laserName'] == 'g3n3210Count'){
-              $max = 40;
-              $name = "generators";
-            }
-			if ($shop['laserName'] == 'g3n2010Count'){
-              $max = 40;
-              $name = "generators";
-            }
-			if ($shop['laserName'] == 'g3n1010Count'){
-              $max = 40;
-              $name = "generators";
-            }			 
-			if ($shop['laserName'] == 'lf3nCount'){
-              $max = 40;
-              $name = "lasers";
-			} 
-			if ($shop['laserName'] == 'lf4mdCount'){
-              $max = 40;
-              $name = "lasers";
-			} 
-			if ($shop['laserName'] == 'lf4pdCount'){
-              $max = 40;
-              $name = "lasers";
-			} 
-			if ($shop['laserName'] == 'lf4hpCount'){
-              $max = 40;
-              $name = "lasers";
-			} 
-			if ($shop['laserName'] == 'lf4spCount'){
-              $max = 40;
-              $name = "lasers";
-			} 
-			if ($shop['laserName'] == 'lf4unstableCount'){
-              $max = 40;
-              $name = "lasers";
-			} 
-			if ($shop['laserName'] == 'mp1Count'){
-              $max = 40;
-              $name = "lasers";
-			}
-      if ($shop['laserName'] == 'iriscount'){
-              if ($items->iriscount <= 7) {
-                $config1conf = array('items' => [], 'designs' => []);
-                $config2conf = array('items' => [], 'designs' => []);
-                array_push($config1, $config1conf);
-                array_push($config2, $config2conf);
-                $mysqli->query("UPDATE player_equipment SET config1_drones = '" . json_encode($config1) . "', config2_drones = '" . json_encode($config2) . "' WHERE userId = " . $player['userId'] . "");
-                }
-                  $max = 8;
-                  $name = "drones";
-                }
-
-			
-
-            if ($max == null && $name == null){ 
-              return; 
-            }
-
-            $dd = $lasersSaved->{$shop['laserName']}+=$amount;
-
-            if ($dd > $max){
-              $json['message'] = "Max ".$max." ".$name." for type";
-
-              return json_encode($json);
-            }
-
-            $items->{$shop['laserName']} += $amount;
-            $status = true;
-
-          } else if (!empty($shop['skillTree'])) {
-
-            $items->skillTree->{$shop['skillTree']} += $amount;
-            $status = true;
-
-          } else if (!empty($shop['petName'])) {
-
-            if (Socket::Get('IsOnline', ['UserId' => $player['userId'], 'Return' => false])) {
-              $json['message'] = "You have disconnect from the server to buy ".$shop['petName'];
-              return json_encode($json);
-            }
-
-            if (!$items->{$shop['petName']}) {
-              $items->{$shop['petName']} = true;
-              $status = true;
-            } else {
-              $json['message'] = 'You already have an '.$shop['name'];
-            }
-
-          } else if (!empty($shop['boosterId']) && is_numeric($shop['boosterType']) && !empty($shop['boosterDuration'])){
-
-            //if (isset($verificaconectado) and ($verificaconectado == 0)){
-
-              $shop['boosterId'] = str_replace("-", "", $shop['boosterId']);
-
-              $canPutBooster = true;
-
-              // Fix Boosters. 21.09.2020. | New revisition: 06.02.2021 | Connected to socket: 07.02.2021
-              if (empty($boosters->{$shop['boosterId']})) {
-                  if(Socket::Get('IsOnline', array('UserId' => $player['userId'], 'Return' => false))) {
-                    Socket::Send('SendBoosters', ['UserId' => $player['userId'], 'typeBooster' => $shop['boosterType'], 'hoursBooster' => $shop['boosterDuration']]);
-                  }
-                  $bb[] = array('Type' => $shop['boosterType'], 'Seconds' => $shop['boosterDuration']);
-                  $boosters->{$shop['boosterId']} = $bb;
-                  $status = true;
-              } else {
-
-                foreach ($boosters->{$shop['boosterId']} as $bb){
-                  if ($bb->Type == $shop['boosterType']){
-                    $canPutBooster = false;
-                  }
-                }
-
-                if ($canPutBooster){
-                  if(Socket::Get('IsOnline', array('UserId' => $player['userId'], 'Return' => false))) {
-                    Socket::Send('SendBoosters', ['UserId' => $player['userId'], 'typeBooster' => $shop['boosterType'], 'hoursBooster' => $shop['boosterDuration']]);
-                  }
-                  array_push($boosters->{$shop['boosterId']}, array('Type' => $shop['boosterType'], 'Seconds' => $shop['boosterDuration']));
-                  $status = true;
-                } else {
-                  $json['message'] = 'You already have an ' . $shop['name'] . '.';
-                }
-
-              }
-
-            //} else {
-              //$json['message'] = "Disconnect from game to buy.";
-            //}
-
+          if (!empty($shop['ammoId'])) {
+            $status = self::_buyAmmo($player, $data, $shop, $original_amount, $json, $mysqli, $typeMunnition);
           } else if (!empty($shop['shipId']) && $shop['shipId'] > 0) {
-
-            if (!in_array($shop['shipId'], $items->ships)) {
-              array_push($items->ships, (int)$shop['shipId']);
-              $status = true;
-            } else {
-              $json['message'] = 'You already have an ' . $shop['name'] . '.';
-            }
-
-        } else if (!empty($shop['design_name'])) {
-
-          $design_name = $shop['design_name'];
-          $search_design = $mysqli->query("SELECT * FROM player_designs WHERE name='$design_name' AND userId = " . $player['userId'] . ";");
-          $info_design = $mysqli->query("SELECT * FROM server_ships WHERE lootID = '$design_name'");
-
-          if ($search_design->num_rows > 0) {
-            $json['message'] = 'You already have an ' . $shop['name'] . '.';
-          } else {
-            if ($info_design->num_rows > 0){
-              $baseShipId = $info_design->fetch_assoc()['baseShipId'];
-              if ($baseShipId > 0){
-                $mysqli->query("INSERT INTO player_designs (name, baseShipId, userId) VALUES ('$design_name', '$baseShipId', " . $player['userId'] . ")");
-                $status = true;
-              }
-            }
+            $status = self::_buyShip($player, $data, $items, $shop, $json, $mysqli);
+          } else if (!empty($shop['petName']) || !empty($shop['petDesign']) || !empty($shop['petFuel']) || !empty($shop['petModule'])) {
+            $status = self::_buyPetRelated($player, $data, $items, $shop, $json, $mysqli, $verificaconectado);
+          } else if (!empty($shop['boosterId']) && is_numeric($shop['boosterType']) && !empty($shop['boosterDuration'])) {
+            $status = self::_buyBooster($player, $data, $boosters, $shop, $json, $mysqli, $verificaconectado);
+          } else if (!empty($shop['design_name'])) {
+            $status = self::_buyShipDesign($player, $data, $shop, $json, $mysqli);
+          } else if (!empty($shop['laserName']) || !empty($shop['skillTree']) || !empty($shop['FormationName'])) {
+            $status = self::_buyGeneralEquipment($player, $data, $items, $shop, $original_amount, $json, $mysqli);
+          } else if (!empty($shop['droneName'])) {
+             $status = self::_buyDrone($player, $data, $items, $shop, $original_amount, $json, $mysqli);
+          } else if (!empty($shop['typeKey']) || !empty($shop['nameBootyKey'])) {
+            $status = self::_buyKey($player, $data, $shop, $original_amount, $json, $mysqli, $verificaconectado);
+          } else if (!empty($shop['moduleId']) && !empty($shop['moduleType'])) {
+            $status = self::_buyCbsModule($player, $data, $module, $shop, $json, $mysqli, $verificaconectado);
           }
-
-        } else if (!empty($shop['moduleId']) && !empty($shop['moduleType'])){
-
-          $module2 = array('Id' => $shop['moduleId'], 'Type' => $shop['moduleType'], 'InUse' => false);
-
-          if (isset($verificaconectado) and ($verificaconectado == 0)){
-            if (!in_array($module, $module)) {
-              array_push($module, $module2);
-              $status = true;
-            }
-          } else {
-            $json['message'] = "Disconnect from game to buy.";
-          }
-
-        } else if (!empty($shop['ammoId'])){
-          if(Socket::Get('IsOnline', array('UserId' => $player['userId'], 'Return' => false))) {
-              Socket::Send('AddAmmo', ['UserId' => $player['userId'], 'itemId' => $shop['ammoId'], 'amount' => $amount]);
-            } else {
-              $ammo=json_decode($mysqli->query("SELECT ammo FROM player_accounts WHERE userId=".$player['userId'])->fetch_assoc()["ammo"]);
-              if (empty($ammo->{$typeMunnition[$shop['ammoId']]})){
-                $ammo->{$typeMunnition[$shop['ammoId']]} = $amount;
-              } else {
-                $ammo->{$typeMunnition[$shop['ammoId']]} += $amount;
-              }
-              $mysqli->query("UPDATE player_accounts SET ammo = '".json_encode($ammo)."' WHERE userId = ".$player["userId"]);
-            }
-            $status = true;
-        } else if (!empty($shop['typeKey'])){
-          if(Socket::Get('IsOnline', array('UserId' => $player['userId'], 'Return' => false))) {
-            return json_encode(array('message' => "Disconnect from game to buy keys."));
-          } else {
-            $mysqli->query("UPDATE player_accounts SET bootyKeys = bootyKeys+$amount WHERE userId = ".$player['userId']);
-            $status = true;
-          }
-        } else if (!empty($shop['petDesign'])){
-          //if(Socket::Get('IsOnline', array('UserId' => $player['userId'], 'Return' => false))) {
-            //return json_encode(array('message' => "Disconnect from game to buy pets."));
-          //} else {
-
-            if (isset($player['petSavedDesigns'])){
-              $arraySavedPets = json_decode($player['petSavedDesigns']);
-            } else {
-              $arraySavedPets = [];
-            }
-
-            if (in_array($shop['petDesign'], $arraySavedPets) || $player['petDesign'] == $shop['petDesign']){
-              $json['message'] = "You already buyed this pet.";
-
-              return json_encode($json);
-            }
-
-            if (!in_array($player['petDesign'], $arraySavedPets)){
-              array_push($arraySavedPets, $player['petDesign']);
-            }
-
-            $mysqli->query("UPDATE player_accounts SET petSavedDesigns = '".json_encode($arraySavedPets)."' WHERE userId = ".$player['userId']);
-            $mysqli->query("UPDATE player_accounts SET petDesign = '".$shop['petDesign']."' WHERE userId = ".$player['userId']);
-
-            if (Socket::Get('IsOnline', ['UserId' => $player['userId'], 'Return' => false])) {
-              Socket::Send('updatePet', ['UserId' => $player['userId'], 'PetName' => $player['petName'], 'PetDesignn' => (isset($shop['petDesign'])) ? $shop['petDesign'] : 22]);
-            }
-
-            $status = true;
-          //}
-        } else if (!empty($shop['petFuel'])){
-
-          $items = json_decode($mysqli->query("SELECT items FROM player_equipment WHERE userId=".$player['userId'])->fetch_assoc()["items"]);
-
-          if (Socket::Get('IsOnline', ['UserId' => $player['userId'], 'Return' => false])) {
-
-            $fuel = Socket::Get('getPetFuel', ['UserId' => $player['userId'], 'Return' => 0]);
-
-            if (empty($fuel) && !is_numeric($fuel)){
-              $json['message'] = "The pet only allows 50,000 liters of fuel.";
-
-              return json_encode($json);
-            }
-
-            $fuel += $shop['petFuel'];
-            $items->fuel += $shop['petFuel'];
-
-            if ($fuel > 50000){
-              $json['message'] = "The pet only allows 50,000 liters of fuel.";
-
-              return json_encode($json);
-            }
-
-          } else {
-
-            if (empty($items->fuel)){
-              $json['message'] = "The pet only allows 50,000 liters of fuel.";
-
-              return json_encode($json);
-            }
-
-            $items->fuel += $shop['petFuel'];
-
-            if ($items->fuel > 50000){
-              $json['message'] = "The pet only allows 50,000 liters of fuel.";
-
-              return json_encode($json);
-            }
-
-          }
-          
-          $mysqli->query("UPDATE player_equipment SET items = '".json_encode($items)."' WHERE userId = ".$player["userId"]);
-
-          if (Socket::Get('IsOnline', ['UserId' => $player['userId'], 'Return' => false])) {
-            Socket::Send('updatePetFuel', ['UserId' => $player['userId'], 'Amount' => $shop['petFuel']]);
-          }
-
-          $status = true;
-        //}
-      } else if (!empty($shop['petModule'])){
-
-        $items = json_decode($mysqli->query("SELECT items FROM player_equipment WHERE userId=".$player['userId'])->fetch_assoc()["items"]);
-
-        $act = $shop['petModule'];
-
-        if (!empty($items->$act) && $items->$act == true){
-          $json['message'] = "You already have ".$shop['name'];
-
-          return json_encode($json);
-        }
-
-        $items->$act = true;
-        
-        $mysqli->query("UPDATE player_equipment SET items = '".json_encode($items)."' WHERE userId = ".$player["userId"]);
-
-        if (Socket::Get('IsOnline', ['UserId' => $player['userId'], 'Return' => false])) {
-          Socket::Send('setPetModule', ['UserId' => $player['userId'], 'TypeModule' => $shop['petModule']]);
-        }
-
-        $status = true;
-    }  else if (!empty($shop['FormationName'])){
-
-          $formations = json_decode($mysqli->query("SELECT formationsSaved FROM player_equipment WHERE userId=".$player['userId'])->fetch_assoc()["formationsSaved"]);
-
-          $act = $shop['FormationName'];
-
-          if (!empty($formations->$act) && $formations->$act == $act){
-            $json['message'] = "You already have ".$shop['name'];
-
-            return json_encode($json);
-          }
-
-          $formations->$act = $act;
-
-          $mysqli->query("UPDATE player_equipment SET formationsSaved = '".json_encode($formations)."' WHERE userId = ".$player["userId"]);
-
-          if (Socket::Get('IsOnline', ['UserId' => $player['userId'], 'Return' => false])) {
-            Socket::Send('buyFormation', ['UserId' => $player['userId'], 'Formation' => $shop['FormationName']]);
-          }
-
-          $status = true;
-      } else if (!empty($shop['nameBootyKey'])){
-
-        $bootyKeys = json_decode($mysqli->query("SELECT bootyKeys FROM player_accounts WHERE userId=".$player['userId'])->fetch_assoc()["bootyKeys"]);
-
-        $act = $shop['nameBootyKey'];
-
-        $bootyKeys->$act+=$amount;
-
-        $mysqli->query("UPDATE player_accounts SET bootyKeys = '".json_encode($bootyKeys)."' WHERE userId = ".$player["userId"]);
-
-        if (Socket::Get('IsOnline', ['UserId' => $player['userId'], 'Return' => false])) {
-          Socket::Send('buyKey', ['UserId' => $player['userId'], 'Key' => $shop['nameBootyKey'], 'Amount' => $amount]);
-        }
-
-        $status = true;
-    }
-
-          if ($status) {
-
-            $mysqli->begin_transaction();
-
-            try {
-              $mysqli->query("UPDATE player_accounts SET data = '" . json_encode($data) . "' WHERE userId = " . $player['userId'] . "");
-              $mysqli->query("UPDATE player_equipment SET items = '" . json_encode($items) . "' WHERE userId = " . $player['userId'] . "");
-              $mysqli->query("UPDATE player_equipment SET boosters = '" . json_encode($boosters) . "' WHERE userId = " . $player['userId'] . "");
-              $mysqli->query("UPDATE player_equipment SET modules = '" . json_encode($module) . "' WHERE userId = " . $player['userId'] . "");
-
-              $json['newStatus'] = [
-                'uridium' => number_format($data->uridium),
-                'credits' => number_format($data->credits)
-              ];
-
-              if (Socket::Get('IsOnline', ['UserId' => $player['userId'], 'Return' => false])) {
-                Socket::Send('BuyItem', ['UserId' => $player['userId'], 'ItemType' => $shop['category'], 'DataType' => ($shop['priceType'] == 'uridium' ? 0 : 1), 'Amount' => $price]);
-              }
-
-              $json['message'] = '' . $shop['name'] . ' ' . ($amount != 0 ? '(' . number_format($amount) . ')' : '') . ' purchased';
-
-              $mysqli->commit();
-            } catch (Exception $e) {
-              $json['message'] = 'An error occurred. Please try again later.';
-              $mysqli->rollback();
-            }
-
-            $mysqli->close();
-
-          }
-        
         } else {
-
           $json['message'] = "You don't have enough " . ($shop['priceType'] == 'uridium' ? 'Uridium' : 'Credits');
-        }  
-
-      } elseif ($shop['priceType'] == 'event') {
-
-        $search_user = $mysqli->query("SELECT * FROM event_coins WHERE userId= " . $player['userId'] . ";");
-
-        if ($search_user->num_rows > 0){
-
-          $user_coins = $search_user->fetch_assoc();
-
-          if ($user_coins['coins'] >= $price) {
-
-            $user_coins['coins'] -= $price;
-            $status = false;
-
-            if (!empty($shop['design_name'])) {
-              $design_name = $shop['design_name'];
-              $search_design = $mysqli->query("SELECT * FROM player_designs WHERE name='$design_name' AND userId = " . $player['userId'] . ";");
-              $info_design = $mysqli->query("SELECT * FROM server_ships WHERE lootID = '$design_name'");
-              if ($search_design->num_rows > 0) {
-                $json['message'] = 'You already have an ' . $shop['name'] . '.';
-              } else {
-                if ($info_design->num_rows > 0){
-                  $baseShipId = $info_design->fetch_assoc()['baseShipId'];
-                  if ($baseShipId > 0){
-                    $mysqli->query("INSERT INTO player_designs (name, baseShipId, userId) VALUES ('$design_name', '$baseShipId', " . $player['userId'] . ")");
-                    $status = true;
-                  }
-                }
-              }
-            }
-
-
-            if (!empty($shop['moduleId']) && !empty($shop['moduleType'])){
-
-              $module2 = array('Id' => $shop['moduleId'], 'Type' => $shop['moduleType'], 'InUse' => false);
-
-              if (isset($verificaconectado) and ($verificaconectado == 0)){
-                if (!in_array($module, $module)) {
-                  array_push($module, $module2);
-                  $status = true;
-                }
-              } else {
-                $json['message'] = "Disconnect from game to buy.";
-              }
-
-            }
-			else if (!empty($shop['nameBootyKey'])){
-
-				$bootyKeys = json_decode($mysqli->query("SELECT bootyKeys FROM player_accounts WHERE userId=".$player['userId'])->fetch_assoc()["bootyKeys"]);
-
-				$act = $shop['nameBootyKey'];
-
-				$bootyKeys->$act+=$amount;
-
-				$mysqli->query("UPDATE player_accounts SET bootyKeys = '".json_encode($bootyKeys)."' WHERE userId = ".$player["userId"]);
-
-				if (Socket::Get('IsOnline', ['UserId' => $player['userId'], 'Return' => false])) {
-				  Socket::Send('updateEC', ['UserId' => $player['userId'], 'Amount' => 3, 'Type' => "DECREASE"]);
-				  Socket::Send('buyKey', ['UserId' => $player['userId'], 'Key' => $shop['nameBootyKey'], 'Amount' => $amount]);
-				}
-			
-				$status = true;
-				
-			} else if (!empty($shop['ammoId'])){
-              if(Socket::Get('IsOnline', array('UserId' => $player['userId'], 'Return' => false))) {
-              Socket::Send('AddAmmo', ['UserId' => $player['userId'], 'itemId' => $shop['ammoId'], 'amount' => $amount]);
-            } else {
-              $ammo=json_decode($mysqli->query("SELECT ammo FROM player_accounts WHERE userId=".$player['userId'])->fetch_assoc()["ammo"]);
-              if (empty($ammo->{$typeMunnition[$shop['ammoId']]})){
-                $ammo->{$typeMunnition[$shop['ammoId']]} = $amount;
-              } else {
-                $ammo->{$typeMunnition[$shop['ammoId']]} += $amount;
-              }
-              $mysqli->query("UPDATE player_accounts SET ammo = '".json_encode($ammo)."' WHERE userId = ".$player["userId"]);
-            }
-            $status = true;
-			
-			} else if (!empty($shop['laserName'])) {
-
-            $lasersSaved = json_decode($mysqli->query("SELECT items FROM player_equipment WHERE userId=".$player['userId'])->fetch_assoc()["items"]);
-		    $config1 = json_decode($mysqli->query('SELECT config1_drones FROM player_equipment WHERE userId = ' . $player['userId'] . '')->fetch_assoc()['config1_drones']);
-	        $config2 = json_decode($mysqli->query('SELECT config2_drones FROM player_equipment WHERE userId = ' . $player['userId'] . '')->fetch_assoc()['config2_drones']);
-
-            $max = null;
-            $name = null;
-
-            if ($shop['laserName'] == 'lf1Count'){
-              $max = 40;
-              $name = "lasers";			
-            } 
-			if ($shop['laserName'] == 'lf2Count'){
-              $max = 40;
-              $name = "lasers";
-            }            
-			if ($shop['laserName'] == 'lf3Count'){
-              $max = 40;
-              $name = "lasers";
-            }
-            if ($shop['laserName'] == 'lf4Count'){
-              $max = 40;
-              $name = "lasers";
-            }
-            if ($shop['laserName'] == 'lf5Count'){
-              $max = 40;
-              $name = "lasers";
-            }
-            if ($shop['laserName'] == 'bo3Count'){
-              $max = 40;
-              $name = "generators";
-            }
-			if ($shop['laserName'] == 'bo2Count'){
-              $max = 40;
-              $name = "generators";
-            }
-			if ($shop['laserName'] == 'B01Count'){
-              $max = 40;
-              $name = "generators";
-            }
-			if ($shop['laserName'] == 'A03Count'){
-              $max = 40;
-              $name = "generators";
-            }
-			if ($shop['laserName'] == 'A02Count'){
-              $max = 40;
-              $name = "generators";
-            }
-			if ($shop['laserName'] == 'A01Count'){
-              $max = 40;
-              $name = "generators";
-            }
-			if ($shop['laserName'] == 'A01Count'){
-              $max = 40;
-              $name = "generators";
-            }
-			if ($shop['laserName'] == 'g3nCount'){
-              $max = 40;
-              $name = "generators";
-            }
-			if ($shop['laserName'] == 'g3n6900Count'){
-              $max = 40;
-              $name = "generators";
-            }
-			if ($shop['laserName'] == 'g3n3310Count'){
-              $max = 40;
-              $name = "generators";
-            }
-			if ($shop['laserName'] == 'g3n3210Count'){
-              $max = 40;
-              $name = "generators";
-            }
-			if ($shop['laserName'] == 'g3n2010Count'){
-              $max = 40;
-              $name = "generators";
-            }
-			if ($shop['laserName'] == 'g3n1010Count'){
-              $max = 40;
-              $name = "generators";
-            }			 
-			if ($shop['laserName'] == 'lf3nCount'){
-              $max = 40;
-              $name = "lasers";
-			} 
-			if ($shop['laserName'] == 'lf4mdCount'){
-              $max = 40;
-              $name = "lasers";
-			} 
-			if ($shop['laserName'] == 'lf4pdCount'){
-              $max = 40;
-              $name = "lasers";
-			} 
-			if ($shop['laserName'] == 'lf4hpCount'){
-              $max = 40;
-              $name = "lasers";
-			} 
-			if ($shop['laserName'] == 'lf4spCount'){
-              $max = 40;
-              $name = "lasers";
-			} 
-			if ($shop['laserName'] == 'lf4unstableCount'){
-              $max = 40;
-              $name = "lasers";
-			} 
-			if ($shop['laserName'] == 'mp1Count'){
-              $max = 40;
-              $name = "lasers";
-			}
-            $items->{$shop['laserName']} += $amount;
-            $status = true;
-			
-			} else if (!empty($shop['droneName'])) {
-
-            if (strpos($shop['droneName'], "Count")) {
-              $items->{$shop['droneName']} += $amount;
-              $status = true;
-            } else {
-              if (!$items->{$shop['droneName']}) {
-                //$items->{$shop['droneName']} = true;
-                $droneName = "drone".ucfirst($shop['droneName'])."Parts";
-                if (empty($items->{$droneName})){
-                  $items->{$droneName} = $amount;
-                } else {
-                  $items->{$droneName} += $amount;
-                }
-                $status = true;
-              } else {
-                $json['message'] = 'You already have an ' . $shop['name'] . ' Drone.';
-              }
-            }
-			
-			} else if (!empty($shop['shipId']) && $shop['shipId'] > 0) {
-
-            if (!in_array($shop['shipId'], $items->ships)) {
-              array_push($items->ships, (int)$shop['shipId']);
-              $status = true;
-            } else {
-              $json['message'] = 'You already have an ' . $shop['name'] . '.';
-            }
-			
-			
-			} else if (!empty($shop['boosterId']) && is_numeric($shop['boosterType']) && !empty($shop['boosterDuration'])){
-
-            //if (isset($verificaconectado) and ($verificaconectado == 0)){
-
-              $shop['boosterId'] = str_replace("-", "", $shop['boosterId']);
-
-              $canPutBooster = true;
-
-              // Fix Boosters. 21.09.2020. | New revisition: 06.02.2021 | Connected to socket: 07.02.2021
-              if (empty($boosters->{$shop['boosterId']})) {
-                  if(Socket::Get('IsOnline', array('UserId' => $player['userId'], 'Return' => false))) {
-                    Socket::Send('SendBoosters', ['UserId' => $player['userId'], 'typeBooster' => $shop['boosterType'], 'hoursBooster' => $shop['boosterDuration']]);
-                  }
-                  $bb[] = array('Type' => $shop['boosterType'], 'Seconds' => $shop['boosterDuration']);
-                  $boosters->{$shop['boosterId']} = $bb;
-                  $status = true;
-              } else {
-
-                foreach ($boosters->{$shop['boosterId']} as $bb){
-                  if ($bb->Type == $shop['boosterType']){
-                    $canPutBooster = false;
-                  }
-                }
-
-                if ($canPutBooster){
-                  if(Socket::Get('IsOnline', array('UserId' => $player['userId'], 'Return' => false))) {
-                    Socket::Send('SendBoosters', ['UserId' => $player['userId'], 'typeBooster' => $shop['boosterType'], 'hoursBooster' => $shop['boosterDuration']]);
-                  }
-                  array_push($boosters->{$shop['boosterId']}, array('Type' => $shop['boosterType'], 'Seconds' => $shop['boosterDuration']));
-                  $status = true;
-                } else {
-                  $json['message'] = 'You already have an ' . $shop['name'] . '.';
-                }
-
-              }
-
-            //} else {
-              //$json['message'] = "Disconnect from game to buy.";
-            //}
-
-          }
-
-            if ($status) {
-
-              $mysqli->begin_transaction();
-
-              try {
-
-                $mysqli->query("UPDATE event_coins SET coins = '" . $user_coins['coins'] . "' WHERE userId = " . $player['userId'] . "");
-				$mysqli->query("UPDATE player_accounts SET data = '" . json_encode($data) . "' WHERE userId = " . $player['userId'] . "");
-				$mysqli->query("UPDATE player_equipment SET items = '" . json_encode($items) . "' WHERE userId = " . $player['userId'] . "");
-			    $mysqli->query("UPDATE player_equipment SET boosters = '" . json_encode($boosters) . "' WHERE userId = " . $player['userId'] . "");
-                $mysqli->query("UPDATE player_equipment SET modules = '" . json_encode($module) . "' WHERE userId = " . $player['userId'] . "");
-                if (Socket::Get('IsOnline', ['UserId' => $player['userId'], 'Return' => false])) {
-                  Socket::Send('updateEC', ['UserId' => $player['userId'], 'Amount' => $price, 'Type' => "DECREASE"]);
-                }
-
-                $json['ec'] = number_format($user_coins['coins']);
-
-                $json['message'] = '' . $shop['name'] . ' ' . ($amount != 0 ? '(' . number_format($amount) . ')' : '') . ' purchased';
-
-                $mysqli->commit();
-              } catch (Exception $e) {
-                $json['message'] = 'An error occurred. Please try again later.';
-                $mysqli->rollback();
-              }
-
-              $mysqli->close();
-
-            }
-
-          } else {
-            $json['message'] = "You don't have enough Event Coins";
-          }
-
         }
+      } elseif ($shop['priceType'] == 'event') {
+        // Event currency logic - this is a simplified version of the original complex block
+        $search_user = $mysqli->query("SELECT * FROM event_coins WHERE userId= " . $player['userId'] . ";");
+        if ($search_user->num_rows > 0){
+            $user_coins = $search_user->fetch_assoc();
+            if ($user_coins['coins'] >= $price) {
+                $user_coins['coins'] -= $price;
 
+                // Similar dispatching logic as above for event currency items
+                if (!empty($shop['design_name'])) {
+                  $status = self::_buyShipDesign($player, $data, $shop, $json, $mysqli); // Note: _buyShipDesign doesn't use $data directly for currency
+                } else if (!empty($shop['moduleId']) && !empty($shop['moduleType'])){
+                  $status = self::_buyCbsModule($player, $data, $module, $shop, $json, $mysqli, $verificaconectado);
+                } else if (!empty($shop['nameBootyKey']) || !empty($shop['typeKey'])){ // Added typeKey for completeness
+                  $status = self::_buyKey($player, $data, $shop, $original_amount, $json, $mysqli, $verificaconectado);
+                  if ($status && Socket::Get('IsOnline', ['UserId' => $player['userId'], 'Return' => false])) {
+                      Socket::Send('updateEC', ['UserId' => $player['userId'], 'Amount' => $price, 'Type' => "DECREASE"]); // $price here is total for event
+                  }
+                } else if (!empty($shop['ammoId'])){
+                  $status = self::_buyAmmo($player, $data, $shop, $original_amount, $json, $mysqli, $typeMunnition);
+                } else if (!empty($shop['laserName']) || !empty($shop['skillTree']) || !empty($shop['FormationName'])) { // Added skillTree and FormationName
+                  $status = self::_buyGeneralEquipment($player, $data, $items, $shop, $original_amount, $json, $mysqli);
+                } else if (!empty($shop['droneName'])) {
+                  $status = self::_buyDrone($player, $data, $items, $shop, $original_amount, $json, $mysqli);
+                } else if (!empty($shop['shipId']) && $shop['shipId'] > 0) {
+                  $status = self::_buyShip($player, $data, $items, $shop, $json, $mysqli);
+                } else if (!empty($shop['boosterId'])) { // Corrected from boosterId to shop['boosterId'] for consistency
+                  $status = self::_buyBooster($player, $data, $boosters, $shop, $json, $mysqli, $verificaconectado);
+                } else if (!empty($shop['petName']) || !empty($shop['petDesign']) || !empty($shop['petFuel']) || !empty($shop['petModule'])) { // Added PetRelated for event currency
+                  $status = self::_buyPetRelated($player, $data, $items, $shop, $json, $mysqli, $verificaconectado);
+                }
+                // ... (add other event currency item types as needed)
+
+                if ($status) {
+                    $mysqli->query("UPDATE event_coins SET coins = '" . $user_coins['coins'] . "' WHERE userId = " . $player['userId'] . "");
+                    // This needs to be handled carefully: $data might not be relevant for event coin purchases if not also deducting uridium/credits
+                    // For now, assuming $data is not modified by event coin specific logic unless explicitly done in helpers
+                    if ($shop['priceType'] == 'event' && (isset($shop['nameBootyKey']) || isset($shop['ammoId']) || isset($shop['laserName']) || isset($shop['droneName']) || isset($shop['shipId']) || isset($shop['boosterId']) || isset($shop['petName']) ) ) { // Only update EC if it was an EC purchase
+                         if (Socket::Get('IsOnline', ['UserId' => $player['userId'], 'Return' => false])) {
+                             Socket::Send('updateEC', ['UserId' => $player['userId'], 'Amount' => $price, 'Type' => "DECREASE"]);
+                         }
+                    }
+                    $json['ec'] = number_format($user_coins['coins']);
+                }
+            } else {
+                $json['message'] = "You don't have enough Event Coins";
+            }
+        } else {
+             $json['message'] = "You don't have Event Coins recorded."; // Or user has no event coins row
+        }
       }
+
+      if ($status) {
+        $mysqli->begin_transaction();
+        try {
+          $mysqli->query("UPDATE player_accounts SET data = '" . json_encode($data) . "' WHERE userId = " . $player['userId'] . "");
+          // Only update equipment parts that could have changed
+          if (!empty($shop['shipId']) || !empty($shop['laserName']) || !empty($shop['skillTree']) || !empty($shop['petName']) || !empty($shop['petFuel']) || !empty($shop['petModule']) || !empty($shop['droneName']) || !empty($shop['FormationName'])) {
+            $mysqli->query("UPDATE player_equipment SET items = '" . json_encode($items) . "' WHERE userId = " . $player['userId'] . "");
+          }
+          if (!empty($shop['boosterId'])) {
+            $mysqli->query("UPDATE player_equipment SET boosters = '" . json_encode($boosters) . "' WHERE userId = " . $player['userId'] . "");
+          }
+          if (!empty($shop['moduleId'])) {
+            $mysqli->query("UPDATE player_equipment SET modules = '" . json_encode($module) . "' WHERE userId = " . $player['userId'] . "");
+          }
+
+          $json['newStatus'] = [
+            'uridium' => number_format($data->uridium),
+            'credits' => number_format($data->credits)
+          ];
+
+          if (Socket::Get('IsOnline', ['UserId' => $player['userId'], 'Return' => false]) && ($shop['priceType'] == 'uridium' || $shop['priceType'] == 'credits')) {
+            Socket::Send('BuyItem', ['UserId' => $player['userId'], 'ItemType' => $shop['category'], 'DataType' => ($shop['priceType'] == 'uridium' ? 0 : 1), 'Amount' => $price]);
+          }
+
+          // If message wasn't set by a helper for a specific error, set generic success.
+          if (empty($json['message'])) {
+            $json['message'] = '' . $shop['name'] . ' ' . ($original_amount != 0 && $shop['amount'] ? '(' . number_format($original_amount) . ')' : '') . ' purchased';
+          }
+          $mysqli->commit();
+        } catch (Exception $e) {
+          error_log('Exception in ' . __METHOD__ . ' on line ' . __LINE__ . ': ' . $e->getMessage() . "\nStack trace: " . $e->getTraceAsString());
+          // Keep the original user-facing message if it was more specific, otherwise use a generic one.
+          if (strpos($e->getMessage(), 'An error occurred') === false) { // Avoid repeating "An error occurred"
+             $json['message'] = 'An error occurred during purchase. Please try again later.';
+          } else {
+             $json['message'] = $e->getMessage();
+          }
+          $mysqli->rollback();
+          $status = false; // Ensure status reflects the rollback
+        }
+      }
+      // If status is false here, $json['message'] should already be set by a helper or the currency check
       
     } else {
-      $json['message'] = 'Something went wrong!';
+      $json['message'] = 'Shop item not found or inactive!';
     }
-
     return json_encode($json);
-
   }
 
   public static function ChangePilotName($newPilotName)
@@ -3485,7 +3191,8 @@ public static function getAmmoId($key) {
 
             $mysqli->commit();
           } catch (Exception $e) {
-            $message = 'An error occurred. Please try again later.';
+            error_log('Exception in ' . __METHOD__ . ' on line ' . __LINE__ . ': ' . $e->getMessage() . "\nStack trace: " . $e->getTraceAsString());
+            $json['message'] = 'An error occurred. Please try again later.'; // Changed $message to $json['message']
             $mysqli->rollback();
           }
 
@@ -3628,7 +3335,8 @@ public static function getAmmoId($key) {
 
             $mysqli->commit();
           } catch (Exception $e) {
-            $message = 'An error occurred. Please try again later.';
+            error_log('Exception in ' . __METHOD__ . ' on line ' . __LINE__ . ': ' . $e->getMessage() . "\nStack trace: " . $e->getTraceAsString());
+            $json['message'] = 'An error occurred. Please try again later.'; // Changed $message to $json['message']
             $mysqli->rollback();
           }
           $mysqli->close();
@@ -3802,6 +3510,8 @@ public static function getAmmoId($key) {
 
         $mysqli->commit();
       } catch (Exception $e) {
+        error_log('Exception in ' . __METHOD__ . ' on line ' . __LINE__ . ': ' . $e->getMessage() . "\nStack trace: " . $e->getTraceAsString());
+        error_log('Exception in ' . __METHOD__ . ' on line ' . __LINE__ . ': ' . $e->getMessage() . "\nStack trace: " . $e->getTraceAsString());
         $json['message'] = 'An error occurred. Please try again later.';
         $mysqli->rollback();
       }
@@ -3914,6 +3624,7 @@ public static function getAmmoId($key) {
 
           $mysqli->commit();
         } catch (Exception $e) {
+          error_log('Exception in ' . __METHOD__ . ' on line ' . __LINE__ . ': ' . $e->getMessage() . "\nStack trace: " . $e->getTraceAsString());
           $json['message'] = 'An error occurred. Please try again later.';
           $mysqli->rollback();
         }
@@ -4889,8 +4600,13 @@ public static function getAmmoId($key) {
 
     if (isset($_SESSION['account']['id'])) {
       $id = $mysqli->real_escape_string(Functions::s($_SESSION['account']['id']));
-	  $result = $mysqli->query('SELECT * FROM player_accounts WHERE userId = ' . $id . '')->fetch_assoc();
-	  if($id == 324) {
+      // Consolidated list from analysis for GetPlayer():
+      // userId, username, pilotName, email, password, info, verification, shipId, sessionId, data, bootyKeys,
+      // killedNpc, Npckill, clanId, factionId, level, oldPilotNames, rankId, premium, premiumUntil,
+      // ammo, petSavedDesigns, petDesign, petName, destructions, droneExp, title, position, version,
+      // securityQuestions, pwResetKey, rank, rankPoints, warPoints
+	  $result = $mysqli->query('SELECT userId, username, pilotName, email, password, info, verification, shipId, sessionId, data, bootyKeys, killedNpc, Npckill, clanId, factionId, level, oldPilotNames, rankId, premium, premiumUntil, ammo, petSavedDesigns, petDesign, petName, destructions, droneExp, title, position, version, securityQuestions, pwResetKey, rank, rankPoints, warPoints FROM player_accounts WHERE userId = ' . $id . '')->fetch_assoc();
+	  if($id == 324) { // This specific user ID check might indicate special handling or testing.
 		$premium = $result["premium"];
 		if($premium == 1 && $result["premiumUntil"] != null) {
 			$premiumUntil = $result["premiumUntil"];
@@ -4916,7 +4632,8 @@ public static function getAmmoId($key) {
 
     if (isset($id) && !empty($id)) {
       $id = $mysqli->real_escape_string(Functions::s($id));
-      return $mysqli->query('SELECT * FROM player_accounts WHERE userId = ' . $id . '')->fetch_assoc();
+      // Consolidated for GetPlayerById: userId, data, pilotName, username, premium, rankId, factionId, clanId
+      return $mysqli->query('SELECT userId, data, pilotName, username, premium, rankId, factionId, clanId FROM player_accounts WHERE userId = ' . $id . '')->fetch_assoc();
     } else {
       return null;
     }
@@ -4927,7 +4644,8 @@ public static function getAmmoId($key) {
 
     if (isset($pilot) && !empty($pilot)) {
       $pilot = $mysqli->real_escape_string(Functions::s($pilot));
-      $dataPilot = $mysqli->query('SELECT * FROM player_accounts WHERE pilotName = "'.$pilot.'"')->fetch_assoc();
+      // Used in infoclan, only needs pilotName (and userId if further lookups are done based on it)
+      $dataPilot = $mysqli->query('SELECT userId, pilotName FROM player_accounts WHERE pilotName = "'.$pilot.'"')->fetch_assoc();
       return $dataPilot;
     } else {
       return null;
@@ -4939,7 +4657,8 @@ public static function getAmmoId($key) {
 
     if (isset($pilot) && !empty($pilot)) {
       $pilot = $mysqli->real_escape_string(Functions::s($pilot));
-      $dataPilot = $mysqli->query('SELECT * FROM player_accounts WHERE pilotName = "'.$pilot.'" OR userId = "'.$pilot.'" OR username = "'.$pilot.'"')->fetch_assoc();
+      // Used in searchUser: username, pilotName, email, data (for currency), info (for IPs, dates), premium, userId
+      $dataPilot = $mysqli->query('SELECT userId, username, pilotName, email, data, info, premium FROM player_accounts WHERE pilotName = "'.$pilot.'" OR userId = "'.$pilot.'" OR username = "'.$pilot.'"')->fetch_assoc();
       return $dataPilot;
     } else {
       return null;
@@ -5046,7 +4765,7 @@ public static function getAmmoId($key) {
 
       $mysqli = Database::GetInstance();
 
-      $query = $mysqli->query("SELECT * FROM shop_items WHERE id = '$shipId' AND active = '1'");
+      $query = $mysqli->query("SELECT id, category, name, information, price, priceType, amount, image, active, shipId, design_name, moduleId, moduleType, boosterId, boosterType, boosterDuration, laserName, petName, skillTree, droneName, ammoId, typeKey, petDesign, petFuel, petModule, FormationName, nameBootyKey FROM shop_items WHERE id = '$shipId' AND active = '1'");
 
       if ($query->num_rows > 0){
         $data_items = $query->fetch_assoc();
@@ -5138,6 +4857,7 @@ public static function getAmmoId($key) {
 
     $player = self::GetPlayer();
     $mysqli = Database::GetInstance();
+    // This query is already specific.
     $query_applications = $mysqli->query("SELECT server_clan_applications.id as appId, server_clans.tag, server_clans.name FROM server_clan_applications INNER JOIN server_clans ON server_clan_applications.clanId=server_clans.id WHERE server_clan_applications.userId = '".$player['userId']."'");
     
     if ($query_applications->num_rows > 0){
@@ -5494,9 +5214,9 @@ public static function getAmmoId($key) {
 
       $mysqli = Database::GetInstance();
       $player = self::GetPlayer();
-      $playerTo = self::GetPlayerById($to);
+      $playerTo = self::GetPlayerById($to); // GetPlayerById is already refactored
 
-      $bankCreditsQ = $mysqli->query("SELECT * FROM server_clans WHERE id = '".$player['clanId']."'");
+      $bankCreditsQ = $mysqli->query("SELECT leaderId, bankcredits FROM server_clans WHERE id = '".$player['clanId']."'");
 
       if ($bankCreditsQ){
 
@@ -5552,9 +5272,9 @@ public static function getAmmoId($key) {
 
       $mysqli = Database::GetInstance();
       $player = self::GetPlayer();
-      $playerTo = self::GetPlayerById($to);
+      $playerTo = self::GetPlayerById($to); // GetPlayerById is already refactored
 
-      $bankUridiumQ = $mysqli->query("SELECT * FROM server_clans WHERE id = '".$player['clanId']."'");
+      $bankUridiumQ = $mysqli->query("SELECT leaderId, bankuri FROM server_clans WHERE id = '".$player['clanId']."'");
 
       if ($bankUridiumQ){
 
@@ -5654,7 +5374,8 @@ public static function getAmmoId($key) {
 
       $player = self::GetPlayer();
 
-      $sQuery = $mysqli->query("SELECT * FROM server_clans WHERE id = '".$player['clanId']."'");
+      $sQuery = $mysqli->query("SELECT leaderId, creditTax FROM server_clans WHERE id = '".$player['clanId']."'");
+      $sQuery = $mysqli->query("SELECT leaderId, uridiumTax FROM server_clans WHERE id = '".$player['clanId']."'");
 
       if ($sQuery){
 
@@ -5775,7 +5496,7 @@ public static function getAmmoId($key) {
 
       $mysqli = Database::GetInstance();
 
-      $sQuery = $mysqli->query("SELECT * FROM server_clans WHERE id = '$idClan'");
+      $sQuery = $mysqli->query("SELECT creditTax, uridiumTax FROM server_clans WHERE id = '$idClan'");
 
       if ($sQuery){
 
@@ -5828,15 +5549,15 @@ public static function getAmmoId($key) {
 
       $mysqli = Database::GetInstance();
       
-      $getClans = $mysqli->query("SELECT * FROM server_clans WHERE creditTax > 0 OR uridiumTax > 0");
+      $getClans = $mysqli->query("SELECT id, tag, name, lastTaxCredit, lastTaxUridium, creditTax, uridiumTax FROM server_clans WHERE creditTax > 0 OR uridiumTax > 0");
 
       if ($getClans->num_rows > 0){
 
         $dateNow = time();
 
         while($dataClans = $getClans->fetch_assoc()){
-          $creditTax = self::calculateTax($dataClans['id'], 'credits');
-          $uridiumTax = self::calculateTax($dataClans['id'], 'uridium');
+          $creditTax = self::calculateTax($dataClans['id'], 'credits'); // calculateTax already specific
+          $uridiumTax = self::calculateTax($dataClans['id'], 'uridium'); // calculateTax already specific
 
           if ($creditTax > 0){
 
@@ -5996,6 +5717,10 @@ public static function getAmmoId($key) {
 
   }
 
+  private static function _getItemLevelFieldInfo($itemName) {
+    return isset(self::$upgradeableItemConfig[$itemName]) ? (object)self::$upgradeableItemConfig[$itemName] : null;
+  }
+
  public static function selectItemUpgradeSystem($idItem = NULL, $cnt = NULL){
 
     if (isset($idItem) && isset($cnt)){
@@ -6014,7 +5739,7 @@ public static function getAmmoId($key) {
 
       $mysqli = Database::GetInstance();
 
-      $sQuery = $mysqli->query("SELECT * FROM itemsUpgradeSystem WHERE id = '$idItem'");
+      $sQuery = $mysqli->query("SELECT id, name, image, multiplier FROM itemsUpgradeSystem WHERE id = '$idItem'");
 
       if ($sQuery->num_rows > 0){
 
@@ -6026,63 +5751,23 @@ public static function getAmmoId($key) {
         $lvl = null;
         $lvlTo = null;
 
-        if ($dataItem['name'] == "LF-1"){
-          $lvl = $dataEquipment['lf1lvl'];
-          $lvlTo = $lvl+1;
-        } else if ($dataItem['name'] == "LF-2"){
-          $lvl = $dataEquipment['lf2lvl'];
-          $lvlTo = $lvl+1;
-        } else if ($dataItem['name'] == "LF-3"){
-          $lvl = $dataEquipment['lf3lvl'];
-          $lvlTo = $lvl+1;
-        } else if ($dataItem['name'] == "LF-4"){
-          $lvl = $dataEquipment['lf4lvl'];
-          $lvlTo = $lvl+1;
-        } else if ($dataItem['name'] == "Prometeus"){
-          $lvl = $dataEquipment['lf5lvl'];
-          $lvlTo = $lvl+1;
-        } else if ($dataItem['name'] == "SG3N-B01"){
-          $lvl = $dataEquipment['B01lvl'];
-          $lvlTo = $lvl+1;
-        } else if ($dataItem['name'] == "SG3N-B02"){
-          $lvl = $dataEquipment['B02lvl'];
-          $lvlTo = $lvl+1;
-        } else if ($dataItem['name'] == "SG3N-B03"){
-          $lvl = $dataEquipment['B03lvl'];
-          $lvlTo = $lvl+1;
-        } else if ($dataItem['name'] == "SG3N-A01"){
-          $lvl = $dataEquipment['A01lvl'];
-          $lvlTo = $lvl+1;
-        } else if ($dataItem['name'] == "SG3N-A02"){
-          $lvl = $dataEquipment['A02lvl'];
-          $lvlTo = $lvl+1;
-        } else if ($dataItem['name'] == "SG3N-A03"){
-          $lvl = $dataEquipment['A03lvl'];
-          $lvlTo = $lvl+1;		
-        } else if ($dataItem['name'] == "Drone Level"){
-          $lvl = self::getDroneLvl();
-          $lvlTo = $lvl+1;
-		} else if ($dataItem['name'] == "LF-3-Neutron"){
-          $lvl = $dataEquipment['lf3nlvl'];
-          $lvlTo = $lvl+1;
-		} else if ($dataItem['name'] == "LF-4-MD"){
-          $lvl = $dataEquipment['lf4mdlvl'];
-          $lvlTo = $lvl+1;
-		} else if ($dataItem['name'] == "LF-4-PD"){
-          $lvl = $dataEquipment['lf4pdlvl'];
-          $lvlTo = $lvl+1;
-		} else if ($dataItem['name'] == "LF-4-HP"){
-          $lvl = $dataEquipment['lf4hplvl'];
-          $lvlTo = $lvl+1;
-		} else if ($dataItem['name'] == "LF-4-SP"){
-          $lvl = $dataEquipment['lf4splvl'];
-          $lvlTo = $lvl+1;
-		} else if ($dataItem['name'] == "Unstable LF-4"){
-          $lvl = $dataEquipment['lf4unstablelvl'];
-          $lvlTo = $lvl+1;
-		} else if ($dataItem['name'] == "MP-1"){
-          $lvl = $dataEquipment['mp1lvl'];
-          $lvlTo = $lvl+1;
+        $itemInfo = self::_getItemLevelFieldInfo($dataItem['name']);
+
+        if ($itemInfo) {
+            if ($itemInfo->type === 'drone_exp') {
+                $lvl = self::getDroneLvl(); // getDroneLvl() should return the current level
+            } else if (isset($dataEquipment[$itemInfo->field])) {
+                $lvl = $dataEquipment[$itemInfo->field];
+            } else {
+                // Field doesn't exist in $dataEquipment, might be a new item not yet in player_equipment table structure
+                // Or could indicate an issue with $itemInfo->field name. For safety, assume level 0.
+                $lvl = 0;
+            }
+            $lvlTo = $lvl + 1;
+        } else {
+            // Fallback or error for unknown item
+            $json['message'] = "Unknown item for level info: " . $dataItem['name'];
+            return json_encode($json); // Early return if item info not found
         }
 
         $json['name'] = $dataItem['name'];
@@ -6175,81 +5860,30 @@ public static function getAmmoId($key) {
      $sQuery4 = $mysqli->query("SELECT lf1lvl,lf3nlvl,lf4mdlvl,lf4pdlvl,lf4hplvl,lf4splvl,lf4unstablelvl,mp1lvl,lf2lvl,lf3lvl,lf4lvl,lf5lvl,A01lvl,A02lvl,A03lvl,B01lvl,B02lvl,B03lvl FROM player_equipment WHERE userId = '{$player['userId']}'");
       $dataEquipment = $sQuery4->fetch_assoc();
 
-      $lvl = null;
-      $lvlTo = null;
+      $itemInfo = self::_getItemLevelFieldInfo($data['name']);
 
-	  if ($data['name'] == "LF-1"){
-          $lvl = $dataEquipment['lf1lvl'];
-          $lvlTo = $lvl+1;
-        } else if ($data['name'] == "LF-2"){
-          $lvl = $dataEquipment['lf2lvl'];
-          $lvlTo = $lvl+1;
-        } else if ($data['name'] == "LF-3"){
-          $lvl = $dataEquipment['lf3lvl'];
-          $lvlTo = $lvl+1;
-        } else if ($data['name'] == "LF-4"){
-          $lvl = $dataEquipment['lf4lvl'];
-          $lvlTo = $lvl+1;
-        } else if ($data['name'] == "Prometeus"){
-          $lvl = $dataEquipment['lf5lvl'];
-          $lvlTo = $lvl+1;
-        } else if ($data['name'] == "SG3N-B01"){
-          $lvl = $dataEquipment['B01lvl'];
-          $lvlTo = $lvl+1;
-        } else if ($data['name'] == "SG3N-B02"){
-          $lvl = $dataEquipment['B02lvl'];
-          $lvlTo = $lvl+1;
-        } else if ($data['name'] == "SG3N-B03"){
-          $lvl = $dataEquipment['B03lvl'];
-          $lvlTo = $lvl+1;
-        } else if ($data['name'] == "SG3N-A01"){
-          $lvl = $dataEquipment['A01lvl'];
-          $lvlTo = $lvl+1;
-        } else if ($data['name'] == "SG3N-A02"){
-          $lvl = $dataEquipment['A02lvl'];
-          $lvlTo = $lvl+1;
-        } else if ($data['name'] == "SG3N-A03"){
-          $lvl = $dataEquipment['A03lvl'];
-          $lvlTo = $lvl+1;
-		} else if ($data['name'] == "LF-3-Neutron"){
-          $lvl = $dataEquipment['lf3nlvl'];
-          $lvlTo = $lvl+1;
-		} else if ($data['name'] == "LF-4-MD"){
-          $lvl = $dataEquipment['lf4mdlvl'];
-          $lvlTo = $lvl+1;
-		} else if ($data['name'] == "LF-4-PD"){
-          $lvl = $dataEquipment['lf4pdlvl'];
-          $lvlTo = $lvl+1;
-		} else if ($data['name'] == "LF-4-HP"){
-          $lvl = $dataEquipment['lf4hplvl'];
-          $lvlTo = $lvl+1;
-		} else if ($data['name'] == "LF-4-SP"){
-          $lvl = $dataEquipment['lf4splvl'];
-          $lvlTo = $lvl+1;
-		} else if ($data['name'] == "Unstable LF-4"){
-          $lvl = $dataEquipment['lf4unstablelvl'];
-          $lvlTo = $lvl+1;
-		} else if ($data['name'] == "MP-1"){
-          $lvl = $dataEquipment['mp1lvl'];
-          $lvlTo = $lvl+1;
-        } else if ($data['name'] == "Drone Level"){
-        $lvl = self::getDroneLvl();
-        $lvlTo = $lvl+1; 
-
-        if ($lvl >= 6){
-          $json['message'] = "This Drone does not allow to upgrade more.";
-  
+      if (!$itemInfo) {
+          $json['message'] = "Unknown item for upgrade: " . $data['name'];
           return json_encode($json);
-        }
-      }
-	  
-      if ($lvl >= 16){
-        $json['message'] = "This laser does not allow to upgrade more.";
-
-        return json_encode($json);
       }
 
-      $waitTime = strtotime("+5 minutes", time());
+      $lvl = 0; // Current level of the item
+      if ($itemInfo->type === 'drone_exp') {
+          $lvl = self::getDroneLvl();
+      } else if (isset($dataEquipment[$itemInfo->field])) {
+          $lvl = $dataEquipment[$itemInfo->field];
+      }
+      // If field is not set in $dataEquipment (e.g. new item), $lvl remains 0, which is fine for a first upgrade.
+
+      if ($lvl >= $itemInfo->maxLevel) {
+          $displayType = ($itemInfo->type === 'drone_exp') ? "Drone" : (($itemInfo->type === 'equipment') ? "Item" : $itemInfo->type);
+          $json['message'] = "This " . $displayType . " does not allow to upgrade more (Max Level: {$itemInfo->maxLevel}).";
+          return json_encode($json);
+      }
+
+      $lvlTo = $lvl + 1;
+
+      $waitTime = strtotime("+" . self::UPGRADE_WAIT_TIME, time());
       $timeNow = time();
 
       $sQuery = $mysqli->query("INSERT INTO upgradesSystem (`idUser`, `lvl_base`, `new_lvl`, `name`, `itemId`, `waitTime`, `percent`, `img`, `timeNow`) VALUES ('".$player['userId']."', '$lvl', '$lvlTo', '".$data['name']."', '".$data['itemId']."', '$waitTime', '$cnt', '".$data['image']."', '$timeNow');");
@@ -6290,7 +5924,8 @@ public static function getAmmoId($key) {
 
       $mysqli = Database::GetInstance();
 
-      $sQuery = $mysqli->query("SELECT * FROM upgradesSystem WHERE id = '$idItem' AND idUser = '".$player['userId']."'");
+      // Needs timeNow, waitTime
+      $sQuery = $mysqli->query("SELECT timeNow, waitTime FROM upgradesSystem WHERE id = '$idItem' AND idUser = '".$player['userId']."'");
 
       if ($sQuery->num_rows > 0){
 
@@ -6348,7 +5983,8 @@ public static function getAmmoId($key) {
 
       $mysqli = Database::GetInstance();
 
-      $sQuery = $mysqli->query("SELECT * FROM upgradesSystem WHERE id = '$id' AND idUser = '".$player['userId']."'");
+      // Needs: timeNow, waitTime, percent, name, new_lvl, itemId, lvl_base, img, idUser, id (for delete)
+      $sQuery = $mysqli->query("SELECT id, idUser, lvl_base, new_lvl, name, itemId, waitTime, percent, img, timeNow FROM upgradesSystem WHERE id = '$id' AND idUser = '".$player['userId']."'");
 
       if ($sQuery->num_rows > 0){
 
@@ -6367,52 +6003,24 @@ public static function getAmmoId($key) {
           $isWinner = self::getWin($percent);
 
           if ($isWinner){
-
-            if ($data['name'] == "LF-1"){
-              $mysqli->query("UPDATE player_equipment SET lf1lvl = '".$data['new_lvl']."' WHERE userId = '{$player['userId']}'");			
-            } else if ($data['name'] == "LF-2"){
-              $mysqli->query("UPDATE player_equipment SET lf2lvl = '".$data['new_lvl']."' WHERE userId = '{$player['userId']}'");
-            } else if ($data['name'] == "LF-3"){
-              $mysqli->query("UPDATE player_equipment SET lf3lvl = '".$data['new_lvl']."' WHERE userId = '{$player['userId']}'");
-            } else if ($data['name'] == "LF-4"){
-              $mysqli->query("UPDATE player_equipment SET lf4lvl = '".$data['new_lvl']."' WHERE userId = '{$player['userId']}'");
-			} else if ($data['name'] == "Prometeus"){
-              $mysqli->query("UPDATE player_equipment SET lf5lvl = '".$data['new_lvl']."' WHERE userId = '{$player['userId']}'");
-            } else if ($data['name'] == "SG3N-A01"){
-              $mysqli->query("UPDATE player_equipment SET A01lvl = '".$data['new_lvl']."' WHERE userId = '{$player['userId']}'");
-            } else if ($data['name'] == "SG3N-A02"){
-              $mysqli->query("UPDATE player_equipment SET A02lvl = '".$data['new_lvl']."' WHERE userId = '{$player['userId']}'");
-            } else if ($data['name'] == "SG3N-A03"){
-              $mysqli->query("UPDATE player_equipment SET A03lvl = '".$data['new_lvl']."' WHERE userId = '{$player['userId']}'");
-            } else if ($data['name'] == "SG3N-B01"){
-              $mysqli->query("UPDATE player_equipment SET B01lvl = '".$data['new_lvl']."' WHERE userId = '{$player['userId']}'");
-            } else if ($data['name'] == "SG3N-B02"){
-              $mysqli->query("UPDATE player_equipment SET B02lvl = '".$data['new_lvl']."' WHERE userId = '{$player['userId']}'");
-            } else if ($data['name'] == "SG3N-B03"){
-              $mysqli->query("UPDATE player_equipment SET B03lvl = '".$data['new_lvl']."' WHERE userId = '{$player['userId']}'");
-			} else if ($data['name'] == "LF-3-Neutron"){
-              $mysqli->query("UPDATE player_equipment SET lf3nlvl = '".$data['new_lvl']."' WHERE userId = '{$player['userId']}'");
-            } else if ($data['name'] == "LF-4-MD"){
-              $mysqli->query("UPDATE player_equipment SET lf4mdlvl = '".$data['new_lvl']."' WHERE userId = '{$player['userId']}'");
-            } else if ($data['name'] == "LF-4-PD"){
-              $mysqli->query("UPDATE player_equipment SET lf4pdlvl = '".$data['new_lvl']."' WHERE userId = '{$player['userId']}'");
-			} else if ($data['name'] == "LF-4-HP"){
-              $mysqli->query("UPDATE player_equipment SET lf4hplvl = '".$data['new_lvl']."' WHERE userId = '{$player['userId']}'");
-            } else if ($data['name'] == "LF-4-SP"){
-              $mysqli->query("UPDATE player_equipment SET lf4splvl = '".$data['new_lvl']."' WHERE userId = '{$player['userId']}'");
-            } else if ($data['name'] == "Unstable LF-4"){
-              $mysqli->query("UPDATE player_equipment SET lf4unstablelvl = '".$data['new_lvl']."' WHERE userId = '{$player['userId']}'");
-            } else if ($data['name'] == "MP-1"){
-              $mysqli->query("UPDATE player_equipment SET mp1lvl = '".$data['new_lvl']."' WHERE userId = '{$player['userId']}'");
-            } else if ($data['name'] == "Drone Level"){
-              if(Socket::Get('IsOnline', array('UserId' => $player['userId'], 'Return' => false))) {
-                Socket::Send('updateDroneEXP', ['UserId' => $player['userId'], 'Amount' => ExpToDron[$data['new_lvl']]]);
-              } else {
-                $mysqli->query("UPDATE player_accounts SET droneExp = '".ExpToDron[$data['new_lvl']]."' WHERE userId = '{$player['userId']}'");
-              }
+            $itemInfo = self::_getItemLevelFieldInfo($data['name']);
+            if ($itemInfo) {
+                if ($itemInfo->type === 'drone_exp') {
+                    if(Socket::Get('IsOnline', array('UserId' => $player['userId'], 'Return' => false))) {
+                        Socket::Send('updateDroneEXP', ['UserId' => $player['userId'], 'Amount' => self::$droneLevelExperienceMap[$data['new_lvl']]]);
+                    } else {
+                        $mysqli->query("UPDATE player_accounts SET droneExp = '".self::$droneLevelExperienceMap[$data['new_lvl']]."' WHERE userId = '{$player['userId']}'");
+                    }
+                } else if ($itemInfo->type === 'equipment') {
+                    $mysqli->query("UPDATE player_equipment SET {$itemInfo->field} = '".$data['new_lvl']."' WHERE userId = '{$player['userId']}'");
+                }
+                // Potentially add more 'else if' for other types if they update different tables or fields
+                $json['winner'] = true;
+            } else {
+                // Should not happen if item was found before and exists in map
+                $json['message'] = "Error applying upgrade: Unknown item " . $data['name'];
+                $json['winner'] = false;
             }
-
-            $json['winner'] = true;
           } else {
             $json['winner'] = false;
           }
@@ -6472,7 +6080,8 @@ public static function getAmmoId($key) {
     $player = Functions::GetPlayer();
     $mysqli = Database::GetInstance();
 
-    $queryFinish = $mysqli->query("SELECT * FROM upgradessystem WHERE idUser = '".$player['userId']."'");
+    // Needs: timeNow, waitTime, percent, name, new_lvl, itemId, lvl_base, img, id, idUser
+    $queryFinish = $mysqli->query("SELECT id, idUser, lvl_base, new_lvl, name, itemId, waitTime, percent, img, timeNow FROM upgradessystem WHERE idUser = '".$player['userId']."'");
 
     if ($queryFinish->num_rows > 0){
 
@@ -6494,52 +6103,23 @@ public static function getAmmoId($key) {
 
           if ($isWinner){
 
-            if ($dataFinish['name'] == "LF-1"){
-              $mysqli->query("UPDATE player_equipment SET lf1lvl = '".$dataFinish['new_lvl']."' WHERE userId = '{$player['userId']}'");
-            } else if ($dataFinish['name'] == "LF-2"){
-              $mysqli->query("UPDATE player_equipment SET lf2lvl = '".$dataFinish['new_lvl']."' WHERE userId = '{$player['userId']}'");
-            } else if ($dataFinish['name'] == "LF-3"){
-              $mysqli->query("UPDATE player_equipment SET lf3lvl = '".$dataFinish['new_lvl']."' WHERE userId = '{$player['userId']}'");
-            } else if ($dataFinish['name'] == "LF-4"){
-              $mysqli->query("UPDATE player_equipment SET lf4lvl = '".$dataFinish['new_lvl']."' WHERE userId = '{$player['userId']}'");
-			} else if ($dataFinish['name'] == "Prometeus"){
-              $mysqli->query("UPDATE player_equipment SET lf5lvl = '".$dataFinish['new_lvl']."' WHERE userId = '{$player['userId']}'");
-            } else if ($dataFinish['name'] == "SG3N-A01"){
-              $mysqli->query("UPDATE player_equipment SET A01lvl = '".$dataFinish['new_lvl']."' WHERE userId = '{$player['userId']}'");
-            } else if ($dataFinish['name'] == "SG3N-A02"){
-              $mysqli->query("UPDATE player_equipment SET A02lvl = '".$dataFinish['new_lvl']."' WHERE userId = '{$player['userId']}'");
-            } else if ($dataFinish['name'] == "SG3N-A03"){
-              $mysqli->query("UPDATE player_equipment SET A03lvl = '".$dataFinish['new_lvl']."' WHERE userId = '{$player['userId']}'");
-            } else if ($dataFinish['name'] == "SG3N-B01"){
-              $mysqli->query("UPDATE player_equipment SET B01lvl = '".$dataFinish['new_lvl']."' WHERE userId = '{$player['userId']}'");
-            } else if ($dataFinish['name'] == "SG3N-B02"){
-              $mysqli->query("UPDATE player_equipment SET B02lvl = '".$dataFinish['new_lvl']."' WHERE userId = '{$player['userId']}'");
-            } else if ($dataFinish['name'] == "SG3N-B03"){
-              $mysqli->query("UPDATE player_equipment SET B03lvl = '".$dataFinish['new_lvl']."' WHERE userId = '{$player['userId']}'");
-			} else if ($dataFinish['name'] == "LF-3-Neutron"){
-              $mysqli->query("UPDATE player_equipment SET lf3nlvl = '".$dataFinish['new_lvl']."' WHERE userId = '{$player['userId']}'");
-            } else if ($dataFinish['name'] == "LF-4-MD"){
-              $mysqli->query("UPDATE player_equipment SET lf4mdlvl = '".$dataFinish['new_lvl']."' WHERE userId = '{$player['userId']}'");
-            } else if ($dataFinish['name'] == "LF-4-PD"){
-              $mysqli->query("UPDATE player_equipment SET lf4pdlvl = '".$dataFinish['new_lvl']."' WHERE userId = '{$player['userId']}'");
-			} else if ($dataFinish['name'] == "LF-4-HP"){
-              $mysqli->query("UPDATE player_equipment SET lf4hplvl = '".$dataFinish['new_lvl']."' WHERE userId = '{$player['userId']}'");
-            } else if ($dataFinish['name'] == "LF-4-SP"){
-              $mysqli->query("UPDATE player_equipment SET lf4splvl = '".$dataFinish['new_lvl']."' WHERE userId = '{$player['userId']}'");
-            } else if ($dataFinish['name'] == "Unstable LF-4"){
-              $mysqli->query("UPDATE player_equipment SET lf4unstablelvl = '".$dataFinish['new_lvl']."' WHERE userId = '{$player['userId']}'");
-            } else if ($dataFinish['name'] == "MP-1"){
-              $mysqli->query("UPDATE player_equipment SET mp1lvl = '".$dataFinish['new_lvl']."' WHERE userId = '{$player['userId']}'");
-            } else if ($dataFinish['name'] == "Drone Level"){
-              if(Socket::Get('IsOnline', array('UserId' => $player['userId'], 'Return' => false))) {
-                Socket::Send('updateDroneEXP', ['UserId' => $player['userId'], 'Amount' => ExpToDron[$dataFinish['new_lvl']]]);
-              } else {
-                $mysqli->query("UPDATE player_accounts SET droneExp = '".ExpToDron[$dataFinish['new_lvl']]."' WHERE userId = '{$player['userId']}'");
-              }
+            $itemInfo = self::_getItemLevelFieldInfo($dataFinish['name']);
+            if ($itemInfo) {
+                if ($itemInfo->type === 'drone_exp') {
+                    if(Socket::Get('IsOnline', array('UserId' => $player['userId'], 'Return' => false))) {
+                        Socket::Send('updateDroneEXP', ['UserId' => $player['userId'], 'Amount' => self::$droneLevelExperienceMap[$dataFinish['new_lvl']]]);
+                    } else {
+                        $mysqli->query("UPDATE player_accounts SET droneExp = '".self::$droneLevelExperienceMap[$dataFinish['new_lvl']]."' WHERE userId = '{$player['userId']}'");
+                    }
+                } else if ($itemInfo->type === 'equipment') {
+                    $mysqli->query("UPDATE player_equipment SET {$itemInfo->field} = '".$dataFinish['new_lvl']."' WHERE userId = '{$player['userId']}'");
+                }
+                 $result['winner'] = true;
+            } else {
+                // Log error or handle unknown item if necessary
+                $result['winner'] = false;
             }
-
-
-            $result['winner'] = true;
+          } else {
           } else {
             $result['winner'] = false;
           }
