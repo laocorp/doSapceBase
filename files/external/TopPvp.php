@@ -15,7 +15,7 @@
     <th>Name</th>
     <th>Faction</th>
     <th>Rank</th>
-	<th>Deaths</th>
+	<th>Kills</th> <?php // Changed "Deaths" to "Kills" as 'rankPoints' refers to PvP kills ?>
 
   </tr>
 
@@ -31,8 +31,8 @@ if ($dataRankingPvp['data'] != null){
     <td><?php echo htmlspecialchars($data['rank'], ENT_QUOTES, 'UTF-8'); ?></td>
     <td><?php echo htmlspecialchars($data['pilotName'], ENT_QUOTES, 'UTF-8'); ?></td>
     <td><img src="/img/companies/logo_<?php echo ($data['factionId'] == 1 ? 'mmo' : ($data['factionId'] == 2 ? 'eic' : 'vru')); ?>_mini.png"></td>
-    <td><img src="<?php echo DOMAIN; ?>img/ranks/rank_<?php echo htmlspecialchars($data['rankId'], ENT_QUOTES, 'UTF-8'); ?>.png"></td>
-    <td><?php echo number_format($data['rankPoints'], 0, ',', '.'); // PvP kills are in 'rankPoints' in the function's output ?></td>
+    <td><img src="<?php echo htmlspecialchars(DOMAIN, ENT_QUOTES, 'UTF-8'); ?>img/ranks/rank_<?php echo htmlspecialchars($data['rankId'], ENT_QUOTES, 'UTF-8'); ?>.png"></td>
+    <td><?php echo htmlspecialchars(number_format($data['rankPoints'], 0, ',', '.'), ENT_QUOTES, 'UTF-8'); // PvP kills are in 'rankPoints' ?></td>
   </tr>
 
  <?php

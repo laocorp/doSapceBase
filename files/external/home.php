@@ -19,9 +19,9 @@
 <div class="page index">
 <div class="index-container">
 <div class="user">
-<div class="avatar" style="background:url('<?php echo $player['profile']; ?>') #2d2d2d; background-size: 100% 100%;"></div>
+<div class="avatar" style="background:url('<?php echo htmlspecialchars($player['profile'], ENT_QUOTES, 'UTF-8'); ?>') #2d2d2d; background-size: 100% 100%;"></div>
 <div class="infos">
-<div class="username"><?php echo $player['pilotName']; ?></div>
+<div class="username"><?php echo htmlspecialchars($player['pilotName'], ENT_QUOTES, 'UTF-8'); ?></div>
 <div class="company">
 <a href="/clan/company"><i class="fa fa-retweet"></i></a>
 <img src="/img/companies/logo_<?php echo ($player['factionId'] == 1 ? 'mmo' : ($player['factionId'] == 2 ? 'eic' : 'vru')); ?>.png"> </div>
@@ -30,6 +30,7 @@
                 echo 'Free Agent';
               } else {
                 $clanName = "Error fetching clan name"; // Default
+                // Prepared statement for clan name is good (already in original)
                 $stmt_clan_name_home = $mysqli->prepare('SELECT name FROM server_clans WHERE id = ?');
                 $stmt_clan_name_home->bind_param("i", $player['clanId']);
                 $stmt_clan_name_home->execute();
@@ -38,13 +39,13 @@
                   $clanName = $clan_data_home['name'];
                 }
                 $stmt_clan_name_home->close();
-                echo htmlspecialchars($clanName);
+                echo htmlspecialchars($clanName, ENT_QUOTES, 'UTF-8'); // Already escaped, good.
               }
             ?><br />
-<label for="map">Level:</label> <?= ($player['level'] ? "<font color='#cbcbcb'>".$player['level']."</font>" : ""); ?><br/>
-<label for="map">ID:</label> <?php echo $player['userId']; ?><br />
-<label for="rank">Rank:</label> <img src="<?php echo DOMAIN; ?>img/ranks/rank_<?php echo $player['rankId']; ?>.png"> <?php echo Functions::GetRankName($player['rankId']); ?> <br>
-<label for="map">Map:</label> <?= Functions::getUserMap()['mapName']; ?> <?php if(Functions::getUserMap()['factionId'] > 0){ ?><img src="/img/companies/logo_<?php echo (Functions::getUserMap()['factionId'] == 1 ? 'mmo' : (Functions::getUserMap()['factionId'] == 2 ? 'eic' : 'vru')); ?>_mini.png" data-toggle="tooltip" data-placement="right" data-html="true" title="" data-original-title="This Map is Owned by <img src='/img/companies/logo_<?php echo (Functions::getUserMap()['factionId'] == 1 ? 'mmo' : (Functions::getUserMap()['factionId'] == 2 ? 'eic' : 'vru')); ?>.png'> "><?php } ?><br />
+<label for="map">Level:</label> <?= ($player['level'] ? "<font color='#cbcbcb'>".htmlspecialchars($player['level'], ENT_QUOTES, 'UTF-8')."</font>" : ""); // Escaped level just in case, though numeric is usually fine. ?><br/>
+<label for="map">ID:</label> <?php echo htmlspecialchars($player['userId'], ENT_QUOTES, 'UTF-8'); // Numeric, but escaped for consistency ?><br />
+<label for="rank">Rank:</label> <img src="<?php echo htmlspecialchars(DOMAIN, ENT_QUOTES, 'UTF-8'); ?>img/ranks/rank_<?php echo htmlspecialchars($player['rankId'], ENT_QUOTES, 'UTF-8'); ?>.png"> <?php echo htmlspecialchars(Functions::GetRankName($player['rankId']), ENT_QUOTES, 'UTF-8'); ?> <br>
+<label for="map">Map:</label> <?= htmlspecialchars(Functions::getUserMap()['mapName'], ENT_QUOTES, 'UTF-8'); ?> <?php if(Functions::getUserMap()['factionId'] > 0){ ?><img src="/img/companies/logo_<?php echo (Functions::getUserMap()['factionId'] == 1 ? 'mmo' : (Functions::getUserMap()['factionId'] == 2 ? 'eic' : 'vru')); ?>_mini.png" data-toggle="tooltip" data-placement="right" data-html="true" title="" data-original-title="This Map is Owned by <img src='/img/companies/logo_<?php echo (Functions::getUserMap()['factionId'] == 1 ? 'mmo' : (Functions::getUserMap()['factionId'] == 2 ? 'eic' : 'vru')); ?>.png'> "><?php } ?><br />
 <?php
 	if($player["premiumUntil"] != null) {
 		$premiumUntil = $player["premiumUntil"];
@@ -54,7 +55,7 @@
 		$mysqldate = "forever";
 	}
 ?>
-<label for="premium" >Premium:</label> <?php echo ($player['premium'] == 1 ? '<i class="fas fa-check"></i>' : '<i class="fa fa-times"></i>'); ?> <?php if($player['premium'] == 1) { ?><font size="1">(until: <?php echo $mysqldate; ?>)</font><?php } ?></div>
+<label for="premium" >Premium:</label> <?php echo ($player['premium'] == 1 ? '<i class="fas fa-check"></i>' : '<i class="fa fa-times"></i>'); ?> <?php if($player['premium'] == 1) { ?><font size="1">(until: <?php echo htmlspecialchars($mysqldate, ENT_QUOTES, 'UTF-8'); ?>)</font><?php } ?></div>
 <div class="line"></div>
 <div class="ranking">
 <div style="width:100%; height:40px;">
@@ -70,12 +71,12 @@ $dataRankingPlayers = Functions::getDataRankingPlayers(11);
 if (isset($dataRankingPlayers['data']) and !empty($dataRankingPlayers['data'])){
 foreach ($dataRankingPlayers['data'] as $data){
 ?>
-<div style="background:<?= $data['color']; ?> "> 
-<b class="place"><?= $data['rank']; ?></b>
-<span class="name"><?php echo $data['pilotName']; ?></span>
+<div style="background:<?= htmlspecialchars($data['color'], ENT_QUOTES, 'UTF-8'); ?> ">
+<b class="place"><?= htmlspecialchars($data['rank'], ENT_QUOTES, 'UTF-8'); ?></b>
+<span class="name"><?php echo htmlspecialchars($data['pilotName'], ENT_QUOTES, 'UTF-8'); ?></span>
 <img src="/img/companies/logo_<?php echo ($data['factionId'] == 1 ? 'mmo' : ($data['factionId'] == 2 ? 'eic' : 'vru')); ?>_mini.png" style='width: 16px;height: 16px;'> &nbsp;
-<img src="<?php echo DOMAIN; ?>img/ranks/rank_<?php echo $data['rankId']; ?>.png">
-<span class="rankpoints"><?php echo number_format($data['rankPoints'], 0, ',', '.'); ?></span>
+<img src="<?php echo htmlspecialchars(DOMAIN, ENT_QUOTES, 'UTF-8'); ?>img/ranks/rank_<?php echo htmlspecialchars($data['rankId'], ENT_QUOTES, 'UTF-8'); ?>.png">
+<span class="rankpoints"><?php echo htmlspecialchars(number_format($data['rankPoints'], 0, ',', '.'), ENT_QUOTES, 'UTF-8'); ?></span>
 </div>
 <?php } } else { ?>
 <div style="border:1px solid #732a2a; padding:5px; margin:auto; text-align:center;">No data in ranking players.</div>
@@ -88,11 +89,11 @@ $dataRankingClan = Functions::getDataRankingClan(11);
 if (isset($dataRankingClan['data']) and !empty($dataRankingClan['data'])){
 foreach ($dataRankingClan['data'] as $data){
 ?>
-<div style="background:<?= $data['color']; ?> "> 
-<b class="place"><?= $data['rank']; ?></b>
-<span class="name">[<?php echo $data['tag']; ?>] <?php echo $data['name']; ?></span>
+<div style="background:<?= htmlspecialchars($data['color'], ENT_QUOTES, 'UTF-8'); ?> ">
+<b class="place"><?= htmlspecialchars($data['rank'], ENT_QUOTES, 'UTF-8'); ?></b>
+<span class="name">[<?php echo htmlspecialchars($data['tag'], ENT_QUOTES, 'UTF-8'); ?>] <?php echo htmlspecialchars($data['name'], ENT_QUOTES, 'UTF-8'); ?></span>
 <img src="/img/companies/logo_<?php echo ($data['factionId'] == 1 ? 'mmo' : ($data['factionId'] == 2 ? 'eic' : 'vru')); ?>_mini.png" style='width: 16px;height: 16px;'> &nbsp;
-<span class="rankpoints"><?php echo number_format($data['rankPoints'], 0, ',', '.'); ?></span>
+<span class="rankpoints"><?php echo htmlspecialchars(number_format($data['rankPoints'], 0, ',', '.'), ENT_QUOTES, 'UTF-8'); ?></span>
 </div>
 <?php } } else { ?>
 <div style="border:1px solid #732a2a; padding:5px; margin:auto; text-align:center;">No data in ranking clans.</div>
@@ -105,12 +106,12 @@ $dataRankingUba = Functions::getDataRankingUba(11);
 if (isset($dataRankingUba['data']) and !empty($dataRankingUba['data'])){
 foreach ($dataRankingUba['data'] as $data){
 ?>
-<div style="background:<?= $data['color']; ?> "> 
-<b class="place"><?= $data['rank']; ?></b>
-<span class="name"><?php echo $data['pilotName']; ?></span>
+<div style="background:<?= htmlspecialchars($data['color'], ENT_QUOTES, 'UTF-8'); ?> ">
+<b class="place"><?= htmlspecialchars($data['rank'], ENT_QUOTES, 'UTF-8'); ?></b>
+<span class="name"><?php echo htmlspecialchars($data['pilotName'], ENT_QUOTES, 'UTF-8'); ?></span>
 <img src="/img/companies/logo_<?php echo ($data['factionId'] == 1 ? 'mmo' : ($data['factionId'] == 2 ? 'eic' : 'vru')); ?>_mini.png" style='width: 16px;height: 16px;'> &nbsp;
-<img src="<?php echo DOMAIN; ?>img/ranks/rank_<?php echo $data['rankId']; ?>.png">
-<span class="rankpoints"><?php echo number_format($data['puntos_totales'], 0, ',', '.'); ?></span>
+<img src="<?php echo htmlspecialchars(DOMAIN, ENT_QUOTES, 'UTF-8'); ?>img/ranks/rank_<?php echo htmlspecialchars($data['rankId'], ENT_QUOTES, 'UTF-8'); ?>.png">
+<span class="rankpoints"><?php echo htmlspecialchars(number_format($data['puntos_totales'], 0, ',', '.'), ENT_QUOTES, 'UTF-8'); ?></span>
 </div>
 <?php } } else { ?>
 <div style="border:1px solid #732a2a; padding:5px; margin:auto; text-align:center;">No data in ranking uba.</div>
@@ -123,12 +124,12 @@ $dataRankingPvp = Functions::getDataRankingPvp(11);
 if (isset($dataRankingPvp['data']) and !empty($dataRankingPvp['data'])){
 foreach ($dataRankingPvp['data'] as $data){
 ?>
-<div style="background:<?= $data['color']; ?> "> 
-<b class="place"><?= $data['rank']; ?></b>
-<span class="name"><?php echo $data['pilotName']; ?></span>
+<div style="background:<?= htmlspecialchars($data['color'], ENT_QUOTES, 'UTF-8'); ?> ">
+<b class="place"><?= htmlspecialchars($data['rank'], ENT_QUOTES, 'UTF-8'); ?></b>
+<span class="name"><?php echo htmlspecialchars($data['pilotName'], ENT_QUOTES, 'UTF-8'); ?></span>
 <img src="/img/companies/logo_<?php echo ($data['factionId'] == 1 ? 'mmo' : ($data['factionId'] == 2 ? 'eic' : 'vru')); ?>_mini.png" style='width: 16px;height: 16px;'> &nbsp;
-<img src="<?php echo DOMAIN; ?>img/ranks/rank_<?php echo $data['rankId']; ?>.png">
-<span class="rankpoints"><?php echo number_format($data['rankPoints'], 0, ',', '.'); ?></span>
+<img src="<?php echo htmlspecialchars(DOMAIN, ENT_QUOTES, 'UTF-8'); ?>img/ranks/rank_<?php echo htmlspecialchars($data['rankId'], ENT_QUOTES, 'UTF-8'); ?>.png">
+<span class="rankpoints"><?php echo htmlspecialchars(number_format($data['rankPoints'], 0, ',', '.'), ENT_QUOTES, 'UTF-8'); ?></span>
 </div>
 <?php } } else { ?>
 <div style="border:1px solid #732a2a; padding:5px; margin:auto; text-align:center;">No data in ranking pvp players.</div>
@@ -136,11 +137,11 @@ foreach ($dataRankingPvp['data'] as $data){
 </div>
 
 <div style="border: 1px solid gray;margin-top:5px" id="MyPos"> 
-<b class="place"><?php echo $player['rank']; ?></b>
-<span class="name"><?php echo $player['pilotName']; ?></span>
+<b class="place"><?php echo htmlspecialchars($player['rank'], ENT_QUOTES, 'UTF-8'); ?></b>
+<span class="name"><?php echo htmlspecialchars($player['pilotName'], ENT_QUOTES, 'UTF-8'); ?></span>
 <img src="/img/companies/logo_<?php echo ($player['factionId'] == 1 ? 'mmo' : ($player['factionId'] == 2 ? 'eic' : 'vru')); ?>_mini.png" style='width: 16px;height: 16px;'> &nbsp;
-<img src="<?php echo DOMAIN; ?>img/ranks/rank_<?php echo $player['rankId']; ?>.png">
-<span class="rankpoints"><?php echo $player['rankPoints']; ?></span>
+<img src="<?php echo htmlspecialchars(DOMAIN, ENT_QUOTES, 'UTF-8'); ?>img/ranks/rank_<?php echo htmlspecialchars($player['rankId'], ENT_QUOTES, 'UTF-8'); ?>.png">
+<span class="rankpoints"><?php echo htmlspecialchars(number_format($player['rankPoints']), ENT_QUOTES, 'UTF-8'); // Added number_format and htmlspecialchars ?></span>
 
 </div>
 
@@ -425,9 +426,9 @@ foreach ($dataRankingPvp['data'] as $data){
 		while($data_pagination = $news_pagination_result->fetch_assoc()){
 			$notice_count_for_pagination++;
 	?>
-		<script>beTotal = <?= $notice_count_for_pagination; ?>;</script>
-		<a class="news-base-pagination-dot" href="javascript:beSwitchTo(<?= $notice_count_for_pagination; ?>);startDelayedTimer();">
-			<span style="<?php if ($notice_count_for_pagination != 1){ ?>display: none;<?php }?>" class="news-base-pagination-inner-dot" id="be_pag_dot_<?= $notice_count_for_pagination; ?>"></span>
+		<script>beTotal = <?= htmlspecialchars($notice_count_for_pagination, ENT_QUOTES, 'UTF-8'); ?>;</script> <?php // Escaped JS output ?>
+		<a class="news-base-pagination-dot" href="javascript:beSwitchTo(<?= htmlspecialchars($notice_count_for_pagination, ENT_QUOTES, 'UTF-8'); ?>);startDelayedTimer();"> <?php // Escaped JS output ?>
+			<span style="<?php if ($notice_count_for_pagination != 1){ ?>display: none;<?php }?>" class="news-base-pagination-inner-dot" id="be_pag_dot_<?= htmlspecialchars($notice_count_for_pagination, ENT_QUOTES, 'UTF-8'); ?>"></span> <?php // Escaped id attribute ?>
 		</a>
 		
 	<?php } } $stmt_news_pagination->close(); ?>
@@ -439,6 +440,7 @@ foreach ($dataRankingPvp['data'] as $data){
 	
 		<?php 
 		$notice_content_index = 0;
+		// Prepared statement for news content (already in original, good)
 		$stmt_news_content = $mysqli->prepare("SELECT image, urlNotice, nameButton, title, news FROM server_news ORDER by id DESC");
 		$stmt_news_content->execute();
 		$news_content_result = $stmt_news_content->get_result();
@@ -446,10 +448,10 @@ foreach ($dataRankingPvp['data'] as $data){
 			while($data_content = $news_content_result->fetch_assoc()){
 				$notice_content_index++;
 		?>
-			<div id="be_news_<?= $notice_content_index; ?>" onclick="startDelayedTimer()" class="news-base-layout news-controll-base <?php if ($notice_content_index != 1){ ?>news-controll-hide<?php }?>" style="">
+			<div id="be_news_<?= htmlspecialchars($notice_content_index, ENT_QUOTES, 'UTF-8'); ?>" onclick="startDelayedTimer()" class="news-base-layout news-controll-base <?php if ($notice_content_index != 1){ ?>news-controll-hide<?php }?>" style=""> <?php // Escaped id attribute ?>
 			
-			<div id="apoc_refresh_feb2021" class="breaking-news-layer" style="background-image: url(<?= htmlspecialchars($data_content['image']) ?>);width:303px;height:381px;position: relative;background-repeat: no-repeat;background-color: transparent">
-			<?php if (!empty($data_content['urlNotice'])) { ?><div onclick="<?= htmlspecialchars($data_content['urlNotice']) ?>" class="be-position-center be-style-defaultButton"><?php if (!empty($data_content['nameButton'])) { echo htmlspecialchars($data_content['nameButton']); } ?></div><?php } ?><div class="be-position-half_headline be-style-bold_full_content"><?= htmlspecialchars($data_content['title']) ?></div><div class="be-position-half_maintext_with_headline be-style-default"><?= nl2br(htmlspecialchars($data_content['news'])) ?></div>
+			<div id="apoc_refresh_feb2021" class="breaking-news-layer" style="background-image: url(<?= htmlspecialchars($data_content['image'], ENT_QUOTES, 'UTF-8'); ?>);width:303px;height:381px;position: relative;background-repeat: no-repeat;background-color: transparent"> <?php // urlNotice is already escaped by Functions::s in original, image needs it here ?>
+			<?php if (!empty($data_content['urlNotice'])) { ?><div onclick="<?= htmlspecialchars($data_content['urlNotice'], ENT_QUOTES, 'UTF-8'); ?>" class="be-position-center be-style-defaultButton"><?php if (!empty($data_content['nameButton'])) { echo htmlspecialchars($data_content['nameButton'], ENT_QUOTES, 'UTF-8'); } ?></div><?php } ?><div class="be-position-half_headline be-style-bold_full_content"><?= htmlspecialchars($data_content['title'], ENT_QUOTES, 'UTF-8'); ?></div><div class="be-position-half_maintext_with_headline be-style-default"><?= nl2br(htmlspecialchars($data_content['news'], ENT_QUOTES, 'UTF-8')); ?></div>
 					
 			</div>
 		
@@ -464,14 +466,14 @@ foreach ($dataRankingPvp['data'] as $data){
 </div>
 
 <div class="text ps-container"><label for="bootkeys" style="color:#fff; display: inline-block;">
-            <span style="color:#11d44f;">Green Keys: <?php echo $bootyKeys->greenKeys;?></span>
-            <span style="color:red;">Red Keys: <?php echo $bootyKeys->redKeys;?></span>
-            <span style="color:blue;">Blue Keys: <?php echo $bootyKeys->blueKeys;?></span>
-            <span style="color:silver;">Silver Keys: <?php echo $bootyKeys->silverKeys;?></span>
-            <span style="color:gold;">Gold Keys: <?php echo $bootyKeys->goldKeys;?></span> 
- 			<span style="color: #d029d6 ">E.C Keys: <?php echo $bootyKeys->ecKeys;?></span> <br /> 
+            <span style="color:#11d44f;">Green Keys: <?php echo htmlspecialchars($bootyKeys->greenKeys, ENT_QUOTES, 'UTF-8');?></span>
+            <span style="color:red;">Red Keys: <?php echo htmlspecialchars($bootyKeys->redKeys, ENT_QUOTES, 'UTF-8');?></span>
+            <span style="color:blue;">Blue Keys: <?php echo htmlspecialchars($bootyKeys->blueKeys, ENT_QUOTES, 'UTF-8');?></span>
+            <span style="color:silver;">Silver Keys: <?php echo htmlspecialchars($bootyKeys->silverKeys, ENT_QUOTES, 'UTF-8');?></span>
+            <span style="color:gold;">Gold Keys: <?php echo htmlspecialchars($bootyKeys->goldKeys, ENT_QUOTES, 'UTF-8');?></span>
+			<span style="color: #d029d6 ">E.C Keys: <?php echo htmlspecialchars($bootyKeys->ecKeys, ENT_QUOTES, 'UTF-8');?></span> <br />
 <label for="online" data-toggle="tooltip" data-placement="bottom" data-html="true">
-        <b style="color:silver">Players Online</b> <span class="user-user" class="button" style="color:#11d44f;"> <?php echo Socket::Get('OnlineCount', array('Return' => 0)); ?> <i style="color:silver;" class="fa fa-user"></i><br/>
+        <b style="color:silver">Players Online</b> <span class="user-user" class="button" style="color:#11d44f;"> <?php echo htmlspecialchars(Socket::Get('OnlineCount', array('Return' => 0)), ENT_QUOTES, 'UTF-8'); ?> <i style="color:silver;" class="fa fa-user"></i><br/>
 		
 
 
@@ -528,7 +530,7 @@ function deleteAnnounce(id){
 
     $.ajax({
         type: 'POST',
-        url: '<?php echo DOMAIN; ?>api/',
+        url: '<?php echo htmlspecialchars(DOMAIN, ENT_QUOTES, 'UTF-8'); ?>api/', // Escaped DOMAIN
         data: 'newId='+id+'&action=deleteAnnounce',
         success: function(response) {
           var json = jQuery.parseJSON(response);

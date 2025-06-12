@@ -1,6 +1,7 @@
 <?php require_once(INCLUDES . 'header.php');
 $category = Functions::getShopCategories();
 $player = Functions::GetPlayer();
+// Ensure player data is HTML escaped if used directly, though not directly used in this file's PHP echo statements for player data.
 ?>
 <link rel="stylesheet" href="/public/css/shopupdate.css">
 <style>
@@ -49,20 +50,24 @@ $player = Functions::GetPlayer();
 
  
   
-<?php foreach ($category as $value) { ?>
-<div id="<?php echo $value; ?>" class="<?php echo $value; ?> city" style="display:block">
+<?php foreach ($category as $value) {
+    $escaped_value = htmlspecialchars($value, ENT_QUOTES, 'UTF-8');
+?>
+<div id="<?php echo $escaped_value; ?>" class="<?php echo $escaped_value; ?> city" style="display:block">
 
-<h4><?php echo $value; ?></h4>
+<h4><?php echo $escaped_value; ?></h4>
 
 <?php 
-  $items = Functions::getShopItems($value);
+  $items = Functions::getShopItems($value); // Original value for fetching
   if ($items){
   foreach($items as $value2){
     
-    if ($value2 && $value2['category'] == $value){
+    if ($value2 && $value2['category'] == $value){ // Original value for comparison
+      $escaped_item_id = htmlspecialchars($value2['id'], ENT_QUOTES, 'UTF-8');
+      $escaped_item_image = htmlspecialchars($value2['image'], ENT_QUOTES, 'UTF-8');
       ?>
-        <div id="<?php echo $value2['id']; ?>" style="#2d2d2d no-repeat; background-size: 100% 100%;" class="item itmstyleUpdateCredits">
-        <img src="<?php echo DOMAIN; ?><?php echo $value2['image']; ?>">
+        <div id="<?php echo $escaped_item_id; ?>" style="#2d2d2d no-repeat; background-size: 100% 100%;" class="item itmstyleUpdateCredits">
+        <img src="<?php echo DOMAIN; ?><?php echo $escaped_item_image; ?>">
         <div class="price" style="font-weight: bold;"><?php echo number_format($value2['price'], 0, '.', '.'); ?> </div>
         </div>
       <?php

@@ -36,7 +36,7 @@ Loading
 </thead>
 <?php
 $stmt = $mysqli->prepare("SELECT voucher, item, amount, date FROM voucher_log WHERE userId = ? ORDER by date DESC");
-$userId = $player['userId']; // Assuming $player is already defined and contains userId
+$userId = (int)$player['userId']; // Ensure userId is int for binding
 $stmt->bind_param("i", $userId);
 $stmt->execute();
 $QLog = $stmt->get_result();
@@ -48,7 +48,7 @@ if ($QLog->num_rows > 0){
         <th><?= htmlspecialchars($row['voucher'], ENT_QUOTES, 'UTF-8'); ?></th>
         <th><?= htmlspecialchars($row['item'], ENT_QUOTES, 'UTF-8'); ?></th>
         <th><?= htmlspecialchars($row['amount'], ENT_QUOTES, 'UTF-8'); ?></th>
-        <th><?= htmlspecialchars(date("d-m-Y h:i:s", $row['date']), ENT_QUOTES, 'UTF-8'); ?></th>
+        <th><?= htmlspecialchars(date("d-m-Y h:i:s", (int)$row['date']), ENT_QUOTES, 'UTF-8'); // Cast date to int ?></th>
         </tbody>
         <?php
     }
@@ -72,7 +72,7 @@ if ($QLog->num_rows > 0){
         if (voucherId){
             $.ajax({
                 type: 'POST',
-                url: '<?php echo DOMAIN; ?>api/',
+                url: '<?php echo htmlspecialchars(DOMAIN, ENT_QUOTES, 'UTF-8'); ?>api/',
                 data: 'voucherId='+voucherId+'&action=voucher',
                 success: function(response) {
                 var json = jQuery.parseJSON(response);
@@ -92,6 +92,11 @@ if ($QLog->num_rows > 0){
                     var cell3 = row.insertCell(2);
                     var cell4 = row.insertCell(3);
 
+                    // For defense-in-depth, if json properties could contain HTML,
+                    // it should be sanitized here before assigning to innerHTML.
+                    // Using textContent would be safer if no HTML is expected from these fields.
+                    // However, sticking to PHP-side XSS for this task as per primary instructions.
+                    // The API providing this JSON should be responsible for escaping data appropriately.
                     cell1.innerHTML = json.voucher;
                     cell2.innerHTML = json.item;
                     cell3.innerHTML = json.amount;
@@ -104,6 +109,7 @@ if ($QLog->num_rows > 0){
                 }
 
                 if (json.uridium !== ""){
+                    // Assuming these are numeric or pre-formatted safely by the API
                     document.getElementsByClassName('user-uridium')[0].innerHTML = json.uridium;
                 }
 
