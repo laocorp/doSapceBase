@@ -32,7 +32,7 @@ define('MYSQL_PORT', '3306');
 define('SystemActiveVerification', false); // true: activado | false: desactivado.
 
 define('DOMAIN', 'http://127.0.0.1/');
-define('PHRASELOGO', array('0' => 'Star', '1' => 'Orbit'));
+define('PHRASELOGO', array('0' => 'Space', '1' => 'Base'));
 define('LOGO', '<b class="logo_pink">'.PHRASELOGO[0].'</b><b class="logo_normal">'.PHRASELOGO[1].'</b>');
 define('SERVERNAME', PHRASELOGO[0].PHRASELOGO[1]);
 define('DESC', 'Join to fight!');

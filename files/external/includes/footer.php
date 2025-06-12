@@ -2343,4 +2343,3 @@ $.ajax({
 
 
 
-[end of files/external/includes/footer.php]

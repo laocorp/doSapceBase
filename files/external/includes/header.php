@@ -5,8 +5,8 @@
 
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="description" content="StarOrbit is a Massive Multiplayer Online Roleplaying Space Game">
-<meta name="keywords" content="Browser games, StarOrbit">
+<meta name="description" content="SpaceBase is a Massive Multiplayer Online Roleplaying Space Game">
+<meta name="keywords" content="Browser games, SpaceBase">
 <meta name="robots" content="">
 <meta http-equiv="Content-Language" content="en, us, tr">
 <meta name="language" content="english, en, us">
@@ -91,7 +91,7 @@ snowStorm.useTwinkleEffect = true;
 <div class="container-fluid">
 <div class="row text-center">
 <div class="logo">
-<a title="StarOrbit" href="/home"><img src="/img/loginhome.png" width="330px" alt="StarOrbit" /></a>
+<a title="SpaceBase" href="/home"><img src="/img/loginhome.png" width="330px" alt="SpaceBase" /></a>
 </div>
 <div class="buttons">
 <?php if (self::checkIsAdmin($player['userId'])){ ?>
