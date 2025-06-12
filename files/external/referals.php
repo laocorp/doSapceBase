@@ -1,9 +1,8 @@
-
 <?php require_once(INCLUDES . 'header.php'); ?>
 <link rel="stylesheet" href="/css/referals.css" />
 
 <?php require_once(INCLUDES . 'data.php'); ?>
-<title><?= SERVERNAME; ?> - Referals</title>
+<title><?= htmlspecialchars(SERVERNAME, ENT_QUOTES, 'UTF-8'); ?> - Referals</title>
 <div class="page styleUpdate lab">
 <div class="lab-container">
 <div class="loader">
@@ -16,7 +15,7 @@ Loading
 </div>
 <div class="drones" style="display: block;">
 <div style="width:100%; height:7%; border: 1px dashed #e30914; margin-bottom:15px;">
-<h4>Hello <b><?= $player['pilotName']; ?></b>, you win for invite players!</h4>
+<h4>Hello <b><?= htmlspecialchars($player['pilotName'], ENT_QUOTES, 'UTF-8'); ?></b>, you win for invite players!</h4>
 </div>
 <br>
 <div class="ranking">

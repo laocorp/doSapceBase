@@ -23,9 +23,9 @@
   foreach ($dataRankingClan['data'] as $data){
     ?>
     <tr>
-    <td>[<?php echo $data['tag']; ?>] <?php echo $data['name']; ?></td>
-    <td><?php echo $data['rank']; ?></td>
-    <td><?php echo number_format($data['rankPoints'], 0, ',', '.'); ?></td>
+    <td>[<?php echo htmlspecialchars($data['tag'], ENT_QUOTES, 'UTF-8'); ?>] <?php echo htmlspecialchars($data['name'], ENT_QUOTES, 'UTF-8'); ?></td>
+    <td><?php echo htmlspecialchars($data['rank'], ENT_QUOTES, 'UTF-8'); ?></td>
+    <td><?php echo htmlspecialchars(number_format($data['rankPoints'], 0, ',', '.'), ENT_QUOTES, 'UTF-8'); // Escaping number_format output for good measure ?></td>
     </tr>
     <?php
   } }

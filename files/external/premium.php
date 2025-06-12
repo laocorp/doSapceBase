@@ -78,103 +78,103 @@ With these donations you contribute to the maintenance of the server. Thank you.
   <tr>
     <td><img src="/do_img/global/items/uridium.png" width="50px"> 6500000 Uridium + Premium</td>
     <td>10.00€	</td>
-    <td><a href="/paypal.php?p=1&i=<?= $player['userId']; ?>" target="_blank"><img src="/do_img/2000.png"></a></td>
+    <td><a href="/paypal.php?p=1&i=<?= htmlspecialchars($player['userId'], ENT_QUOTES, 'UTF-8'); ?>" target="_blank"><img src="/do_img/2000.png"></a></td>
   </tr>
   <tr>
     <td><img src="/do_img/global/items/uridium.png" width="50px"> <img src="https://cdn.iconscout.com/icon/free/png-64/offer-tag-label-sign-sticker-coupon-shop-shopping-12929.png"> 13000000 Uridium + Premium</td>
     <td>20.00€</td>
-    <td><a href="/paypal.php?p=2&i=<?= $player['userId']; ?>" target="_blank"><img src="/do_img/2000.png"></a></td>
+    <td><a href="/paypal.php?p=2&i=<?= htmlspecialchars($player['userId'], ENT_QUOTES, 'UTF-8'); ?>" target="_blank"><img src="/do_img/2000.png"></a></td>
   </tr>
     <tr>
     <td><img src="/do_img/global/items/uridium.png" width="50px"> <img src="https://cdn.iconscout.com/icon/free/png-64/offer-tag-label-sign-sticker-coupon-shop-shopping-12929.png"> 27000000 Uridium + Premium</td>
     <td>30.00€</td>
-    <td><a href="/paypal.php?p=3&i=<?= $player['userId']; ?>" target="_blank"><img src="/do_img/2000.png"></a></td>
+    <td><a href="/paypal.php?p=3&i=<?= htmlspecialchars($player['userId'], ENT_QUOTES, 'UTF-8'); ?>" target="_blank"><img src="/do_img/2000.png"></a></td>
   </tr>
   <tr>
     <td><img src="/do_img/global/items/eventcoins.png" width="50px">  500 E.C + Premium </td>
     <td>7.00€</td>
-    <td><a href="/paypal.php?p=4&i=<?= $player['userId']; ?>" target="_blank"><img src="/do_img/2000.png"></a></td>
+    <td><a href="/paypal.php?p=4&i=<?= htmlspecialchars($player['userId'], ENT_QUOTES, 'UTF-8'); ?>" target="_blank"><img src="/do_img/2000.png"></a></td>
   </tr>
   
     <tr>
     <td><img src="/do_img/global/items/eventcoins.png" width="50px"> <img src="https://cdn.iconscout.com/icon/free/png-64/offer-tag-label-sign-sticker-coupon-shop-shopping-12929.png">  1500 E.C + Premium </td>
     <td>15.00€</td>
-    <td><a href="/paypal.php?p=5&i=<?= $player['userId']; ?>" target="_blank"><img src="/do_img/2000.png"></a></td>
+    <td><a href="/paypal.php?p=5&i=<?= htmlspecialchars($player['userId'], ENT_QUOTES, 'UTF-8'); ?>" target="_blank"><img src="/do_img/2000.png"></a></td>
   </tr>
   <tr>
     <td><img src="/do_img/global/items/ship/solace/design/solace-asimov_100x100.png" width="50px"><strong style="color:green;"> RARE 1 </strong>Solace-Asimov + Premium  <em>(10% shield + 15% hp + 5% honor) </em>	</td>
     <td>10.00€</td>
-    <td><a href="/paypal.php?p=6&i=<?= $player['userId']; ?>" target="_blank"><img src="/do_img/2000.png"></a></td>
+    <td><a href="/paypal.php?p=6&i=<?= htmlspecialchars($player['userId'], ENT_QUOTES, 'UTF-8'); ?>" target="_blank"><img src="/do_img/2000.png"></a></td>
   </tr>
   <tr>
     <td><img src="/do_img/global/items/ship/sentinel/design/sentinel-neikos_100x100.png" width="50px"> <strong style="color:green;"> RARE 2 </strong>Sentinel-Neikos <em>(15% Shield + 15% EXP) + Premium  </em>	</td>
     <td>10.00€</td>
-    <td><a href="/paypal.php?p=7&i=<?= $player['userId']; ?>" target="_blank"><img src="/do_img/2000.png"></a></td>
+    <td><a href="/paypal.php?p=7&i=<?= htmlspecialchars($player['userId'], ENT_QUOTES, 'UTF-8'); ?>" target="_blank"><img src="/do_img/2000.png"></a></td>
   </tr>
   <tr>
     <td><img src="/do_img/global/items/ship/cyborg/design/cyborg-tyrannos_100x100.png" width="50px"> <strong style="color:orange;"> VERY RARE 1 </strong> Cyborg-Tyrannos <em>(10% damage + 10% shield) + Premium </em></td>
     <td>10.00€</td>
-    <td><a href="/paypal.php?p=8&i=<?= $player['userId']; ?>" target="_blank"><img src="/do_img/2000.png"></a></td>
+    <td><a href="/paypal.php?p=8&i=<?= htmlspecialchars($player['userId'], ENT_QUOTES, 'UTF-8'); ?>" target="_blank"><img src="/do_img/2000.png"></a></td>
   </tr>
     <tr>
     <td><img src="/do_img/global/items/ship/cyborg/design/cyborg-inferno_100x100.png" width="50px"> <strong style="color:orange;"> VERY RARE 2 </strong> Cyborg-Inferno <em>(10% damage + 10% shield) + Premium </em></td>
    <td>10.00€</td>
-    <td><a href="/paypal.php?p=9&i=<?= $player['userId']; ?>" target="_blank"><img src="/do_img/2000.png"></a></td>
+    <td><a href="/paypal.php?p=9&i=<?= htmlspecialchars($player['userId'], ENT_QUOTES, 'UTF-8'); ?>" target="_blank"><img src="/do_img/2000.png"></a></td>
   </tr>
     <tr>
     <td><img src="/do_img/global/items/ship/sentinel/design/sentinel-tyrannos_100x100.png" width="50px"> <strong style="color:purple;"> LEGENDARY 1 </strong> Sentinel-Tyrannos <em>(20% shield 5% Exp + 10% ) + Premium </em></td>
     <td>12.00€</td>
-    <td><a href="/paypal.php?p=10&i=<?= $player['userId']; ?>" target="_blank"><img src="/do_img/2000.png"></a></td>
+    <td><a href="/paypal.php?p=10&i=<?= htmlspecialchars($player['userId'], ENT_QUOTES, 'UTF-8'); ?>" target="_blank"><img src="/do_img/2000.png"></a></td>
   </tr>
     <tr>
     <td><img src="do_img/global/items/ship/g-surgeon/design/g-surgeon_100x100.png" width="50px"> <strong style="color:purple;"> LEGENDARY 2 </strong> Surgeon <em>(5% shield + 5% hp ) + Premium </em></td>
 	<td>15.00€</td>
-    <td><a href="/paypal.php?p=11&i=<?= $player['userId']; ?>" target="_blank"><img src="/do_img/2000.png"></a></td>
+    <td><a href="/paypal.php?p=11&i=<?= htmlspecialchars($player['userId'], ENT_QUOTES, 'UTF-8'); ?>" target="_blank"><img src="/do_img/2000.png"></a></td>
   </tr>
   <tr>
     <td><img src="/do_img/global/items/ship/vengeance/design/lightning_top.png" width="50px"> <strong style="color:purple;"> LEGENDARY 3 </strong> Vengeance-Lightning <em>(17% damage + 20% shield + 17% hp + 20% honor + 20% exp) </em></td>
 	<td>10.00€</td>
-    <td><a href="/paypal.php?p=12&i=<?= $player['userId']; ?>" target="_blank"><img src="/do_img/2000.png"></a></td>
+    <td><a href="/paypal.php?p=12&i=<?= htmlspecialchars($player['userId'], ENT_QUOTES, 'UTF-8'); ?>" target="_blank"><img src="/do_img/2000.png"></a></td>
   </tr>
   <tr>
     <td><img src="/do_img/global/items/ship/vengeance/design/lightning_top.png" width="50px"> <strong style="color:purple;"> LEGENDARY 4 </strong> Vengeance-Lightning <em>(17% damage + 20% shield + 17% hp + 20% honor + 20% exp) + 2100000 Uridium + Premium </em></td>
 	<td>25.00€</td>
-    <td><a href="/paypal.php?p=13&i=<?= $player['userId']; ?>" target="_blank"><img src="/do_img/2000.png"></a></td>
+    <td><a href="/paypal.php?p=13&i=<?= htmlspecialchars($player['userId'], ENT_QUOTES, 'UTF-8'); ?>" target="_blank"><img src="/do_img/2000.png"></a></td>
   </tr>
   <tr>
     <td><img src="img/season/3.png" width="50px"><strong style="color:gold;"> EXCLUSIVE </strong> Pack Season Summer <em> (Solace-Contagion</em> + <em>title: "Summer Killer!" </em>+ <em>2100000 U. + 500 E.C.) + Premium </em></td>
 	<td>25.00€</td>
-    <td><a href="/paypal.php?p=14&i=<?= $player['userId']; ?>" target="_blank"><img src="/do_img/2000.png"></a></td>
+    <td><a href="/paypal.php?p=14&i=<?= htmlspecialchars($player['userId'], ENT_QUOTES, 'UTF-8'); ?>" target="_blank"><img src="/do_img/2000.png"></a></td>
 	</tr>
   <tr>
     <td><img src="do_img/global/items/drone/designs/Spartan_drone.jpg" width="50px"><strong style="color:gold;"> EXCLUSIVE </strong> Pack Spartan_drone(20%DMG+35%HP+15%SHD Full Set (10x)</em></td>
 	<td>20.00€</td>
-    <td><a href="/paypal.php?p=15&i=<?= $player['userId']; ?>" target="_blank"><img src="/do_img/2000.png"></a></td>
+    <td><a href="/paypal.php?p=15&i=<?= htmlspecialchars($player['userId'], ENT_QUOTES, 'UTF-8'); ?>" target="_blank"><img src="/do_img/2000.png"></a></td>
   </tr>
   <tr>
-    <td><img src="do_img/global/items/package.png" width="50px"> <strong style="color:purple;"> 15 LF-4 + 15+SG3N-BO2 </em></td>
+    <td><img src="/do_img/global/items/package.png" width="50px"> <strong style="color:purple;"> 15 LF-4 + 15+SG3N-BO2 </em></td>
 	<td>15.00€</td>
-    <td><a href="/paypal.php?p=16&i=<?= $player['userId']; ?>" target="_blank"><img src="/do_img/2000.png"></a></td>
+    <td><a href="/paypal.php?p=16&i=<?= htmlspecialchars($player['userId'], ENT_QUOTES, 'UTF-8'); ?>" target="_blank"><img src="/do_img/2000.png"></a></td>
   </tr>
   <tr>
-    <td><img src="do_img/global/items/package.png" width="50px"> <strong style="color:purple;"> 32 LF-4 + 32+SG3N-BO2 </em></td>
+    <td><img src="/do_img/global/items/package.png" width="50px"> <strong style="color:purple;"> 32 LF-4 + 32+SG3N-BO2 </em></td>
 	<td>25.00€</td>
-    <td><a href="/paypal.php?p=17&i=<?= $player['userId']; ?>" target="_blank"><img src="/do_img/2000.png"></a></td>
+    <td><a href="/paypal.php?p=17&i=<?= htmlspecialchars($player['userId'], ENT_QUOTES, 'UTF-8'); ?>" target="_blank"><img src="/do_img/2000.png"></a></td>
   </tr>
   <tr>
     <td><img src="/do_img/global/items/ship/goliath/design/bastion_top.png" width="50px"> <strong style="color:purple;"> BASTION </strong> <em>(20% damage + 20% shield + 20% honor + 20% EXP + 20% HP) + Premium </em></td>
 	<td>20.00€</td>
-    <td><a href="/paypal.php?p=18&i=<?= $player['userId']; ?>" target="_blank"><img src="/do_img/2000.png"></a></td>
+    <td><a href="/paypal.php?p=18&i=<?= htmlspecialchars($player['userId'], ENT_QUOTES, 'UTF-8'); ?>" target="_blank"><img src="/do_img/2000.png"></a></td>
   </tr>
   <tr>
     <td><img src="/do_img/global/items/ship/goliath/design/enforcer_top.png" width="50px"> <strong style="color:purple;"> ENFORCER </strong> <em>(20% damage + 20% shield + 20% honor + 20% EXP + 20% HP) + Premium </em></td>
 	<td>20.00€</td>
-    <td><a href="/paypal.php?p=19&i=<?= $player['userId']; ?>" target="_blank"><img src="/do_img/2000.png"></a></td>
+    <td><a href="/paypal.php?p=19&i=<?= htmlspecialchars($player['userId'], ENT_QUOTES, 'UTF-8'); ?>" target="_blank"><img src="/do_img/2000.png"></a></td>
   </tr>
   <tr>
     <td> <img src="/do_img/global/items/ship/sentinel/design/sentinel-neikos_100x100.png" width="50px"> <img src="/do_img/global/items/ship/cyborg/design/cyborg-inferno_100x100.png" width="50px" style="margin-right: 1em;">  <img src="/do_img/global/items/razer_100x100.png" width="50px" style="margin-right: 1em;"><strong style="color:orange;"> VERY RARE 1 </strong> Pack Farmers <em>(Design: Sentinel-Neikos</em> + <em>Cyborg-Inferno</em> + <em>Goliath-Razer) + Premium </td>
     <td>25.00€</td>
-    <td><a href="/paypal.php?p=22&i=<?= $player['userId']; ?>" target="_blank"><img src="/do_img/2000.png"></a></td>
+    <td><a href="/paypal.php?p=22&i=<?= htmlspecialchars($player['userId'], ENT_QUOTES, 'UTF-8'); ?>" target="_blank"><img src="/do_img/2000.png"></a></td>
   </tr>
    <tr>
    

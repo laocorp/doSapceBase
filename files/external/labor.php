@@ -28,8 +28,8 @@ Can only be collected from Silver loot boxes.</p>
 </ul>
 <b>You have:</b>
 <ul>
-<li><b><font color="green"><?= Functions::getPartsDrones("Apis"); ?>x</font></b> Apis Drone Parts</li>
-<li><b><font color="green"><span class="uridiumCount"><?php echo number_format($data->uridium, 0, ',', '.'); ?></span></font></b> Uridium</li>
+<li><b><font color="green"><?= htmlspecialchars(Functions::getPartsDrones("Apis"), ENT_QUOTES, 'UTF-8'); ?>x</font></b> Apis Drone Parts</li>
+<li><b><font color="green"><span class="uridiumCount"><?php echo htmlspecialchars(number_format($data->uridium, 0, ',', '.'), ENT_QUOTES, 'UTF-8'); ?></span></font></b> Uridium</li>
 </ul>
 </div>
 <div class="action">
@@ -49,8 +49,8 @@ Can only be collected from Silver loot boxes.</p>
 </ul>
 <b>You have:</b>
 <ul>
-<li><b><font color="green"><?= Functions::getPartsDrones("Zeus"); ?>x</font></b> Zeus Drone Parts</li>
-<li><b><font color="green"><span class="uridiumCount"><?php echo number_format($data->uridium, 0, ',', '.'); ?></span></font></b> Uridium</li>
+<li><b><font color="green"><?= htmlspecialchars(Functions::getPartsDrones("Zeus"), ENT_QUOTES, 'UTF-8'); ?>x</font></b> Zeus Drone Parts</li>
+<li><b><font color="green"><span class="uridiumCount"><?php echo htmlspecialchars(number_format($data->uridium, 0, ',', '.'), ENT_QUOTES, 'UTF-8'); ?></span></font></b> Uridium</li>
 </ul>
 </div>
 <div class="action">
@@ -59,7 +59,5 @@ Can only be collected from Silver loot boxes.</p>
 </div>
 </div>
 </div>
-</div>
 
 <?php require_once(INCLUDES . 'footer.php'); ?>
-

@@ -260,7 +260,7 @@ function startEvent(type){
 
     $.ajax({
         type: 'POST',
-        url: '<?php echo DOMAIN; ?>api/',
+        url: '<?php echo htmlspecialchars(DOMAIN, ENT_QUOTES, 'UTF-8'); ?>api/',
         data: 'type='+type+'&action=startEvent',
         success: function(response) {
           var json = jQuery.parseJSON(response);
@@ -286,12 +286,12 @@ function searchUser(){
 
     $.ajax({
         type: 'POST',
-        url: '<?php echo DOMAIN; ?>api/',
+        url: '<?php echo htmlspecialchars(DOMAIN, ENT_QUOTES, 'UTF-8'); ?>api/',
         data: 'pilot='+pilot+'&action=searchUser',
         success: function(response) {
           console.log(response);
           document.getElementById("msgResultU").style.display = "block";
-          document.getElementById("msgResultU").innerHTML = response;
+          document.getElementById("msgResultU").innerHTML = response; // Potential DOM XSS if API response is not sanitized
         }
     });
 
@@ -312,7 +312,7 @@ function saveDataUser(){
 
     $.ajax({
         type: 'POST',
-        url: '<?php echo DOMAIN; ?>api/',
+        url: '<?php echo htmlspecialchars(DOMAIN, ENT_QUOTES, 'UTF-8'); ?>api/',
         data: 'userId='+userId+'&username='+username+'&pilotName='+pilotName+'&uridium='+uridium+'&credits='+credits+'&honor='+honor+'&experience='+experience+'&premium='+premium+'&action=saveDataUser',
         success: function(response) {
             console.log(response);
@@ -320,7 +320,7 @@ function saveDataUser(){
 
             if (json.message != ""){
                 document.getElementById("msgResultUD").style.display = "block";
-                document.getElementById("msgResultUD").innerHTML = json.message;
+                document.getElementById("msgResultUD").innerHTML = json.message; // Potential DOM XSS if API response is not sanitized
             }
 
         }
@@ -346,7 +346,7 @@ $('#buttonSendItemsToUser').attr('disabled','disabled');
 
 $.ajax({
     type: 'POST',
-    url: '<?php echo DOMAIN; ?>api/',
+    url: '<?php echo htmlspecialchars(DOMAIN, ENT_QUOTES, 'UTF-8'); ?>api/',
     data: 'username='+username+'&uridium='+uridium+'&credits='+credits+'&honor='+honor+'&experience='+experience+'&eventCoins='+eventCoins+'&design='+design+'&action=sendItemsToUser',
     success: function(response) {
         var json = jQuery.parseJSON(response);
@@ -355,7 +355,7 @@ $.ajax({
             $('#buttonSendItemsToUser').removeAttr('disabled');
             document.getElementById('buttonSendItemsToUser').innerHTML = "Send";
             document.getElementById("msgResultUSE").style.display = "block";
-            document.getElementById("msgResultUSE").innerHTML = json.message;
+            document.getElementById("msgResultUSE").innerHTML = json.message; // Potential DOM XSS if API response is not sanitized
         }
 
     }

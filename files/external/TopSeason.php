@@ -30,9 +30,9 @@ if ($dataRankingUba['data'] != null){
   <tr style="background-color:<?= htmlspecialchars($data['color'], ENT_QUOTES, 'UTF-8') ?>;">
     <td><?php echo htmlspecialchars($data['pilotName'], ENT_QUOTES, 'UTF-8'); ?></td>
     <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src="/img/companies/logo_<?php echo ($data['factionId'] == 1 ? 'mmo' : ($data['factionId'] == 2 ? 'eic' : 'vru')); ?>_mini.png"></td>
-    <td>&nbsp;<?php echo number_format($data['puntos_totales'], 0, ',', '.'); // Warpoints is 'puntos_totales' in getDataRankingUba ?></td>
+    <td>&nbsp;<?php echo htmlspecialchars(number_format($data['puntos_totales'], 0, ',', '.'), ENT_QUOTES, 'UTF-8'); // Warpoints is 'puntos_totales' in getDataRankingUba ?></td>
     <td>&nbsp;<?php echo htmlspecialchars($data['rank'], ENT_QUOTES, 'UTF-8'); // This is $numero from the function ?></td>
-    <td>&nbsp;&nbsp;<img src="<?php echo DOMAIN; ?>img/ranks/rank_<?php echo htmlspecialchars($data['rankId'], ENT_QUOTES, 'UTF-8'); ?>.png"></td>
+    <td>&nbsp;&nbsp;<img src="<?php echo htmlspecialchars(DOMAIN, ENT_QUOTES, 'UTF-8'); ?>img/ranks/rank_<?php echo htmlspecialchars($data['rankId'], ENT_QUOTES, 'UTF-8'); ?>.png"></td>
   </tr>
 
  <?php
@@ -73,3 +73,4 @@ tr:nth-child(even) {
   background-color: #dddddd;
 }
 </style>
+<?php require_once(INCLUDES . 'footer.php'); ?>

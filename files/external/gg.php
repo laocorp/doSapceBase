@@ -10,16 +10,18 @@
 
 
 <?php
-$userId = $player['userId'];
+$userId = $player['userId']; // Assuming $player is from data.php and userId is safe (integer)
 
 // Helper function to get gate data
 function getGateProgress($mysqli, $userId, $gateId, $maxParts) {
     $gateTP = 0;
     $requireGateParts = 0;
     $gateUnlocked = false;
+    $userIdInt = (int)$userId;
+    $gateIdInt = (int)$gateId;
 
     $stmtPlayerGate = $mysqli->prepare("SELECT parts FROM player_galaxygates WHERE userId = ? AND gateId = ?");
-    $stmtPlayerGate->bind_param("ii", $userId, $gateId);
+    $stmtPlayerGate->bind_param("ii", $userIdInt, $gateIdInt);
     $stmtPlayerGate->execute();
     $resultPlayerGate = $stmtPlayerGate->get_result();
 
@@ -39,7 +41,7 @@ function getGateProgress($mysqli, $userId, $gateId, $maxParts) {
     $stmtPlayerGate->close();
 
     $stmtInfoGate = $mysqli->prepare("SELECT parts FROM info_galaxygates WHERE gateId = ?");
-    $stmtInfoGate->bind_param("i", $gateId);
+    $stmtInfoGate->bind_param("i", $gateIdInt);
     $stmtInfoGate->execute();
     $resultInfoGate = $stmtInfoGate->get_result();
 
@@ -49,6 +51,7 @@ function getGateProgress($mysqli, $userId, $gateId, $maxParts) {
     }
     $stmtInfoGate->close();
 
+    // Output is already safe as it's numbers and a slash
     return ["parts" => $gateTP . "/" . $requireGateParts, "unlocked" => $gateUnlocked];
 }
 
@@ -68,7 +71,7 @@ $deltaData = getGateProgress($mysqli, $userId, 4, 128);
 $deltaParts = $deltaData['parts'];
 $deltaUnlocked = $deltaData['unlocked'];
 
-$epsilonData = getGateProgress($mysqli, $userId, 5, 99);
+$epsilonData = getGateProgress($mysqli, $userId, 5, 99); // Assuming Epsilon is ID 5
 $epsilonParts = $epsilonData['parts'];
 $epsilonUnlocked = $epsilonData['unlocked'];
 
@@ -80,7 +83,7 @@ $kappaData = getGateProgress($mysqli, $userId, 7, 120);
 $kappaParts = $kappaData['parts'];
 $kappaUnlocked = $kappaData['unlocked'];
 
-$hadesData = getGateProgress($mysqli, $userId, 10, 45);
+$hadesData = getGateProgress($mysqli, $userId, 10, 45); // Assuming Hades is ID 10
 $hadesParts = $hadesData['parts'];
 $hadesUnlocked = $hadesData['unlocked'];
 
@@ -165,7 +168,7 @@ $kronosUnlocked = $kronosData['unlocked'];
 
 </div>
 <div style="float:right; width:240px;  height:400px;  padding-top:10px; padding-left:5px; padding-right:5px;">
-<b>Uridium:</b> <span style="float:right; margin-right:15px;" id="gg-uridium"><?php echo number_format($data->uridium, 0, ',', '.'); ?></span><br>
+<b>Uridium:</b> <span style="float:right; margin-right:15px;" id="gg-uridium"><?php echo htmlspecialchars(number_format($data->uridium, 0, ',', '.'), ENT_QUOTES, 'UTF-8'); ?></span><br>
 <div style="display:none;" id="livesDiv"><b>Lives:</b> <span style="float:right; margin-right:15px;" id="gg-lives"><i class="fa fa-heart" aria-hidden="true"></i> -</span></div>
 <div class="gg-energy-button" onclick="spin();" style="display:none;"></div>
 <div class="gg-live-button" onclick="buyLive();" style="display:none;"></div>
@@ -231,7 +234,7 @@ tr:nth-child(even) {
                 ?>
                     <tr>
                         <td><?= htmlspecialchars($dataL['log'], ENT_QUOTES, 'UTF-8') ;?></td>
-                        <td><?= htmlspecialchars(date("d-m-Y h:i:s", $dataL['date']), ENT_QUOTES, 'UTF-8'); ?></td>
+                        <td><?= htmlspecialchars(date("d-m-Y h:i:s", (int)$dataL['date']), ENT_QUOTES, 'UTF-8'); // Ensure date is int for safety ?></td>
                     </tr>
                 <?php
             }
@@ -274,7 +277,7 @@ tr:nth-child(even) {
 
             $.ajax({
                 type: 'POST',
-                url: '<?php echo DOMAIN; ?>api/',
+                url: '<?php echo htmlspecialchars(DOMAIN, ENT_QUOTES, 'UTF-8'); ?>api/',
                 data: 'gateId='+id+'&action=gg',
                 success: function(response) {
 
@@ -357,7 +360,7 @@ tr:nth-child(even) {
 
             $.ajax({
                 type: 'POST',
-                url: '<?php echo DOMAIN; ?>api/',
+                url: '<?php echo htmlspecialchars(DOMAIN, ENT_QUOTES, 'UTF-8'); ?>api/',
                 data: 'gateId='+id+'&action=getInfoGate',
                 success: function(response) {
                     var json = jQuery.parseJSON(response);
@@ -372,7 +375,7 @@ tr:nth-child(even) {
 
                     $.ajax({
                         type: 'POST',
-                        url: '<?php echo DOMAIN; ?>api/',
+                        url: '<?php echo htmlspecialchars(DOMAIN, ENT_QUOTES, 'UTF-8'); ?>api/',
                         data: 'gateId='+id+'&action=getLivesGate',
                         success: function(response) {
                             var json = jQuery.parseJSON(response);
@@ -402,7 +405,7 @@ tr:nth-child(even) {
 
             $.ajax({
                 type: 'POST',
-                url: '<?php echo DOMAIN; ?>api/',
+                url: '<?php echo htmlspecialchars(DOMAIN, ENT_QUOTES, 'UTF-8'); ?>api/',
                 data: 'gateId='+id+'&action=ggPreparePortal',
                 success: function(response) {
                     console.log(response);var json = jQuery.parseJSON(response);
@@ -437,7 +440,7 @@ tr:nth-child(even) {
 
             $.ajax({
                 type: 'POST',
-                url: '<?php echo DOMAIN; ?>api/',
+                url: '<?php echo htmlspecialchars(DOMAIN, ENT_QUOTES, 'UTF-8'); ?>api/',
                 data: 'gateId='+id+'&action=buyLive',
                 success: function(response) {
 

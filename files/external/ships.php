@@ -30,10 +30,12 @@
                     $currentShip = $mysqli->query('SELECT * FROM server_ships WHERE shipID = '.$player['shipId'].'')->fetch_assoc();
                     $lootId = $currentShip['baseShipId'] != $shipId ? $ship['lootID'] : ($player['shipId'] == 69 ? 'ship_goliath_design_razer' : $currentShip['lootID']);
                     $lootId = str_replace('_', '/', $lootId);
+                    $escaped_ship_id = htmlspecialchars($shipId, ENT_QUOTES, 'UTF-8');
+                    $escaped_loot_id = htmlspecialchars($lootId, ENT_QUOTES, 'UTF-8');
                   ?>
 
-<div id="<?php echo $shipId; ?>" class="item info_ship<?php echo $currentShip['baseShipId'] == $shipId ? ' active' : ''; ?>">
-<img src="<?php echo DOMAIN; ?>do_img/global/items/<?php echo $lootId; ?>_100x100.png">
+<div id="<?php echo $escaped_ship_id; ?>" class="item info_ship<?php echo $currentShip['baseShipId'] == $shipId ? ' active' : ''; ?>">
+<img src="<?php echo DOMAIN; ?>do_img/global/items/<?php echo $escaped_loot_id; ?>_100x100.png">
 </div>
 
 <?php } ?>
@@ -57,7 +59,7 @@
 </div>
 </div>
 <div class="buttons">
-<div id="<?php echo $shipId; ?>" class="button useNave"><i class="fa fa-wrench"></i> use ship</div>
+<div id="<?php echo htmlspecialchars($shipId, ENT_QUOTES, 'UTF-8'); // Assuming $shipId from the loop is still in scope here, if not, this needs to be the correct variable ?>" class="button useNave"><i class="fa fa-wrench"></i> use ship</div>
 </div>
 </div>
 </div>
