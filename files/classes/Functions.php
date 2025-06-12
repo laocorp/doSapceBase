@@ -23,7 +23,7 @@ class Functions
 		$killedNpc = json_decode($player['killedNpc']);
 		$Npckill = json_decode($player['Npckill']);
       if ($player['clanId'] > 0) {
-        // $clan = $mysqli->query('SELECT * FROM server_clans WHERE id = ' . $player['clanId'] . '')->fetch_assoc(); 
+        // $clan = $mysqli->query('SELECT * FROM server_clans WHERE id = ' . $player['clanId'] . '')->fetch_assoc();
         // The $clan variable seems unused in this method. Commenting out for optimization.
         // If needed later, it should be optimized to select specific columns.
       }
