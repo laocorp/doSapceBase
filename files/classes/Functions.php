@@ -23,7 +23,9 @@ class Functions
 		$killedNpc = json_decode($player['killedNpc']);
 		$Npckill = json_decode($player['Npckill']);
       if ($player['clanId'] > 0) {
-        $clan = $mysqli->query('SELECT * FROM server_clans WHERE id = ' . $player['clanId'] . '')->fetch_assoc();
+        // $clan = $mysqli->query('SELECT * FROM server_clans WHERE id = ' . $player['clanId'] . '')->fetch_assoc();
+        // The $clan variable seems unused in this method. Commenting out for optimization.
+        // If needed later, it should be optimized to select specific columns.
       }
     }
 
@@ -154,7 +156,7 @@ class Functions
 
     if ($mysqli->query('SELECT userId FROM player_accounts WHERE username = "' . $username . '"')->num_rows <= 0) {
 
-      if ($mysqli->query('SELECT * FROM player_accounts WHERE email = "' . $email . '"')->num_rows > 0) {
+      if ($mysqli->query('SELECT userId FROM player_accounts WHERE email = "' . $email . '"')->num_rows > 0) {
         $json['type'] = "email";
         $json['message'] = "This email is already taken.";
 
@@ -207,6 +209,7 @@ class Functions
 
           $mysqli->commit();
         } catch (Exception $e) {
+          error_log('Exception in ' . __METHOD__ . ' on line ' . __LINE__ . ': ' . $e->getMessage() . "\nStack trace: " . $e->getTraceAsString());
           $json['message'] = 'An error login occurred. Please try again later.';
           $mysqli->rollback();
         }
@@ -220,6 +223,7 @@ class Functions
 
         return json_encode($json);
       } catch (Exception $e) {
+        error_log('Exception in ' . __METHOD__ . ' on line ' . __LINE__ . ': ' . $e->getMessage() . "\nStack trace: " . $e->getTraceAsString());
         $json['type'] = "resultAll";
         $json['message'] = 'An error occurred. Please try again later.';
         $mysqli->rollback();
@@ -883,6 +887,7 @@ class Functions
 
             $mysqli->commit();
           } catch (Exception $e) {
+            error_log('Exception in ' . __METHOD__ . ' on line ' . __LINE__ . ': ' . $e->getMessage() . "\nStack trace: " . $e->getTraceAsString());
             $json['message'] = 'An error occurred. Please try again later.';
             $mysqli->rollback();
           }
@@ -972,6 +977,7 @@ class Functions
           $json['status'] = true;
           $mysqli->commit();
         } catch (Exception $e) {
+          error_log('Exception in ' . __METHOD__ . ' on line ' . __LINE__ . ': ' . $e->getMessage() . "\nStack trace: " . $e->getTraceAsString());
           $json['message'] = 'An error occurred. Please try again later.';
           $mysqli->rollback();
         }
@@ -1004,6 +1010,7 @@ class Functions
               $json['status'] = true;
               $mysqli->commit();
             } catch (Exception $e) {
+              error_log('Exception in ' . __METHOD__ . ' on line ' . __LINE__ . ': ' . $e->getMessage() . "\nStack trace: " . $e->getTraceAsString());
               $json['message'] = 'An error occurred. Please try again later.';
               $mysqli->rollback();
             }
@@ -1045,7 +1052,7 @@ class Functions
 
     $clans = [];
 
-    foreach ($mysqli->query('SELECT * FROM server_clans WHERE tag like "%' . $keywords . '%" OR name like "%' . $keywords . '%"')->fetch_all(MYSQLI_ASSOC) as $key => $value) {
+    foreach ($mysqli->query('SELECT id, tag, name, rank, rankPoints FROM server_clans WHERE tag like "%' . $keywords . '%" OR name like "%' . $keywords . '%"')->fetch_all(MYSQLI_ASSOC) as $key => $value) {
       $clans[$key]['id'] = $value['id'];
       $clans[$key]['members'] = count($mysqli->query('SELECT userId FROM player_accounts WHERE clanId = ' . $value['id'] . '')->fetch_all(MYSQLI_ASSOC));
       $clans[$key]['tag'] = $value['tag'];
@@ -1066,7 +1073,7 @@ class Functions
 
     $clans = [];
 
-    foreach ($mysqli->query('SELECT * FROM server_clans WHERE id != ' . $player['clanId'] . ' AND (tag like "%' . $keywords . '%" OR name like "%' . $keywords . '%")')->fetch_all(MYSQLI_ASSOC) as $key => $value) {
+    foreach ($mysqli->query('SELECT id, tag, name FROM server_clans WHERE id != ' . $player['clanId'] . ' AND (tag like "%' . $keywords . '%" OR name like "%' . $keywords . '%")')->fetch_all(MYSQLI_ASSOC) as $key => $value) {
       $clans[$key]['id'] = $value['id'];
       $clans[$key]['tag'] = $value['tag'];
       $clans[$key]['name'] = $value['name'];
@@ -1082,7 +1089,7 @@ class Functions
     $player = Functions::GetPlayer();
     $clanId = $mysqli->real_escape_string($clanId);
     $diplomacyType = $mysqli->real_escape_string($diplomacyType);
-    $clan = $mysqli->query('SELECT * FROM server_clans WHERE id = ' . $player['clanId'] . '')->fetch_assoc();
+    $clan = $mysqli->query('SELECT id, leaderId, name FROM server_clans WHERE id = ' . $player['clanId'] . '')->fetch_assoc();
 
     $json = [
       'message' => '',
@@ -1092,7 +1099,7 @@ class Functions
     if ($clanId != 0) {
       if ($clan != NULL) {
         if ($clan['leaderId'] == $player['userId']) {
-          $toClan = $mysqli->query('SELECT * FROM server_clans WHERE id = "' . $clanId . '"')->fetch_assoc();
+          $toClan = $mysqli->query('SELECT id, name FROM server_clans WHERE id = "' . $clanId . '"')->fetch_assoc();
 
           if ($toClan != NULL && $clan['id'] != $toClan['id'] && in_array($diplomacyType, [1, 2, 3, 4, 5, 6])) {
             $mysqli->begin_transaction();
@@ -1156,6 +1163,7 @@ class Functions
 
               $mysqli->commit();
             } catch (Exception $e) {
+              error_log('Exception in ' . __METHOD__ . ' on line ' . __LINE__ . ': ' . $e->getMessage() . "\nStack trace: " . $e->getTraceAsString());
               $json['message'] = 'An error occurred. Please try again later.';
               $mysqli->rollback();
             }
@@ -1190,7 +1198,7 @@ class Functions
       'message' => ''
     ];
 
-    $clan = $mysqli->query('SELECT * FROM server_clans WHERE id = "' . $clanId . '"')->fetch_assoc();
+    $clan = $mysqli->query('SELECT id, recruiting, tag, name FROM server_clans WHERE id = "' . $clanId . '"')->fetch_assoc();
 
     if ($clan != NULL & $clan['recruiting'] && $mysqli->query('SELECT id FROM server_clan_applications WHERE clanId = ' . $clanId . ' AND userId = ' . $player['userId'] . '')->num_rows <= 0 && $player['clanId'] == 0) {
       
@@ -1212,6 +1220,7 @@ class Functions
 
         $mysqli->commit();
       } catch (Exception $e) {
+        error_log('Exception in ' . __METHOD__ . ' on line ' . __LINE__ . ': ' . $e->getMessage() . "\nStack trace: " . $e->getTraceAsString());
         $json['message'] = 'An error occurred. Please try again later.';
         $mysqli->rollback();
       }
@@ -1319,6 +1328,7 @@ class Functions
 
         $mysqli->commit();
       } catch (Exception $e) {
+        error_log('Exception in ' . __METHOD__ . ' on line ' . __LINE__ . ': ' . $e->getMessage() . "\nStack trace: " . $e->getTraceAsString());
         $json['message'] = 'An error occurred. Please try again later.';
         $mysqli->rollback();
       }
@@ -1336,7 +1346,7 @@ class Functions
     $mysqli = Database::GetInstance();
 
     $player = Functions::GetPlayer();
-    $clan = $mysqli->query('SELECT * FROM server_clans WHERE id = ' . $player['clanId'] . '')->fetch_assoc();
+    $clan = $mysqli->query('SELECT id, leaderId, join_dates FROM server_clans WHERE id = ' . $player['clanId'] . '')->fetch_assoc();
 
     $json = [
       'status' => false,
@@ -1398,8 +1408,8 @@ class Functions
 
     $player = Functions::GetPlayer();
     $userId = $mysqli->real_escape_string($userId);
-    $clan = $mysqli->query('SELECT * FROM server_clans WHERE id = ' . $player['clanId'] . '')->fetch_assoc();
-    $user = $mysqli->query('SELECT * FROM player_accounts WHERE userId = "' . $userId . '" AND clanId = "' . $clan['id'] . '"')->fetch_assoc();
+    $clan = $mysqli->query('SELECT id, leaderId, join_dates FROM server_clans WHERE id = ' . $player['clanId'] . '')->fetch_assoc();
+    $user = $mysqli->query('SELECT userId FROM player_accounts WHERE userId = "' . $userId . '" AND clanId = "' . $clan['id'] . '"')->fetch_assoc();
 
     if ($userId == $player['userId']){
       $json['message'] = "Error to delete a member.";
@@ -1428,6 +1438,7 @@ class Functions
 
         $mysqli->commit();
       } catch (Exception $e) {
+        error_log('Exception in ' . __METHOD__ . ' on line ' . __LINE__ . ': ' . $e->getMessage() . "\nStack trace: " . $e->getTraceAsString());
         $json['message'] = 'An error occurred. Please try again later.';
         $mysqli->rollback();
       }
@@ -1446,8 +1457,8 @@ class Functions
 
     $player = Functions::GetPlayer();
     $userId = $mysqli->real_escape_string($userId);
-    $user = $mysqli->query('SELECT * FROM player_accounts WHERE userId = "' . $userId . '"')->fetch_assoc();
-    $clan = $mysqli->query('SELECT * FROM server_clans WHERE id = ' . $player['clanId'] . '')->fetch_assoc();
+    $user = $mysqli->query('SELECT userId, clanId, pilotName, data, rankId, factionId FROM player_accounts WHERE userId = "' . $userId . '"')->fetch_assoc();
+    $clan = $mysqli->query('SELECT id, leaderId, join_dates FROM server_clans WHERE id = ' . $player['clanId'] . '')->fetch_assoc();
 
     $json = [
       'status' => false,
@@ -1507,8 +1518,8 @@ class Functions
 
     $player = Functions::GetPlayer();
     $userId = $mysqli->real_escape_string($userId);
-    $user = $mysqli->query('SELECT * FROM player_accounts WHERE userId = "' . $userId . '"')->fetch_assoc();
-    $clan = $mysqli->query('SELECT * FROM server_clans WHERE id = ' . $player['clanId'] . '')->fetch_assoc();
+    $user = $mysqli->query('SELECT userId, pilotName FROM player_accounts WHERE userId = "' . $userId . '"')->fetch_assoc();
+    $clan = $mysqli->query('SELECT id, leaderId FROM server_clans WHERE id = ' . $player['clanId'] . '')->fetch_assoc();
 
     $json = [
       'status' => false,
@@ -1542,7 +1553,7 @@ class Functions
     $mysqli = Database::GetInstance();
 
     $player = Functions::GetPlayer();
-    $clan = $mysqli->query('SELECT * FROM server_clans WHERE id = ' . $player['clanId'] . '')->fetch_assoc();
+    $clan = $mysqli->query('SELECT leaderId FROM server_clans WHERE id = ' . $player['clanId'] . '')->fetch_assoc();
     $requestId = $mysqli->real_escape_string($requestId);
 
     $json = [
@@ -1589,7 +1600,7 @@ class Functions
     $mysqli = Database::GetInstance();
 
     $player = Functions::GetPlayer();
-    $clan = $mysqli->query('SELECT * FROM server_clans WHERE id = ' . $player['clanId'] . '')->fetch_assoc();
+    $clan = $mysqli->query('SELECT leaderId FROM server_clans WHERE id = ' . $player['clanId'] . '')->fetch_assoc();
     $requestId = $mysqli->real_escape_string($requestId);
 
     $json = [
@@ -1639,7 +1650,7 @@ class Functions
     $mysqli = Database::GetInstance();
 
     $player = Functions::GetPlayer();
-    $clan = $mysqli->query('SELECT * FROM server_clans WHERE id = ' . $player['clanId'] . '')->fetch_assoc();
+    $clan = $mysqli->query('SELECT leaderId FROM server_clans WHERE id = ' . $player['clanId'] . '')->fetch_assoc();
     $requestId = $mysqli->real_escape_string($requestId);
 
     $json = [
@@ -1649,7 +1660,7 @@ class Functions
 
     if ($clan != NULL) {
       if ($clan['leaderId'] == $player['userId']) {
-        $statement = $mysqli->query('SELECT * FROM server_clan_diplomacy_applications WHERE toClanId = ' . $player['clanId'] . ' AND id = "' . $requestId . '"');
+        $statement = $mysqli->query('SELECT id, senderClanId, toClanId, diplomacyType FROM server_clan_diplomacy_applications WHERE toClanId = ' . $player['clanId'] . ' AND id = "' . $requestId . '"');
         $fetch = $statement->fetch_assoc();
 
         if ($statement->num_rows >= 1) {
@@ -2399,7 +2410,7 @@ public static function getAmmoId($key) {
     $mysqli = Database::GetInstance();
 
     $player = Functions::GetPlayer();
-    $clan = $mysqli->query('SELECT * FROM server_clans WHERE id = ' . $player['clanId'] . '')->fetch_assoc();
+    $clan = $mysqli->query('SELECT leaderId FROM server_clans WHERE id = ' . $player['clanId'] . '')->fetch_assoc();
     $diplomacyId = $mysqli->real_escape_string($diplomacyId);
 
     $json = [
@@ -2409,7 +2420,7 @@ public static function getAmmoId($key) {
 
     if ($clan != NULL) {
       if ($clan['leaderId'] == $player['userId']) {
-        $statement = $mysqli->query('SELECT * FROM server_clan_diplomacy WHERE id = "' . $diplomacyId . '"');
+        $statement = $mysqli->query('SELECT diplomacyType, senderClanId, toClanId FROM server_clan_diplomacy WHERE id = "' . $diplomacyId . '"');
         $fetch = $statement->fetch_assoc();
 
         if ($statement->num_rows >= 1 && $fetch['diplomacyType'] != 3) {
@@ -2480,6 +2491,7 @@ public static function getAmmoId($key) {
 
             $mysqli->commit();
           } catch (Exception $e) {
+            error_log('Exception in ' . __METHOD__ . ' on line ' . __LINE__ . ': ' . $e->getMessage() . "\nStack trace: " . $e->getTraceAsString());
             $message = 'An error occurred. Please try again later.';
             $mysqli->rollback();
           }
@@ -3485,7 +3497,9 @@ public static function getAmmoId($key) {
 
             $mysqli->commit();
           } catch (Exception $e) {
-            $message = 'An error occurred. Please try again later.';
+            error_log('Exception in ' . __METHOD__ . ' on line ' . __LINE__ . ': ' . $e->getMessage() . "\nStack trace: " . $e->getTraceAsString());
+            // $message variable was used here but it's not defined in this scope, using $json['message']
+            $json['message'] = 'An error occurred. Please try again later.';
             $mysqli->rollback();
           }
 
@@ -3628,7 +3642,9 @@ public static function getAmmoId($key) {
 
             $mysqli->commit();
           } catch (Exception $e) {
-            $message = 'An error occurred. Please try again later.';
+            error_log('Exception in ' . __METHOD__ . ' on line ' . __LINE__ . ': ' . $e->getMessage() . "\nStack trace: " . $e->getTraceAsString());
+            // $message variable was used here but it's not defined in this scope, using $json['message']
+            $json['message'] = 'An error occurred. Please try again later.';
             $mysqli->rollback();
           }
           $mysqli->close();
@@ -4916,7 +4932,8 @@ public static function getAmmoId($key) {
 
     if (isset($id) && !empty($id)) {
       $id = $mysqli->real_escape_string(Functions::s($id));
-      return $mysqli->query('SELECT * FROM player_accounts WHERE userId = ' . $id . '')->fetch_assoc();
+      // Used by send_bank_credits and send_bank_uridium, which access pilotName and data.
+      return $mysqli->query('SELECT userId, pilotName, data FROM player_accounts WHERE userId = ' . $id . '')->fetch_assoc();
     } else {
       return null;
     }
@@ -4927,7 +4944,9 @@ public static function getAmmoId($key) {
 
     if (isset($pilot) && !empty($pilot)) {
       $pilot = $mysqli->real_escape_string(Functions::s($pilot));
-      $dataPilot = $mysqli->query('SELECT * FROM player_accounts WHERE pilotName = "'.$pilot.'"')->fetch_assoc();
+      // This function is not directly called within Functions.php.
+      // Assuming userId and pilotName would be the most common fields needed if used externally.
+      $dataPilot = $mysqli->query('SELECT userId, pilotName FROM player_accounts WHERE pilotName = "'.$pilot.'"')->fetch_assoc();
       return $dataPilot;
     } else {
       return null;
@@ -4939,7 +4958,8 @@ public static function getAmmoId($key) {
 
     if (isset($pilot) && !empty($pilot)) {
       $pilot = $mysqli->real_escape_string(Functions::s($pilot));
-      $dataPilot = $mysqli->query('SELECT * FROM player_accounts WHERE pilotName = "'.$pilot.'" OR userId = "'.$pilot.'" OR username = "'.$pilot.'"')->fetch_assoc();
+      // Used by searchUser, accessing: userId, username, pilotName, email, data, info, premium.
+      $dataPilot = $mysqli->query('SELECT userId, username, pilotName, email, data, info, premium FROM player_accounts WHERE pilotName = "'.$pilot.'" OR userId = "'.$pilot.'" OR username = "'.$pilot.'"')->fetch_assoc();
       return $dataPilot;
     } else {
       return null;
@@ -5021,7 +5041,9 @@ public static function getAmmoId($key) {
 
             $mysqli->commit();
           } catch (Exception $e) {
-            $json['message'] = 'An error occurred. Please try again later.';
+        error_log('Exception in ' . __METHOD__ . ' on line ' . __LINE__ . ': ' . $e->getMessage() . "\nStack trace: " . $e->getTraceAsString());
+        // $message variable was used here but it's not defined in this scope, using $json['message']
+        $json['message'] = 'An error occurred. Please try again later.';
             $mysqli->rollback();
           }
 
@@ -5333,7 +5355,8 @@ public static function getAmmoId($key) {
 
       $mysqli = Database::GetInstance();
 
-      $queryMembersClan = $mysqli->query("SELECT * FROM player_accounts WHERE clanId = '$clanId'");
+      // Used by calculateTax, which accesses 'data' from each member.
+      $queryMembersClan = $mysqli->query("SELECT userId, data FROM player_accounts WHERE clanId = '$clanId'");
 
       if ($queryMembersClan){
         return $queryMembersClan;
@@ -5351,7 +5374,8 @@ public static function getAmmoId($key) {
 
       $mysqli = Database::GetInstance();
 
-      $queryCheck = $mysqli->query("SELECT * FROM player_accounts WHERE userId = '$userId' AND clanId = '$clanId'");
+      // Only num_rows is used.
+      $queryCheck = $mysqli->query("SELECT userId FROM player_accounts WHERE userId = '$userId' AND clanId = '$clanId'");
 
       if ($queryCheck && $queryCheck->num_rows > 0){
         return true;
@@ -5775,9 +5799,10 @@ public static function getAmmoId($key) {
 
       $mysqli = Database::GetInstance();
 
-      $sQuery = $mysqli->query("SELECT * FROM server_clans WHERE id = '$idClan'");
+      // Uses creditTax, uridiumTax.
+      $sQuery = $mysqli->query("SELECT id, creditTax, uridiumTax FROM server_clans WHERE id = '$idClan'");
 
-      if ($sQuery){
+      if ($sQuery && $sQuery->num_rows > 0){ // Added num_rows check
 
         $clanInfo = $sQuery->fetch_assoc();
 
@@ -5828,7 +5853,8 @@ public static function getAmmoId($key) {
 
       $mysqli = Database::GetInstance();
       
-      $getClans = $mysqli->query("SELECT * FROM server_clans WHERE creditTax > 0 OR uridiumTax > 0");
+      // Uses id, tag, name, creditTax, uridiumTax, lastTaxCredit, lastTaxUridium.
+      $getClans = $mysqli->query("SELECT id, tag, name, creditTax, uridiumTax, lastTaxCredit, lastTaxUridium FROM server_clans WHERE creditTax > 0 OR uridiumTax > 0");
 
       if ($getClans->num_rows > 0){
 
@@ -7374,7 +7400,8 @@ public static function getAmmoId($key) {
       }
     }
 
-    $query = $mysqli->query("SELECT * FROM player_accounts WHERE userId = '".$player['userId']."' AND rankId != 22 AND factionId = '".$player['factionId']."'");
+    // Uses: userId, data (for experience, honor), info (for registerDate), destructions, rankId, factionId
+    $query = $mysqli->query("SELECT userId, data, info, destructions, rankId, factionId FROM player_accounts WHERE userId = '".$player['userId']."' AND rankId != 22 AND factionId = '".$player['factionId']."'");
 
     if ($query->num_rows > 0){
 
@@ -7692,6 +7719,7 @@ function acik_arttirma($bid_credit)
         $mysqli->commit();
       }
       catch (Exception $e) {
+        error_log('Exception in ' . __FUNCTION__ . ' on line ' . __LINE__ . ': ' . $e->getMessage() . "\nStack trace: " . $e->getTraceAsString()); // Using __FUNCTION__ as it's not a class method
         $mysqli->rollback();
       }
       $mysqli->close();
@@ -7753,6 +7781,7 @@ function acik_arttirma_lf4_2($bid_credit_lf4_2)
         $mysqli->commit();
       }
       catch (Exception $e) {
+        error_log('Exception in ' . __FUNCTION__ . ' on line ' . __LINE__ . ': ' . $e->getMessage() . "\nStack trace: " . $e->getTraceAsString()); // Using __FUNCTION__
         $mysqli->rollback();
       }
       $mysqli->close();
@@ -7818,6 +7847,7 @@ function acik_arttirma_lf4_3($bid_credit_lf4_3)
         $mysqli->commit();
       }
       catch (Exception $e) {
+        error_log('Exception in ' . __FUNCTION__ . ' on line ' . __LINE__ . ': ' . $e->getMessage() . "\nStack trace: " . $e->getTraceAsString()); // Using __FUNCTION__
         $mysqli->rollback();
       }
       $mysqli->close();
@@ -7884,6 +7914,7 @@ function acik_arttirma_lf4_4($bid_credit_lf4_4)
         $mysqli->commit();
       }
       catch (Exception $e) {
+        error_log('Exception in ' . __FUNCTION__ . ' on line ' . __LINE__ . ': ' . $e->getMessage() . "\nStack trace: " . $e->getTraceAsString()); // Using __FUNCTION__
         $mysqli->rollback();
       }
       $mysqli->close();
@@ -7948,6 +7979,7 @@ function acik_arttirmahavoc($bid_havoc)
         $mysqli->commit();
       }
       catch (Exception $e) {
+        error_log('Exception in ' . __FUNCTION__ . ' on line ' . __LINE__ . ': ' . $e->getMessage() . "\nStack trace: " . $e->getTraceAsString()); // Using __FUNCTION__
         $mysqli->rollback();
       }
       $mysqli->close();
@@ -8006,6 +8038,7 @@ function acik_arttirmahercul($bid_hercul)
         $mysqli->commit();
       }
       catch (Exception $e) {
+        error_log('Exception in ' . __FUNCTION__ . ' on line ' . __LINE__ . ': ' . $e->getMessage() . "\nStack trace: " . $e->getTraceAsString()); // Using __FUNCTION__
         $mysqli->rollback();
       }
       $mysqli->close();
@@ -8065,6 +8098,7 @@ function acik_arttirma_apis($bid_apis)
         $mysqli->commit();
       }
       catch (Exception $e) {
+        error_log('Exception in ' . __FUNCTION__ . ' on line ' . __LINE__ . ': ' . $e->getMessage() . "\nStack trace: " . $e->getTraceAsString()); // Using __FUNCTION__
         $mysqli->rollback();
       }
       $mysqli->close();
@@ -8125,6 +8159,7 @@ function acik_arttirma_zeus($bid_zeus)
         $mysqli->commit();
       }
       catch (Exception $e) {
+        error_log('Exception in ' . __FUNCTION__ . ' on line ' . __LINE__ . ': ' . $e->getMessage() . "\nStack trace: " . $e->getTraceAsString()); // Using __FUNCTION__
         $mysqli->rollback();
       }
       $mysqli->close();
