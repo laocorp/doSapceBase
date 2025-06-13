@@ -1,5 +1,9 @@
 <?php
     // Assuming config.php (with DOMAIN, Functions class etc.) is loaded by the calling script (e.g., redirect.php)
+    if (session_status() == PHP_SESSION_NONE) {
+        session_start();
+    }
+    Functions::generateCsrfToken(); // Ensure CSRF token is available in the session
 
     $toastMessage = ''; // Initialize for potential messages
     // Initialize other variables that might be used in the HTML if not set by POST handlers
@@ -7,47 +11,54 @@
     $mail = "";
 
     if (isset($_POST['loginsubmit'])) {
-        if (isset($_POST['username']) && isset($_POST['password'])) {
-            $loginResultJson = Functions::Login($_POST['username'], $_POST['password']);
-            $loginResult = json_decode($loginResultJson, true);
+        if (isset($_POST['csrf_token']) && Functions::validateCsrfToken($_POST['csrf_token'])) {
+            if (isset($_POST['username']) && isset($_POST['password'])) {
+                $loginResultJson = Functions::Login($_POST['username'], $_POST['password']);
+                $loginResult = json_decode($loginResultJson, true);
 
-            if (isset($loginResult['status']) && $loginResult['status'] === true) {
-                // Successful login, redirect to home
-                header('Location: ' . DOMAIN . 'home');
-                exit;
-            } else {
-                // Use htmlspecialchars to prevent XSS from error messages if they can contain user input
-                $toastMessage = isset($loginResult['message']) ? htmlspecialchars($loginResult['message'], ENT_QUOTES, 'UTF-8') : 'Login failed. Please try again.';
-            }
-        } else {
-            $toastMessage = 'Please enter both username and password.';
-        }
-    } else if (isset($_POST['registersubmit'])) { // Registration attempt
-
-        // Ensure all required fields are present before calling Functions::Register
-        if (isset($_POST['username'], $_POST['password'], $_POST['password_confirm'], $_POST['email'])) {
-            $username = $_POST['username'];
-            $password = $_POST['password'];
-            $password_confirm = $_POST['password_confirm'];
-            $email = $_POST['email'];
-            $terms = isset($_POST['terms']) ? $_POST['terms'] : '';
-
-            $registrationResultJson = Functions::Register($username, $password, $password_confirm, $email, $terms);
-
-            $registrationResult = json_decode($registrationResultJson, true);
-
-            if (isset($registrationResult['status']) && $registrationResult['status'] === true) {
-                if (isset($registrationResult['redirect']) && $registrationResult['redirect'] === true) {
+                if (isset($loginResult['status']) && $loginResult['status'] === true) {
+                    // Successful login, redirect to home
                     header('Location: ' . DOMAIN . 'home');
                     exit;
                 } else {
-                    $toastMessage = isset($registrationResult['message']) ? htmlspecialchars($registrationResult['message'], ENT_QUOTES, 'UTF-8') : 'Registration successful!';
+                    // Use htmlspecialchars to prevent XSS from error messages if they can contain user input
+                    $toastMessage = isset($loginResult['message']) ? htmlspecialchars($loginResult['message'], ENT_QUOTES, 'UTF-8') : 'Login failed. Please try again.';
                 }
             } else {
-                $toastMessage = isset($registrationResult['message']) ? htmlspecialchars($registrationResult['message'], ENT_QUOTES, 'UTF-8') : 'Registration failed. Please try again.';
+                $toastMessage = 'Please enter both username and password.';
             }
         } else {
-            $toastMessage = 'Please fill all required registration fields.';
+            $toastMessage = 'Invalid security token. Please try again.';
+        }
+    } else if (isset($_POST['registersubmit'])) { // Registration attempt
+        if (isset($_POST['csrf_token']) && Functions::validateCsrfToken($_POST['csrf_token'])) {
+            // Ensure all required fields are present before calling Functions::Register
+            if (isset($_POST['username'], $_POST['password'], $_POST['password_confirm'], $_POST['email'])) {
+                $username = $_POST['username'];
+                $password = $_POST['password'];
+                $password_confirm = $_POST['password_confirm'];
+                $email = $_POST['email'];
+                $terms = isset($_POST['terms']) ? $_POST['terms'] : '';
+
+                $registrationResultJson = Functions::Register($username, $password, $password_confirm, $email, $terms);
+
+                $registrationResult = json_decode($registrationResultJson, true);
+
+                if (isset($registrationResult['status']) && $registrationResult['status'] === true) {
+                    if (isset($registrationResult['redirect']) && $registrationResult['redirect'] === true) {
+                        header('Location: ' . DOMAIN . 'home');
+                        exit;
+                    } else {
+                        $toastMessage = isset($registrationResult['message']) ? htmlspecialchars($registrationResult['message'], ENT_QUOTES, 'UTF-8') : 'Registration successful!';
+                    }
+                } else {
+                    $toastMessage = isset($registrationResult['message']) ? htmlspecialchars($registrationResult['message'], ENT_QUOTES, 'UTF-8') : 'Registration failed. Please try again.';
+                }
+            } else {
+                $toastMessage = 'Please fill all required registration fields.';
+            }
+        } else {
+            $toastMessage = 'Invalid security token. Please try again.';
         }
     }
     // Future placeholder for password recovery handlers if they are added to this file:
@@ -78,8 +89,6 @@
 <link href="https://fonts.googleapis.com/css?family=Muli" rel='stylesheet' type='text/css'>
 
 	
-<script type="text/javascript" src="http://www.mind.ilstu.edu/include/swfobject.js"></script>
-
 
 </head>
 
@@ -92,6 +101,7 @@
 </div>
 <div class="login">
 <form id="login" method="post">
+<input type="hidden" name="csrf_token" value="<?= htmlspecialchars($_SESSION['csrf_token'] ?? '', ENT_QUOTES, 'UTF-8') ?>">
 <input type="text" required name="username" placeholder="Username">
 <input type="password" required name="password" placeholder="Password">
 <button type="submit" name="loginsubmit" class="login-button">LOGIN</button>
@@ -134,6 +144,7 @@ Introducing
 			</div>
 			<div class="modal-body"><center>
 			<form id="register" method="post">
+                  <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($_SESSION['csrf_token'] ?? '', ENT_QUOTES, 'UTF-8') ?>">
                   <div class="card-content">
                     <div class="row">
                       <div class="input-field col s12">

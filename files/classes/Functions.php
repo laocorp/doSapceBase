@@ -7793,6 +7793,25 @@ function acik_arttirma_lf4_2($bid_credit_lf4_2)
   return null;
 }
 
+  public static function generateCsrfToken()
+  {
+    if (session_status() == PHP_SESSION_NONE) {
+      // It's good practice to ensure session is started, though in many frameworks it already would be.
+      // Depending on the environment, direct session_start() here might be too late or cause issues
+      // if headers are already sent. Assuming session is managed appropriately before this call.
+    }
+    $token = bin2hex(random_bytes(32));
+    $_SESSION['csrf_token'] = $token;
+    return $token;
+  }
+
+  public static function validateCsrfToken($token)
+  {
+    if (empty($_SESSION['csrf_token']) || empty($token)) {
+      return false;
+    }
+    return hash_equals($_SESSION['csrf_token'], $token);
+  }
 
 
 // LF4 IKINCI

@@ -1,4 +1,10 @@
 <?php require_once(INCLUDES . 'header.php');
+
+if (session_status() == PHP_SESSION_NONE) {
+    session_start();
+}
+Functions::generateCsrfToken(); // Ensure CSRF token is available in the session
+
 $category = Functions::getShopCategories();
 $player = Functions::GetPlayer();
 // Ensure player data is HTML escaped if used directly, though not directly used in this file's PHP echo statements for player data.
@@ -39,6 +45,7 @@ $player = Functions::GetPlayer();
 <?php require_once(INCLUDES . 'data.php'); ?>
 <div class="page shop">
 <div class="shop-container styleUpdate">
+<input type="hidden" id="csrf_token_shop" name="csrf_token" value="<?= htmlspecialchars($_SESSION['csrf_token'] ?? '', ENT_QUOTES, 'UTF-8') ?>">
 <div class="loader">
 <div class="content"><i class="fa fa-check fg-green"></i><br>
 								  <b>1x ship: "ship_bigboy" purchsased.<br><br></b><br>
@@ -66,7 +73,16 @@ $player = Functions::GetPlayer();
       $escaped_item_id = htmlspecialchars($value2['id'], ENT_QUOTES, 'UTF-8');
       $escaped_item_image = htmlspecialchars($value2['image'], ENT_QUOTES, 'UTF-8');
       ?>
-        <div id="<?php echo $escaped_item_id; ?>" style="#2d2d2d no-repeat; background-size: 100% 100%;" class="item itmstyleUpdateCredits">
+        <div id="<?php echo $escaped_item_id; ?>"
+             style="#2d2d2d no-repeat; background-size: 100% 100%;"
+             class="item itmstyleUpdateCredits"
+             data-id="<?= $escaped_item_id ?>"
+             data-name="<?= htmlspecialchars($value2['name'], ENT_QUOTES, 'UTF-8') ?>"
+             data-image="<?= $escaped_item_image ?>"
+             data-price="<?= htmlspecialchars($value2['price'], ENT_QUOTES, 'UTF-8') ?>"
+             data-price-type="<?= htmlspecialchars($value2['priceType'], ENT_QUOTES, 'UTF-8') ?>"
+             data-information="<?= htmlspecialchars($value2['information'], ENT_QUOTES, 'UTF-8') ?>"
+             data-is-stackable="<?= $value2['amount'] ? 'true' : 'false' ?>">
         <img src="<?php echo DOMAIN; ?><?php echo $escaped_item_image; ?>">
         <div class="price" style="font-weight: bold;"><?php echo number_format($value2['price'], 0, '.', '.'); ?> </div>
         </div>
