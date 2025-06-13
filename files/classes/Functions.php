@@ -7749,7 +7749,7 @@ function acik_arttirma_lf4_2($bid_credit_lf4_2)
   return null;
 }
 
-  public static function generateCsrfToken()
+function generateCsrfToken()
   {
     if (session_status() == PHP_SESSION_NONE) {
       // It's good practice to ensure session is started, though in many frameworks it already would be.
@@ -7761,14 +7761,14 @@ function acik_arttirma_lf4_2($bid_credit_lf4_2)
     return $token;
   }
 
-  public static function validateCsrfToken($token)
+function validateCsrfToken($token)
   {
     if (empty($_SESSION['csrf_token']) || empty($token)) {
       return false;
     }
     return hash_equals($_SESSION['csrf_token'], $token);
   }
-} // Closing brace for the Functions class
+// Removed extra closing brace that was here.
 
 // LF4 IKINCI
 
