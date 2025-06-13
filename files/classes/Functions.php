@@ -1,6 +1,45 @@
 <?php
 class Functions
 {
+  const UPGRADE_WAIT_TIME = '+5 minutes';
+
+  private static $droneLevelExperienceMap = [
+    1 => 0,
+    2 => 500,
+    3 => 1000,
+    4 => 1500,
+    5 => 2000,
+    6 => 2500
+  ];
+
+  private static $upgradeableItemConfig = [
+    "LF-1" => ["field" => "lf1lvl", "maxLevel" => 16, "type" => "laser"],
+    "LF-2" => ["field" => "lf2lvl", "maxLevel" => 16, "type" => "laser"],
+    "LF-3" => ["field" => "lf3lvl", "maxLevel" => 16, "type" => "laser"],
+    "LF-4" => ["field" => "lf4lvl", "maxLevel" => 16, "type" => "laser"],
+    "Prometeus" => ["field" => "lf5lvl", "maxLevel" => 16, "type" => "laser"],
+    "SG3N-B01" => ["field" => "B01lvl", "maxLevel" => 16, "type" => "generator"],
+    "SG3N-B02" => ["field" => "B02lvl", "maxLevel" => 16, "type" => "generator"],
+    "SG3N-B03" => ["field" => "B03lvl", "maxLevel" => 16, "type" => "generator"],
+    "SG3N-A01" => ["field" => "A01lvl", "maxLevel" => 16, "type" => "generator"],
+    "SG3N-A02" => ["field" => "A02lvl", "maxLevel" => 16, "type" => "generator"],
+    "SG3N-A03" => ["field" => "A03lvl", "maxLevel" => 16, "type" => "generator"],
+    "LF-3-Neutron" => ["field" => "lf3nlvl", "maxLevel" => 16, "type" => "laser"],
+    "LF-4-MD" => ["field" => "lf4mdlvl", "maxLevel" => 16, "type" => "laser"],
+    "LF-4-PD" => ["field" => "lf4pdlvl", "maxLevel" => 16, "type" => "laser"],
+    "LF-4-HP" => ["field" => "lf4hplvl", "maxLevel" => 16, "type" => "laser"],
+    "LF-4-SP" => ["field" => "lf4splvl", "maxLevel" => 16, "type" => "laser"],
+    "Unstable LF-4" => ["field" => "lf4unstablelvl", "maxLevel" => 16, "type" => "laser"],
+    "MP-1" => ["field" => "mp1lvl", "maxLevel" => 16, "type" => "laser"],
+    "Drone Level" => ["field" => "droneLvl", "maxLevel" => 6, "type" => "drone"], // field 'droneLvl' is conceptual for logic
+  ];
+
+  // Method _getItemLevelFieldInfo is not present, so I will refactor selectItemUpgradeSystem and upgradeItem directly.
+  // If _getItemLevelFieldInfo were to be created, it would look like:
+  // private static function _getItemLevelFieldInfo($itemName) {
+  //   return isset(self::$upgradeableItemConfig[$itemName]) ? self::$upgradeableItemConfig[$itemName] : null;
+  // }
+
   public static function ObStart()
   {
     function minify_everything($buffer)
@@ -6051,67 +6090,25 @@ public static function getAmmoId($key) {
 
         $lvl = null;
         $lvlTo = null;
+        $itemName = $dataItem['name'];
 
-        if ($dataItem['name'] == "LF-1"){
-          $lvl = $dataEquipment['lf1lvl'];
-          $lvlTo = $lvl+1;
-        } else if ($dataItem['name'] == "LF-2"){
-          $lvl = $dataEquipment['lf2lvl'];
-          $lvlTo = $lvl+1;
-        } else if ($dataItem['name'] == "LF-3"){
-          $lvl = $dataEquipment['lf3lvl'];
-          $lvlTo = $lvl+1;
-        } else if ($dataItem['name'] == "LF-4"){
-          $lvl = $dataEquipment['lf4lvl'];
-          $lvlTo = $lvl+1;
-        } else if ($dataItem['name'] == "Prometeus"){
-          $lvl = $dataEquipment['lf5lvl'];
-          $lvlTo = $lvl+1;
-        } else if ($dataItem['name'] == "SG3N-B01"){
-          $lvl = $dataEquipment['B01lvl'];
-          $lvlTo = $lvl+1;
-        } else if ($dataItem['name'] == "SG3N-B02"){
-          $lvl = $dataEquipment['B02lvl'];
-          $lvlTo = $lvl+1;
-        } else if ($dataItem['name'] == "SG3N-B03"){
-          $lvl = $dataEquipment['B03lvl'];
-          $lvlTo = $lvl+1;
-        } else if ($dataItem['name'] == "SG3N-A01"){
-          $lvl = $dataEquipment['A01lvl'];
-          $lvlTo = $lvl+1;
-        } else if ($dataItem['name'] == "SG3N-A02"){
-          $lvl = $dataEquipment['A02lvl'];
-          $lvlTo = $lvl+1;
-        } else if ($dataItem['name'] == "SG3N-A03"){
-          $lvl = $dataEquipment['A03lvl'];
-          $lvlTo = $lvl+1;		
-        } else if ($dataItem['name'] == "Drone Level"){
-          $lvl = self::getDroneLvl();
-          $lvlTo = $lvl+1;
-		} else if ($dataItem['name'] == "LF-3-Neutron"){
-          $lvl = $dataEquipment['lf3nlvl'];
-          $lvlTo = $lvl+1;
-		} else if ($dataItem['name'] == "LF-4-MD"){
-          $lvl = $dataEquipment['lf4mdlvl'];
-          $lvlTo = $lvl+1;
-		} else if ($dataItem['name'] == "LF-4-PD"){
-          $lvl = $dataEquipment['lf4pdlvl'];
-          $lvlTo = $lvl+1;
-		} else if ($dataItem['name'] == "LF-4-HP"){
-          $lvl = $dataEquipment['lf4hplvl'];
-          $lvlTo = $lvl+1;
-		} else if ($dataItem['name'] == "LF-4-SP"){
-          $lvl = $dataEquipment['lf4splvl'];
-          $lvlTo = $lvl+1;
-		} else if ($dataItem['name'] == "Unstable LF-4"){
-          $lvl = $dataEquipment['lf4unstablelvl'];
-          $lvlTo = $lvl+1;
-		} else if ($dataItem['name'] == "MP-1"){
-          $lvl = $dataEquipment['mp1lvl'];
-          $lvlTo = $lvl+1;
+        if (isset(self::$upgradeableItemConfig[$itemName])) {
+            $itemConfig = self::$upgradeableItemConfig[$itemName];
+            if ($itemConfig['type'] === 'drone') {
+                $lvl = self::getDroneLvl();
+            } else {
+                // $dataEquipment is already fetched before this block
+                $lvl = $dataEquipment[$itemConfig['field']];
+            }
+            $lvlTo = $lvl + 1;
+        } else {
+            // If item is not in config, it cannot be upgraded via this system.
+            $json['status'] = false;
+            $json['message'] = "Item '" . htmlspecialchars($itemName) . "' is not configured for upgrades.";
+            return json_encode($json);
         }
 
-        $json['name'] = $dataItem['name'];
+        $json['name'] = $itemName;
         $json['image'] = $dataItem['image'];
         $json['costUpgrade'] = $dataItem['multiplier'];
         $json['percent'] = $percent;
@@ -6203,82 +6200,36 @@ public static function getAmmoId($key) {
 
       $lvl = null;
       $lvlTo = null;
+      $itemName = $data['name']; // Name from $data which comes from selectItemUpgradeSystem
+      $itemConfig = null;
 
-	  if ($data['name'] == "LF-1"){
-          $lvl = $dataEquipment['lf1lvl'];
-          $lvlTo = $lvl+1;
-        } else if ($data['name'] == "LF-2"){
-          $lvl = $dataEquipment['lf2lvl'];
-          $lvlTo = $lvl+1;
-        } else if ($data['name'] == "LF-3"){
-          $lvl = $dataEquipment['lf3lvl'];
-          $lvlTo = $lvl+1;
-        } else if ($data['name'] == "LF-4"){
-          $lvl = $dataEquipment['lf4lvl'];
-          $lvlTo = $lvl+1;
-        } else if ($data['name'] == "Prometeus"){
-          $lvl = $dataEquipment['lf5lvl'];
-          $lvlTo = $lvl+1;
-        } else if ($data['name'] == "SG3N-B01"){
-          $lvl = $dataEquipment['B01lvl'];
-          $lvlTo = $lvl+1;
-        } else if ($data['name'] == "SG3N-B02"){
-          $lvl = $dataEquipment['B02lvl'];
-          $lvlTo = $lvl+1;
-        } else if ($data['name'] == "SG3N-B03"){
-          $lvl = $dataEquipment['B03lvl'];
-          $lvlTo = $lvl+1;
-        } else if ($data['name'] == "SG3N-A01"){
-          $lvl = $dataEquipment['A01lvl'];
-          $lvlTo = $lvl+1;
-        } else if ($data['name'] == "SG3N-A02"){
-          $lvl = $dataEquipment['A02lvl'];
-          $lvlTo = $lvl+1;
-        } else if ($data['name'] == "SG3N-A03"){
-          $lvl = $dataEquipment['A03lvl'];
-          $lvlTo = $lvl+1;
-		} else if ($data['name'] == "LF-3-Neutron"){
-          $lvl = $dataEquipment['lf3nlvl'];
-          $lvlTo = $lvl+1;
-		} else if ($data['name'] == "LF-4-MD"){
-          $lvl = $dataEquipment['lf4mdlvl'];
-          $lvlTo = $lvl+1;
-		} else if ($data['name'] == "LF-4-PD"){
-          $lvl = $dataEquipment['lf4pdlvl'];
-          $lvlTo = $lvl+1;
-		} else if ($data['name'] == "LF-4-HP"){
-          $lvl = $dataEquipment['lf4hplvl'];
-          $lvlTo = $lvl+1;
-		} else if ($data['name'] == "LF-4-SP"){
-          $lvl = $dataEquipment['lf4splvl'];
-          $lvlTo = $lvl+1;
-		} else if ($data['name'] == "Unstable LF-4"){
-          $lvl = $dataEquipment['lf4unstablelvl'];
-          $lvlTo = $lvl+1;
-		} else if ($data['name'] == "MP-1"){
-          $lvl = $dataEquipment['mp1lvl'];
-          $lvlTo = $lvl+1;
-        } else if ($data['name'] == "Drone Level"){
-        $lvl = self::getDroneLvl();
-        $lvlTo = $lvl+1; 
+      if (isset(self::$upgradeableItemConfig[$itemName])) {
+          $itemConfig = self::$upgradeableItemConfig[$itemName];
+          if ($itemConfig['type'] === 'drone') {
+              $lvl = self::getDroneLvl();
+          } else {
+              // $dataEquipment should be fetched here if not already available from $data
+              // Assuming $dataEquipment is fetched as it was in original code block for $data['name'] checks
+              $sQueryEq = $mysqli->query("SELECT lf1lvl,lf3nlvl,lf4mdlvl,lf4pdlvl,lf4hplvl,lf4splvl,lf4unstablelvl,mp1lvl,lf2lvl,lf3lvl,lf4lvl,lf5lvl,A01lvl,A02lvl,A03lvl,B01lvl,B02lvl,B03lvl FROM player_equipment WHERE userId = '{$player['userId']}'");
+              $dataEquipment = $sQueryEq->fetch_assoc();
+              $lvl = $dataEquipment[$itemConfig['field']];
+          }
+          $lvlTo = $lvl + 1;
 
-        if ($lvl >= 6){
-          $json['message'] = "This Drone does not allow to upgrade more.";
-  
+          if ($lvl >= $itemConfig['maxLevel']){
+            $json['message'] = "This " . $itemConfig['type'] . " does not allow to upgrade more.";
+            return json_encode($json);
+          }
+      } else {
+          // Handle items not in config - this should ideally not happen
+          $json['message'] = "Item configuration not found for upgrade.";
           return json_encode($json);
-        }
       }
 	  
-      if ($lvl >= 16){
-        $json['message'] = "This laser does not allow to upgrade more.";
-
-        return json_encode($json);
-      }
-
-      $waitTime = strtotime("+5 minutes", time());
+      $waitTime = strtotime(self::UPGRADE_WAIT_TIME, time());
       $timeNow = time();
 
-      $sQuery = $mysqli->query("INSERT INTO upgradesSystem (`idUser`, `lvl_base`, `new_lvl`, `name`, `itemId`, `waitTime`, `percent`, `img`, `timeNow`) VALUES ('".$player['userId']."', '$lvl', '$lvlTo', '".$data['name']."', '".$data['itemId']."', '$waitTime', '$cnt', '".$data['image']."', '$timeNow');");
+      $sQuery = $mysqli->query("INSERT INTO upgradesSystem (`idUser`, `lvl_base`, `new_lvl`, `name`, `itemId`, `waitTime`, `percent`, `img`, `timeNow`) VALUES ('".$player['userId']."', '$lvl', '$lvlTo', '".$itemName."', '".$data['itemId']."', '$waitTime', '$cnt', '".$data['image']."', '$timeNow');");
 
       $date1 = $timeNow;
       $date2 = $waitTime;
@@ -6432,9 +6383,9 @@ public static function getAmmoId($key) {
               $mysqli->query("UPDATE player_equipment SET mp1lvl = '".$data['new_lvl']."' WHERE userId = '{$player['userId']}'");
             } else if ($data['name'] == "Drone Level"){
               if(Socket::Get('IsOnline', array('UserId' => $player['userId'], 'Return' => false))) {
-                Socket::Send('updateDroneEXP', ['UserId' => $player['userId'], 'Amount' => ExpToDron[$data['new_lvl']]]);
+                Socket::Send('updateDroneEXP', ['UserId' => $player['userId'], 'Amount' => self::$droneLevelExperienceMap[$data['new_lvl']]]);
               } else {
-                $mysqli->query("UPDATE player_accounts SET droneExp = '".ExpToDron[$data['new_lvl']]."' WHERE userId = '{$player['userId']}'");
+                $mysqli->query("UPDATE player_accounts SET droneExp = '".self::$droneLevelExperienceMap[$data['new_lvl']]."' WHERE userId = '{$player['userId']}'");
               }
             }
 
@@ -6558,9 +6509,9 @@ public static function getAmmoId($key) {
               $mysqli->query("UPDATE player_equipment SET mp1lvl = '".$dataFinish['new_lvl']."' WHERE userId = '{$player['userId']}'");
             } else if ($dataFinish['name'] == "Drone Level"){
               if(Socket::Get('IsOnline', array('UserId' => $player['userId'], 'Return' => false))) {
-                Socket::Send('updateDroneEXP', ['UserId' => $player['userId'], 'Amount' => ExpToDron[$dataFinish['new_lvl']]]);
+                Socket::Send('updateDroneEXP', ['UserId' => $player['userId'], 'Amount' => self::$droneLevelExperienceMap[$dataFinish['new_lvl']]]);
               } else {
-                $mysqli->query("UPDATE player_accounts SET droneExp = '".ExpToDron[$dataFinish['new_lvl']]."' WHERE userId = '{$player['userId']}'");
+                $mysqli->query("UPDATE player_accounts SET droneExp = '".self::$droneLevelExperienceMap[$dataFinish['new_lvl']]."' WHERE userId = '{$player['userId']}'");
               }
             }
 
@@ -7666,6 +7617,11 @@ public static function getAmmoId($key) {
   }
 
   // Finish update 28.01.2021.
+
+  public static function getUpgradeableItemConfig()
+  {
+    return self::$upgradeableItemConfig;
+  }
 	
 }
 
@@ -7812,7 +7768,7 @@ function acik_arttirma_lf4_2($bid_credit_lf4_2)
     }
     return hash_equals($_SESSION['csrf_token'], $token);
   }
-
+} // Closing brace for the Functions class
 
 // LF4 IKINCI
 

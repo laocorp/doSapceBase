@@ -73,6 +73,26 @@ if ($player_user_id_for_equip > 0) {
         $player_item_levels['droneExp'] = 0;
     }
 }
+
+$upgrade_item_meta = Functions::getUpgradeableItemConfig();
+
+// Helper function to calculate drone level from experience
+function calculateDroneLevelLocal($droneExp) {
+    $exp_map = [ // Based on Functions::$droneLevelExperienceMap structure
+        2500 => 6,
+        2000 => 5,
+        1500 => 4,
+        1000 => 3,
+        500 => 2,
+        0 => 1
+    ];
+    foreach ($exp_map as $exp_needed => $level) {
+        if ($droneExp >= $exp_needed) {
+            return $level;
+        }
+    }
+    return 1; // Default to level 1 if somehow no match (e.g. negative exp)
+}
 ?>
 
 
@@ -105,27 +125,7 @@ if ($sQuery->num_rows > 0){
 <div class="upgradeableItems noselect ps-container">
 
 <?php
-$item_name_to_level_key = [
-    "LF-1" => "lf1lvl",
-    "LF-2" => "lf2lvl",
-    "LF-3" => "lf3lvl",
-    "LF-4" => "lf4lvl",
-    "Prometeus" => "lf5lvl",
-    "SG3N-B01" => "B01lvl",
-    "SG3N-B02" => "B02lvl", // Original code used Functions::getLaserLvl("b02") - ensure $player_item_levels key is 'B02lvl' for consistency
-    "SG3N-B03" => "B03lvl",
-    "SG3N-A01" => "A01lvl",
-    "SG3N-A02" => "A02lvl",
-    "SG3N-A03" => "A03lvl",
-    "LF-3-Neutron" => "lf3nlvl",
-    "LF-4-MD" => "lf4mdlvl",
-    "LF-4-PD" => "lf4pdlvl",
-    "LF-4-HP" => "lf4hplvl",
-    "LF-4-SP" => "lf4splvl",
-    "Unstable LF-4" => "lf4unstablelvl",
-    "MP-1" => "mp1lvl",
-    "Drone Level" => "droneExp"
-];
+// $item_name_to_level_key is removed as we now use $upgrade_item_meta
 
 $stmt_cat2 = $mysqli->prepare("SELECT id, cat FROM categoryUpgradeSystem WHERE active = ?");
 $stmt_cat2->bind_param("i", $active_status);
@@ -144,12 +144,20 @@ $stmt_items->bind_param("ii", $active_status, $catId);
 $stmt_items->execute();
 $sQuery3 = $stmt_items->get_result();
 
-if ($sQuery3 && $sQuery3->num_rows > 0){ // Added null check for $sQuery3
+        if ($sQuery3 && $sQuery3->num_rows > 0){
     while($data3 = $sQuery3->fetch_assoc()){
+        $itemName = $data3['name'];
         $data3_id_escaped = htmlspecialchars($data3['id'], ENT_QUOTES, 'UTF-8');
-        $available_item_count = 1; // Default for items not needing inventory check (like drone level) or if checkLaser is empty
 
-        if (!empty($data3['checkLaser'])){
+        if (!isset($upgrade_item_meta[$itemName])) {
+            // error_log("UpgradeSystem.php: Item '{$itemName}' not found in upgrade_item_meta. Skipping.");
+            continue;
+        }
+        $meta = $upgrade_item_meta[$itemName];
+
+        $available_item_count = 1; // Default for items not needing inventory check or if checkLaser is empty
+
+        if (!empty($data3['checkLaser'])){ // This 'checkLaser' field seems to be from itemsUpgradeSystem table, not the new config
             if ($data3['checkLaser'] == "apis|zeus"){
                 $available_item_count = (isset($player_equipment_items['apis']) && $player_equipment_items['apis'] == true) || (isset($player_equipment_items['zeus']) && $player_equipment_items['zeus'] == true) ? 1 : 0;
             } else {
@@ -163,29 +171,20 @@ if ($sQuery3 && $sQuery3->num_rows > 0){ // Added null check for $sQuery3
 
             if (!$is_in_process){
                 $current_level = 0;
-                $level_key = $item_name_to_level_key[$data3['name']] ?? null;
-
-                if ($level_key && isset($player_item_levels[$level_key])) {
-                    if ($data3['name'] == "Drone Level") {
-                        $droneEXP = (int)$player_item_levels['droneExp'];
-                        if ($droneEXP >= 2500) $current_level = 6;
-                        elseif ($droneEXP >= 2000) $current_level = 5;
-                        elseif ($droneEXP >= 1500) $current_level = 4;
-                        elseif ($droneEXP >= 1000) $current_level = 3;
-                        elseif ($droneEXP >= 500) $current_level = 2;
-                        else $current_level = 1;
-                    } else {
-                        $current_level = (int)$player_item_levels[$level_key];
-                    }
+                if ($meta['type'] === 'drone') {
+                    $droneEXP = (int)($player_item_levels['droneExp'] ?? 0);
+                    $current_level = calculateDroneLevelLocal($droneEXP);
+                } else {
+                    $current_level = (int)($player_item_levels[$meta['field']] ?? 0);
                 }
 
-                $max_level = ($data3['name'] == "Drone Level") ? 6 : 16;
+                $max_level = (int)$meta['maxLevel'];
 
-                if ($level_key && $current_level < $max_level){
+                if ($current_level < $max_level){
     ?>
 <div class="item" id="ItemT_<?= $data3_id_escaped; ?>" onclick="selectItem('<?= $data3_id_escaped; ?>');">
 <div class="img"><img src="<?= htmlspecialchars($data3['image'], ENT_QUOTES, 'UTF-8'); ?>"></div>
-<div class="name"><?= htmlspecialchars($data3['name'], ENT_QUOTES, 'UTF-8'); ?></div>
+<div class="name"><?= htmlspecialchars($itemName, ENT_QUOTES, 'UTF-8'); ?></div>
 <div class="level" id="level_<?= $data3_id_escaped; ?>">Level <?= htmlspecialchars($current_level, ENT_QUOTES, 'UTF-8'); ?></div>
 </div>
     <?php
