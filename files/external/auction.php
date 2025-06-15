@@ -1,4 +1,72 @@
-<?php require_once(INCLUDES . 'header.php'); ?>
+<?php
+require_once(INCLUDES . 'header.php');
+if (session_status() == PHP_SESSION_NONE) {
+    session_start();
+}
+
+$csrf_token = '';
+// Generate CSRF token if user is logged in
+if (isset($player) && !empty($player['userId'])) {
+    // Ensure Functions class is available. If you have an autoloader, this might not be strictly necessary.
+    // require_once(ROOT . 'files/classes/Functions.php');
+    $_SESSION['csrf_token'] = Functions::generateCsrfToken();
+    $csrf_token = $_SESSION['csrf_token'];
+}
+
+// Prepare a variable to hold auction messages
+$auction_messages = [];
+
+// Process auction bids if a form was submitted
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($csrf_token)) {
+    $submitted_token = $_POST['csrf_token'] ?? '';
+
+    if (!Functions::validateCsrfToken($submitted_token)) {
+        $auction_messages[] = ['type' => 'error', 'text' => 'Invalid CSRF token. Please try again.'];
+    } else {
+        if (isset($_POST['submit_bid_credit'])) {
+            $bid_value = $_POST['bid_credit'];
+            $responseJson = Functions::acik_arttirma($bid_value, $submitted_token);
+            $response = json_decode($responseJson, true);
+            $auction_messages['acik_arttirma'] = ['type' => (isset($response['status']) && $response['status'] ? 'success' : 'error'), 'text' => $response['message'] ?? 'An error occurred.'];
+        } elseif (isset($_POST['submit_bid_credit_lf4_2'])) { // LF4 Slot 2 - commented out
+            $bid_value = $_POST['bid_credit_lf4_2'];
+            $responseJson = Functions::acik_arttirma_lf4_2($bid_value, $submitted_token);
+            $response = json_decode($responseJson, true);
+            $auction_messages['acik_arttirma_lf4_2'] = ['type' => (isset($response['status']) && $response['status'] ? 'success' : 'error'), 'text' => $response['message'] ?? 'An error occurred.'];
+        } elseif (isset($_POST['submit_bid_credit_lf4_3'])) { // LF4 Uri
+            $bid_value = $_POST['bid_credit_lf4_3'];
+            $responseJson = Functions::acik_arttirma_lf4_3($bid_value, $submitted_token);
+            $response = json_decode($responseJson, true);
+            $auction_messages['acik_arttirma_lf4_3'] = ['type' => (isset($response['status']) && $response['status'] ? 'success' : 'error'), 'text' => $response['message'] ?? 'An error occurred.'];
+        } elseif (isset($_POST['submit_bid_credit_lf4_4'])) { // LF4 Slot 4 - commented out
+            $bid_value = $_POST['bid_credit_lf4_4'];
+            $responseJson = Functions::acik_arttirma_lf4_4($bid_value, $submitted_token);
+            $response = json_decode($responseJson, true);
+            $auction_messages['acik_arttirma_lf4_4'] = ['type' => (isset($response['status']) && $response['status'] ? 'success' : 'error'), 'text' => $response['message'] ?? 'An error occurred.'];
+        } elseif (isset($_POST['submit_bid_hercul'])) {
+            $bid_value = $_POST['bid_hercul'];
+            $responseJson = Functions::acik_arttirmahercul($bid_value, $submitted_token);
+            $response = json_decode($responseJson, true);
+            $auction_messages['acik_arttirmahercul'] = ['type' => (isset($response['status']) && $response['status'] ? 'success' : 'error'), 'text' => $response['message'] ?? 'An error occurred.'];
+        } elseif (isset($_POST['submit_bid_havoc'])) {
+            $bid_value = $_POST['bid_havoc'];
+            $responseJson = Functions::acik_arttirmahavoc($bid_value, $submitted_token);
+            $response = json_decode($responseJson, true);
+            $auction_messages['acik_arttirmahavoc'] = ['type' => (isset($response['status']) && $response['status'] ? 'success' : 'error'), 'text' => $response['message'] ?? 'An error occurred.'];
+        } elseif (isset($_POST['submit_bid_apis'])) {
+            $bid_value = $_POST['bid_apis'];
+            $responseJson = Functions::acik_arttirma_apis($bid_value, $submitted_token);
+            $response = json_decode($responseJson, true);
+            $auction_messages['acik_arttirma_apis'] = ['type' => (isset($response['status']) && $response['status'] ? 'success' : 'error'), 'text' => $response['message'] ?? 'An error occurred.'];
+        } elseif (isset($_POST['submit_bid_zeus'])) {
+            $bid_value = $_POST['bid_zeus'];
+            $responseJson = Functions::acik_arttirma_zeus($bid_value, $submitted_token);
+            $response = json_decode($responseJson, true);
+            $auction_messages['acik_arttirma_zeus'] = ['type' => (isset($response['status']) && $response['status'] ? 'success' : 'error'), 'text' => $response['message'] ?? 'An error occurred.'];
+        }
+    }
+}
+?>
 <script src="https://kit.fontawesome.com/4f90b43f8c.js" crossorigin="anonymous" type="text/javascript"></script>
 <link rel="stylesheet" href="/css/auction.css" />
 <?php require_once(INCLUDES . 'data.php'); ?>
@@ -100,22 +168,24 @@ if(output.length<3)output="00:"+output;return output?output:"00:00"};return this
 					<br>
 					Highest Offer: <a style="color:gold;"><?php echo htmlspecialchars($winlf4_bid, ENT_QUOTES, 'UTF-8'); ?></a>
 				
-                    <form id="acik_arttirma" method="post">   
-								
+                    <form id="acik_arttirma_form" method="post">
+                        <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars($csrf_token, ENT_QUOTES, 'UTF-8'); ?>">
                         Credit Offer:<input style="color:black;" placeholder="50000" min="100000" max="9999999999" step="50000" type="number" class="form-control" name="bid_credit" id="bid_credit" required>
 						
                         
 						<div style="background-color: transparent;" class="card-action">
                             <div class="row">
-								<input type="submit" value="Bidding" class="buy button modal-trigger">
+								<input type="submit" name="submit_bid_credit" value="Bidding" class="buy button modal-trigger">
                             </div>
                         </div>
 						
                     
-								<?php if(isset($_POST['bid_credit'])){
-								$bid_credit = $_POST['bid_credit']; 
-								Functions::acik_arttirma($bid_credit); // Updated to call Functions method
-								} ?>
+								<?php
+								if (isset($auction_messages['acik_arttirma'])) {
+								    $msg = $auction_messages['acik_arttirma'];
+								    echo "<p style='color: " . ($msg['type'] == 'success' ? 'green' : 'red') . ";'>" . htmlspecialchars($msg['text']) . "</p>";
+								}
+								?>
                     
 					</form>
 					
@@ -131,26 +201,28 @@ if(output.length<3)output="00:"+output;return output?output:"00:00"};return this
                  <?php echo "Weapon LF4 SLOT2"?>
               <br>
                          
-                 Highest Bid: <b style="color:#957c0a;"><?php echo $winlf4_lf4_2; ?></b>
+                 Highest Bid: <b style="color:#957c0a;"><?php echo htmlspecialchars($winlf4_lf4_2, ENT_QUOTES, 'UTF-8'); ?></b>
 				 <br>
-					Highest Offer: <a style="color:#957c0a;"><?php echo $winlf4_lf4_2_bid; ?></a>
+					Highest Offer: <a style="color:#957c0a;"><?php echo htmlspecialchars($winlf4_lf4_2_bid, ENT_QUOTES, 'UTF-8'); ?></a>
              
-                 <form id="acik_arttirma" method="post">   
-                             
+                 <form id="acik_arttirma_lf4_2_form" method="post">
+                     <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars($csrf_token, ENT_QUOTES, 'UTF-8'); ?>">
                      Credit Offer:<input style="color:white" type="number" name="bid_credit_lf4_2" id="bid_credit_lf4_2" required>
                      
                      
                      <div style="background-color: transparent;" class="card-action">
                          <div class="row">
-                             <input type="submit" value="Give Offer LF4 SLOT2" class="buy button modal-trigger">
+                             <input type="submit" name="submit_bid_credit_lf4_2" value="Give Offer LF4 SLOT2" class="buy button modal-trigger">
                          </div>
                      </div>
                      
                  
-                             <?php if(isset($_POST['bid_credit_lf4_2'])){
-                             $bid_credit_lf4_2 = $_POST['bid_credit_lf4_2']; 
-                             acik_arttirma_lf4_2($bid_credit_lf4_2);
-                             } ?>
+                             <?php
+                             /*if (isset($auction_messages['acik_arttirma_lf4_2'])) {
+                                 $msg = $auction_messages['acik_arttirma_lf4_2'];
+                                 echo "<p style='color: " . ($msg['type'] == 'success' ? 'green' : 'red') . ";'>" . htmlspecialchars($msg['text']) . "</p>";
+                             }*/
+                             ?>
                  
                  </form>
                  
@@ -172,22 +244,24 @@ if(output.length<3)output="00:"+output;return output?output:"00:00"};return this
 				 <br>
 					Highest Offer: <a style="color:gold;"><?php echo htmlspecialchars($winlf4_lf4_3_bid, ENT_QUOTES, 'UTF-8'); ?></a>
              
-                 <form id="acik_arttirma" method="post">   
-                             
+                 <form id="acik_arttirma_lf4_3_form" method="post">
+                     <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars($csrf_token, ENT_QUOTES, 'UTF-8'); ?>">
                      Uridium Offer:<input style="color:black;" placeholder="500" min="0" max="9999999999" step="500" type="number" class="form-control" name="bid_credit_lf4_3" id="bid_credit_lf4_3" required>
                      
                      
                      <div style="background-color: transparent;" class="card-action">
                          <div class="row">
-                             <input type="submit" value="Bidding" class="buy button modal-trigger">
+                             <input type="submit" name="submit_bid_credit_lf4_3" value="Bidding" class="buy button modal-trigger">
                          </div>
                      </div>
                      
                  
-                             <?php if(isset($_POST['bid_credit_lf4_3'])){
-                             $bid_credit_lf4_3 = $_POST['bid_credit_lf4_3']; 
-                             Functions::acik_arttirma_lf4_3($bid_credit_lf4_3);  // Updated to call Functions method
-                             } ?>
+                             <?php
+                             if (isset($auction_messages['acik_arttirma_lf4_3'])) {
+                                 $msg = $auction_messages['acik_arttirma_lf4_3'];
+                                 echo "<p style='color: " . ($msg['type'] == 'success' ? 'green' : 'red') . ";'>" . htmlspecialchars($msg['text']) . "</p>";
+                             }
+                             ?>
                  
                  </form>
                  
@@ -207,27 +281,29 @@ if(output.length<3)output="00:"+output;return output?output:"00:00"};return this
                  <?php echo "Weapon LF4 SLOT4"?>
               <br>
                          
-                 Highest Bid: <b style="color:#957c0a;"><?php echo $winlf4_lf4_4; ?></b>
+                 Highest Bid: <b style="color:#957c0a;"><?php echo htmlspecialchars($winlf4_lf4_4, ENT_QUOTES, 'UTF-8'); ?></b>
 				  <br>
-					Highest Offer: <a style="color:#957c0a;"><?php echo $winlf4_lf4_4_bid; ?></a>
+					Highest Offer: <a style="color:#957c0a;"><?php echo htmlspecialchars($winlf4_lf4_4_bid, ENT_QUOTES, 'UTF-8'); ?></a>
 				 
              
-                 <form id="acik_arttirma" method="post">   
-                             
+                 <form id="acik_arttirma_lf4_4_form" method="post">
+                     <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars($csrf_token, ENT_QUOTES, 'UTF-8'); ?>">
                      Uridium Offer:<input style="color:white" type="number" name="bid_credit_lf4_4" id="bid_credit_lf4_4" required>
                      
                      
                      <div style="background-color: transparent;" class="card-action">
                          <div class="row">
-                             <input type="submit" value="Give Offer LF4 SLOT4" class="buy button modal-trigger">
+                             <input type="submit" name="submit_bid_credit_lf4_4" value="Give Offer LF4 SLOT4" class="buy button modal-trigger">
                          </div>
                      </div>
                      
                  
-                             <?php if(isset($_POST['bid_credit_lf4_4'])){
-                             $bid_credit_lf4_4 = $_POST['bid_credit_lf4_4']; 
-                             acik_arttirma_lf4_4($bid_credit_lf4_4);
-                             } ?>
+                             <?php
+                             /*if (isset($auction_messages['acik_arttirma_lf4_4'])) {
+                                 $msg = $auction_messages['acik_arttirma_lf4_4'];
+                                 echo "<p style='color: " . ($msg['type'] == 'success' ? 'green' : 'red') . ";'>" . htmlspecialchars($msg['text']) . "</p>";
+                             }*/
+                             ?>
                  
                  </form>
                  
@@ -255,18 +331,21 @@ if(output.length<3)output="00:"+output;return output?output:"00:00"};return this
 						Highest Bid: <b style="color:gold;"><?php echo htmlspecialchars($winhercul, ENT_QUOTES, 'UTF-8'); ?></b>
 						 <br>
 					Highest Offer: <a style="color:gold;"><?php echo htmlspecialchars($winhercul_bid, ENT_QUOTES, 'UTF-8'); ?></a>
-                    <form id="acik_arttirmahercul" method="post">                     
+                    <form id="acik_arttirmahercul_form" method="post">
+                        <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars($csrf_token, ENT_QUOTES, 'UTF-8'); ?>">
                         Uridium Offer:<input style="color:black;" placeholder="500" min="0" max="9999999999" step="500" type="number" class="form-control" name="bid_hercul" id="bid_hercul" required>
                         <div style="background-color: transparent;" class="card-action">
                             <div class="row">
-							<input type="submit" value="Bidding" class="buy button modal-trigger">
+							<input type="submit" name="submit_bid_hercul" value="Bidding" class="buy button modal-trigger">
                              </div>
                             </div>
 						
-							<?php if(isset($_POST['bid_hercul'])){
-							$bid_hercul = $_POST['bid_hercul']; 
-							Functions::acik_arttirmahercul($bid_hercul); // Updated to call Functions method
-							} ?>
+							<?php
+							if (isset($auction_messages['acik_arttirmahercul'])) {
+							    $msg = $auction_messages['acik_arttirmahercul'];
+							    echo "<p style='color: " . ($msg['type'] == 'success' ? 'green' : 'red') . ";'>" . htmlspecialchars($msg['text']) . "</p>";
+							}
+							?>
                     
 					</form>
 
@@ -291,19 +370,22 @@ if(output.length<3)output="00:"+output;return output?output:"00:00"};return this
 					<br>
 					Highest Offer: <a style="color:gold;"><?php echo htmlspecialchars($winhavoc_bid, ENT_QUOTES, 'UTF-8'); ?></a>
 					
-                    <form id="acik_arttirmahavoc" method="post">                     
+                    <form id="acik_arttirmahavoc_form" method="post">
+                        <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars($csrf_token, ENT_QUOTES, 'UTF-8'); ?>">
                         Uridium Offer<input style="color:black;" placeholder="500" min="0" max="9999999999" step="500" type="number" class="form-control" name="bid_havoc" id="bid_havoc" required>
                         
 						 <div style="background-color: transparent;" class="card-action">
                             <div class="row">
-							<input type="submit" value="Bidding" class="buy button modal-trigger">
+							<input type="submit" name="submit_bid_havoc" value="Bidding" class="buy button modal-trigger">
                              </div>
                             </div>
 						
-							<?php if(isset($_POST['bid_havoc'])){
-							$bid_havoc = $_POST['bid_havoc']; 
-							Functions::acik_arttirmahavoc($bid_havoc); // Updated to call Functions method
-							} ?>
+							<?php
+							if (isset($auction_messages['acik_arttirmahavoc'])) {
+							    $msg = $auction_messages['acik_arttirmahavoc'];
+							    echo "<p style='color: " . ($msg['type'] == 'success' ? 'green' : 'red') . ";'>" . htmlspecialchars($msg['text']) . "</p>";
+							}
+							?>
                     
 					</form>
 
@@ -331,22 +413,24 @@ if(output.length<3)output="00:"+output;return output?output:"00:00"};return this
 					<br>
 					Highest Offer: <a style="color:gold;"><?php echo htmlspecialchars($winapis_bid, ENT_QUOTES, 'UTF-8'); ?></a>
 				
-                    <form id="acik_arttirma_apis" method="post">   
-								
+                    <form id="acik_arttirma_apis_form" method="post">
+                        <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars($csrf_token, ENT_QUOTES, 'UTF-8'); ?>">
                          Uridium Offer<input style="color:black;" placeholder="500" min="0" max="9999999999" step="500" type="number" class="form-control" name="bid_apis" id="bid_apis" required>
 						
                         
 						<div style="background-color: transparent;" class="card-action">
                             <div class="row">
-								<input type="submit" value="Bidding" class="buy button modal-trigger">
+								<input type="submit" name="submit_bid_apis" value="Bidding" class="buy button modal-trigger">
                             </div>
                         </div>
 						
                     
-								<?php if(isset($_POST['bid_apis'])){
-								$bid_apis = $_POST['bid_apis']; 
-								Functions::acik_arttirma_apis($bid_apis); // Updated to call Functions method
-								} ?>
+								<?php
+								if (isset($auction_messages['acik_arttirma_apis'])) {
+								    $msg = $auction_messages['acik_arttirma_apis'];
+								    echo "<p style='color: " . ($msg['type'] == 'success' ? 'green' : 'red') . ";'>" . htmlspecialchars($msg['text']) . "</p>";
+								}
+								?>
                     
 					</form>
 					
@@ -374,22 +458,24 @@ if(output.length<3)output="00:"+output;return output?output:"00:00"};return this
 					<br>
 					Highest Offer: <a style="color:gold;"><?php echo htmlspecialchars($winzeus_bid, ENT_QUOTES, 'UTF-8'); ?></a>
 				
-                    <form id="acik_arttirma_zeus" method="post">   
-								
+                    <form id="acik_arttirma_zeus_form" method="post">
+                        <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars($csrf_token, ENT_QUOTES, 'UTF-8'); ?>">
                         Uridium Offer<input style="color:black;" placeholder="500" min="0" max="9999999999" step="500" type="number" class="form-control" name="bid_zeus" id="bid_zeus" required>
 						
                         
 						<div style="background-color: transparent;" class="card-action">
                             <div class="row">
-								<input type="submit" value="Bidding" class="buy button modal-trigger">
+								<input type="submit" name="submit_bid_zeus" value="Bidding" class="buy button modal-trigger">
                             </div>
                         </div>
 						
                     
-								<?php if(isset($_POST['bid_zeus'])){
-								$bid_zeus = $_POST['bid_zeus']; 
-								Functions::acik_arttirma_zeus($bid_zeus); // Updated to call Functions method
-								} ?>
+								<?php
+								if (isset($auction_messages['acik_arttirma_zeus'])) {
+								    $msg = $auction_messages['acik_arttirma_zeus'];
+								    echo "<p style='color: " . ($msg['type'] == 'success' ? 'green' : 'red') . ";'>" . htmlspecialchars($msg['text']) . "</p>";
+								}
+								?>
                     
 					</form>
 					
